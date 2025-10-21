@@ -6,6 +6,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.dependencies import get_db, get_current_user
+from app.core.config import settings
+from app.middleware.rate_limit import rate_limit_ip
 from app.schemas.auth import UserRegister, UserLogin, Token, TokenRefresh
 from app.schemas.user import UsuarioResponse
 from app.services import auth_service
@@ -17,7 +19,8 @@ router = APIRouter()
 @router.post("/register", response_model=UsuarioResponse, status_code=status.HTTP_201_CREATED)
 async def register(
     user_data: UserRegister,
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
+    _rl: None = Depends(rate_limit_ip(settings.RATE_LIMIT_REGISTER, scope="register"))
 ):
     """
     Register a new user.
@@ -33,7 +36,8 @@ async def register(
 @router.post("/login", response_model=Token)
 async def login(
     credentials: UserLogin,
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
+    _rl: None = Depends(rate_limit_ip(settings.RATE_LIMIT_LOGIN, scope="login"))
 ):
     """
     Login with email and password to get JWT tokens.
@@ -46,7 +50,8 @@ async def login(
 @router.post("/login/form", response_model=Token)
 async def login_form(
     form_data: OAuth2PasswordRequestForm = Depends(),
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
+    _rl: None = Depends(rate_limit_ip(settings.RATE_LIMIT_LOGIN, scope="login"))
 ):
     """
     Login with OAuth2 password flow (for compatibility).

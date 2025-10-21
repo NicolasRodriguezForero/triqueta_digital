@@ -102,8 +102,8 @@ async def update_user(
     Raises:
         HTTPException: If user not found or email already exists
     """
-    # Get user
-    stmt = select(Usuario).where(Usuario.id == user_id)
+    # Get user with profile
+    stmt = select(Usuario).options(selectinload(Usuario.perfil)).where(Usuario.id == user_id)
     result = await db.execute(stmt)
     user = result.scalar_one_or_none()
     
@@ -153,7 +153,7 @@ async def delete_user(
     Raises:
         HTTPException: If user not found
     """
-    stmt = select(Usuario).where(Usuario.id == user_id)
+    stmt = select(Usuario).options(selectinload(Usuario.perfil)).where(Usuario.id == user_id)
     result = await db.execute(stmt)
     user = result.scalar_one_or_none()
     

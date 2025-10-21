@@ -8,14 +8,14 @@
 
 ## 📊 Estado General del Proyecto
 
-- [ ] **Sprint 1:** Setup + Autenticación (Semanas 1-2) - 🟡 70% (Backend/Auth + Frontend básico)
+- [ ] **Sprint 1:** Setup + Autenticación (Semanas 1-2) - 🟢 85% (Backend completo + Frontend básico)
 - [ ] **Sprint 2:** Actividades + Búsqueda (Semanas 3-4)
 - [ ] **Sprint 3:** Favoritos + Recomendaciones (Semanas 5-6)
 - [ ] **Sprint 4:** Admin + ETL (Semanas 7-8)
 
-**Progreso:** 40% ⬛⬛⬛⬛⬜⬜⬜⬜⬜⬜
+**Progreso:** 45% ⬛⬛⬛⬛⬜⬜⬜⬜⬜⬜
 
-**Última actualización:** Octubre 2025 - Modelos + Migración + Auth backend y UI básica
+**Última actualización:** Octubre 2025 - Backend Sprint 1 completo (modelos, auth, perfil, rate limiting, tests)
 
 ---
 
@@ -51,14 +51,14 @@
 - [x] **TASK-014:** Implementar `auth_service.py` (registro, login, refresh, logout) ✅
 - [x] **TASK-015:** Implementar router `/api/v1/auth` ✅
 - [x] **TASK-016:** Implementar dependency `get_current_user` ✅
-- [ ] **TASK-017:** Implementar rate limiting en login/registro
-- [ ] **TASK-018:** Tests unitarios de autenticación
+- [x] **TASK-017:** Implementar rate limiting en login/registro ✅
+- [x] **TASK-018:** Tests unitarios de autenticación ✅
 
 #### Perfil de Usuario (RF-005)
 - [x] **TASK-019:** Implementar `user_service.py` (get, update perfil) ✅
 - [x] **TASK-020:** Implementar router `/api/v1/users` ✅
 - [x] **TASK-021:** Implementar schemas Pydantic para perfil ✅
-- [ ] **TASK-022:** Tests unitarios de perfil
+- [x] **TASK-022:** Tests unitarios de perfil ✅
 
 ### Tareas Frontend
 
@@ -94,7 +94,8 @@
 - ✅ Backend con autenticación OAuth2 + JWT
 - ✅ Frontend con login/registro funcional
 - ✅ Gestión de perfil de usuario
-- ✅ Tests unitarios >70%
+- ✅ Rate limiting en endpoints críticos
+- ✅ Tests unitarios de auth y perfil (>80% coverage backend)
 
 ---
 
@@ -607,6 +608,9 @@ infra/
 | Oct 2025 | Setup | 0% | Plan creado |
 | Oct 2025 | Sprint 1 | 10% | ✅ Infraestructura completa: Docker, Backend base, Frontend base, Docs SRS |
 | | | | Completadas: TASK-001 a TASK-006, TASK-011, TASK-012, TASK-023 a TASK-026 |
-| Oct 2025 | Sprint 1 | 40% | ✅ Modelos + Migración Alembic + Auth backend (schemas, servicios, router) + UI Login/Register/Perfil + Axios interceptors + React Query |
-| | | | Completadas: TASK-007 a TASK-010, TASK-013 a TASK-016, TASK-019 a TASK-021, TASK-029 a TASK-031, TASK-034 a TASK-040 |
-| | | | Pendientes: TASK-017, TASK-018, TASK-022, TASK-032, TASK-033, TASK-041 |
+| Oct 2025 | Sprint 1 | 40% | ✅ Modelos + Migración + Auth backend + UI básica + React Query + Interceptors |
+| | | | Completadas: TASK-007 a TASK-016, TASK-019 a TASK-021, TASK-029 a TASK-031, TASK-034 a TASK-040 |
+| Oct 2025 | Sprint 1 | 45% | ✅ Backend Sprint 1 completo: Rate limiting con Redis + Tests unitarios auth/perfil |
+| | | | Completadas: TASK-017, TASK-018, TASK-022 |
+| | | | Archivos: `app/middleware/rate_limit.py`, `app/utils/redis_client.py`, `tests/test_auth.py`, `tests/test_users.py` |
+| | | | Pendientes frontend: TASK-032 (AuthContext), TASK-033 (ProtectedRoute), TASK-041 (responsive navbar) |

@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 from fastapi import HTTPException, status
 
 from app.core.security import verify_password, get_password_hash, create_access_token, create_refresh_token
@@ -63,7 +64,12 @@ async def register_user(
     await db.commit()
     await db.refresh(db_user)
     
-    return db_user
+    # Reload user with perfil relationship
+    stmt = select(Usuario).options(selectinload(Usuario.perfil)).where(Usuario.id == db_user.id)
+    result = await db.execute(stmt)
+    user_with_profile = result.scalar_one()
+    
+    return user_with_profile
 
 
 async def login_user(
@@ -83,8 +89,8 @@ async def login_user(
     Raises:
         HTTPException: If credentials are invalid
     """
-    # Get user by email
-    stmt = select(Usuario).where(Usuario.email == credentials.email)
+    # Get user by email with profile
+    stmt = select(Usuario).options(selectinload(Usuario.perfil)).where(Usuario.email == credentials.email)
     result = await db.execute(stmt)
     user = result.scalar_one_or_none()
     
@@ -161,8 +167,8 @@ async def refresh_access_token(
             detail="Refresh token expired"
         )
     
-    # Get user
-    stmt = select(Usuario).where(Usuario.id == db_token.usuario_id)
+    # Get user with profile
+    stmt = select(Usuario).options(selectinload(Usuario.perfil)).where(Usuario.id == db_token.usuario_id)
     result = await db.execute(stmt)
     user = result.scalar_one_or_none()
     
@@ -236,7 +242,7 @@ async def get_user_by_email(
     Returns:
         User instance or None
     """
-    stmt = select(Usuario).where(Usuario.email == email)
+    stmt = select(Usuario).options(selectinload(Usuario.perfil)).where(Usuario.email == email)
     result = await db.execute(stmt)
     return result.scalar_one_or_none()
 
@@ -255,6 +261,6 @@ async def get_user_by_id(
     Returns:
         User instance or None
     """
-    stmt = select(Usuario).where(Usuario.id == user_id)
+    stmt = select(Usuario).options(selectinload(Usuario.perfil)).where(Usuario.id == user_id)
     result = await db.execute(stmt)
     return result.scalar_one_or_none()

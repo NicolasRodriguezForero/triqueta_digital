@@ -12,8 +12,8 @@ from app.db.session import async_session
 from app.models.user import Usuario
 
 
-# OAuth2 scheme for token authentication
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
+# OAuth2 scheme for token authentication (uses form endpoint for Swagger UI compatibility)
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login/form")
 
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:

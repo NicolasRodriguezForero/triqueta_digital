@@ -3,6 +3,7 @@ Security utilities for authentication and password hashing.
 """
 from datetime import datetime, timedelta
 from typing import Any, Optional
+import uuid
 from jose import jwt
 from passlib.context import CryptContext
 from app.core.config import settings
@@ -41,7 +42,7 @@ def get_password_hash(password: str) -> str:
 
 def create_access_token(subject: str | Any, expires_delta: Optional[timedelta] = None) -> str:
     """
-    Create a JWT access token.
+    Create a JWT access token with unique identifier.
     
     Args:
         subject: Subject of the token (usually user ID)
@@ -57,7 +58,11 @@ def create_access_token(subject: str | Any, expires_delta: Optional[timedelta] =
             minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
         )
     
-    to_encode = {"exp": expire, "sub": str(subject)}
+    to_encode = {
+        "exp": expire, 
+        "sub": str(subject),
+        "jti": str(uuid.uuid4())  # Unique token identifier
+    }
     encoded_jwt = jwt.encode(
         to_encode, 
         settings.SECRET_KEY, 
@@ -68,7 +73,7 @@ def create_access_token(subject: str | Any, expires_delta: Optional[timedelta] =
 
 def create_refresh_token(subject: str | Any) -> str:
     """
-    Create a JWT refresh token.
+    Create a JWT refresh token with unique identifier.
     
     Args:
         subject: Subject of the token (usually user ID)
@@ -77,7 +82,12 @@ def create_refresh_token(subject: str | Any) -> str:
         Encoded JWT refresh token
     """
     expire = datetime.utcnow() + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
-    to_encode = {"exp": expire, "sub": str(subject), "type": "refresh"}
+    to_encode = {
+        "exp": expire, 
+        "sub": str(subject), 
+        "type": "refresh",
+        "jti": str(uuid.uuid4())  # Unique token identifier
+    }
     encoded_jwt = jwt.encode(
         to_encode,
         settings.SECRET_KEY,
