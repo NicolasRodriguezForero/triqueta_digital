@@ -44,6 +44,8 @@ async def get_current_user(
     Raises:
         HTTPException: If token is invalid or user not found
     """
+    from app.services.auth_service import get_user_by_id
+    
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -58,14 +60,11 @@ async def get_current_user(
     except JWTError:
         raise credentials_exception
     
-    # TODO: Implement get_user_by_id in Sprint 1
-    # user = await get_user_by_id(db, user_id)
-    # if user is None:
-    #     raise credentials_exception
-    # return user
+    user = await get_user_by_id(db, int(user_id))
+    if user is None:
+        raise credentials_exception
     
-    # Placeholder for now
-    raise NotImplementedError("User retrieval not implemented yet")
+    return user
 
 
 async def get_current_active_user(
@@ -83,7 +82,7 @@ async def get_current_active_user(
     Raises:
         HTTPException: If user is inactive
     """
-    if current_user.estado != "activo":
+    if not current_user.is_active:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Inactive user"
@@ -106,7 +105,7 @@ async def get_current_admin_user(
     Raises:
         HTTPException: If user is not admin
     """
-    if current_user.rol != "administrador":
+    if not current_user.is_admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not enough permissions"

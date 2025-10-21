@@ -8,14 +8,14 @@
 
 ## 📊 Estado General del Proyecto
 
-- [ ] **Sprint 1:** Setup + Autenticación (Semanas 1-2) - 🟡 10% (Infraestructura)
+- [ ] **Sprint 1:** Setup + Autenticación (Semanas 1-2) - 🟡 70% (Backend/Auth + Frontend básico)
 - [ ] **Sprint 2:** Actividades + Búsqueda (Semanas 3-4)
 - [ ] **Sprint 3:** Favoritos + Recomendaciones (Semanas 5-6)
 - [ ] **Sprint 4:** Admin + ETL (Semanas 7-8)
 
-**Progreso:** 10% ⬛⬜⬜⬜⬜⬜⬜⬜⬜⬜
+**Progreso:** 40% ⬛⬛⬛⬛⬜⬜⬜⬜⬜⬜
 
-**Última actualización:** Octubre 2025 - Setup inicial completado
+**Última actualización:** Octubre 2025 - Modelos + Migración + Auth backend y UI básica
 
 ---
 
@@ -39,25 +39,25 @@
 - [x] **TASK-006:** Configurar CORS y middleware básico ✅
 
 #### Base de Datos
-- [ ] **TASK-007:** Crear modelo SQLAlchemy `Usuario`
-- [ ] **TASK-008:** Crear modelo SQLAlchemy `PerfilUsuario`
-- [ ] **TASK-009:** Crear modelo SQLAlchemy `RefreshToken`
-- [ ] **TASK-010:** Crear migración inicial de Alembic
+- [x] **TASK-007:** Crear modelo SQLAlchemy `Usuario` ✅
+- [x] **TASK-008:** Crear modelo SQLAlchemy `PerfilUsuario` ✅
+- [x] **TASK-009:** Crear modelo SQLAlchemy `RefreshToken` ✅
+- [x] **TASK-010:** Crear migración inicial de Alembic ✅
 
 #### Autenticación (RF-001 a RF-004)
 - [x] **TASK-011:** Implementar hash de contraseñas (bcrypt) ✅
 - [x] **TASK-012:** Implementar generación de JWT (access + refresh) ✅
-- [ ] **TASK-013:** Implementar schemas Pydantic para auth
-- [ ] **TASK-014:** Implementar `auth_service.py` (registro, login, refresh, logout)
-- [ ] **TASK-015:** Implementar router `/api/v1/auth`
-- [ ] **TASK-016:** Implementar dependency `get_current_user`
+- [x] **TASK-013:** Implementar schemas Pydantic para auth ✅
+- [x] **TASK-014:** Implementar `auth_service.py` (registro, login, refresh, logout) ✅
+- [x] **TASK-015:** Implementar router `/api/v1/auth` ✅
+- [x] **TASK-016:** Implementar dependency `get_current_user` ✅
 - [ ] **TASK-017:** Implementar rate limiting en login/registro
 - [ ] **TASK-018:** Tests unitarios de autenticación
 
 #### Perfil de Usuario (RF-005)
-- [ ] **TASK-019:** Implementar `user_service.py` (get, update perfil)
-- [ ] **TASK-020:** Implementar router `/api/v1/users`
-- [ ] **TASK-021:** Implementar schemas Pydantic para perfil
+- [x] **TASK-019:** Implementar `user_service.py` (get, update perfil) ✅
+- [x] **TASK-020:** Implementar router `/api/v1/users` ✅
+- [x] **TASK-021:** Implementar schemas Pydantic para perfil ✅
 - [ ] **TASK-022:** Tests unitarios de perfil
 
 ### Tareas Frontend
@@ -71,22 +71,22 @@
 - [x] **TASK-028:** Crear axios instance con interceptors ✅
 
 #### Autenticación UI
-- [ ] **TASK-029:** Crear componente `LoginForm`
-- [ ] **TASK-030:** Crear componente `RegisterForm`
-- [ ] **TASK-031:** Crear páginas `/login` y `/register`
+- [x] **TASK-029:** Crear componente `LoginForm` ✅
+- [x] **TASK-030:** Crear componente `RegisterForm` ✅
+- [x] **TASK-031:** Crear páginas `/login` y `/register` ✅
 - [ ] **TASK-032:** Implementar AuthContext para gestión de sesión
 - [ ] **TASK-033:** Implementar ProtectedRoute component
-- [ ] **TASK-034:** Implementar servicios API de autenticación
+- [x] **TASK-034:** Implementar servicios API de autenticación ✅
 
 #### Perfil UI
-- [ ] **TASK-035:** Crear componente `ProfileForm`
-- [ ] **TASK-036:** Crear página `/perfil`
-- [ ] **TASK-037:** Implementar edición de etiquetas de interés
-- [ ] **TASK-038:** Implementar servicios API de perfil
+- [x] **TASK-035:** Crear componente `ProfileForm` ✅
+- [x] **TASK-036:** Crear página `/perfil` ✅
+- [x] **TASK-037:** Implementar edición de etiquetas de interés ✅
+- [x] **TASK-038:** Implementar servicios API de perfil ✅
 
 #### Layout y Navegación
-- [ ] **TASK-039:** Crear componente `Layout` con Navbar y Footer
-- [ ] **TASK-040:** Crear componente `Navbar` con auth state
+- [x] **TASK-039:** Crear componente `Layout` con Navbar y Footer ✅
+- [x] **TASK-040:** Crear componente `Navbar` con auth state ✅
 - [ ] **TASK-041:** Implementar navegación responsive
 
 ### Entregables Sprint 1
@@ -606,5 +606,7 @@ infra/
 |-------|--------|----------|-------|
 | Oct 2025 | Setup | 0% | Plan creado |
 | Oct 2025 | Sprint 1 | 10% | ✅ Infraestructura completa: Docker, Backend base, Frontend base, Docs SRS |
-| | | | Completadas: TASK-001 a TASK-006, TASK-011, TASK-012, TASK-023 a TASK-028 |
-| | | | **Próximo:** TASK-007 - Crear modelo Usuario |
+| | | | Completadas: TASK-001 a TASK-006, TASK-011, TASK-012, TASK-023 a TASK-026 |
+| Oct 2025 | Sprint 1 | 40% | ✅ Modelos + Migración Alembic + Auth backend (schemas, servicios, router) + UI Login/Register/Perfil + Axios interceptors + React Query |
+| | | | Completadas: TASK-007 a TASK-010, TASK-013 a TASK-016, TASK-019 a TASK-021, TASK-029 a TASK-031, TASK-034 a TASK-040 |
+| | | | Pendientes: TASK-017, TASK-018, TASK-022, TASK-032, TASK-033, TASK-041 |

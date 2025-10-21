@@ -42,7 +42,8 @@ async def health_check():
     return {"status": "healthy"}
 
 
-# TODO: Include routers in Sprint 1
-# from app.api.v1 import auth, users, activities
-# app.include_router(auth.router, prefix="/api/v1/auth", tags=["auth"])
-# app.include_router(users.router, prefix="/api/v1/users", tags=["users"])
+# Include API routers
+from app.api.v1 import auth, users
+
+app.include_router(auth.router, prefix="/api/v1/auth", tags=["auth"])
+app.include_router(users.router, prefix="/api/v1/users", tags=["users"])
