@@ -40,8 +40,8 @@ services:
     environment:
       - DATABASE_URL=postgresql+asyncpg://triqueta_user:triqueta_pass@db:5432/triqueta_db
       - REDIS_URL=redis://redis:6379/0
-    expose:
-      - "8000"
+    ports:
+      - "8000:8000"
     volumes:
       - ./backend:/app
     depends_on:
@@ -58,6 +58,8 @@ services:
       dockerfile: Dockerfile
       target: production
     container_name: triqueta-frontend
+    env_file:
+      - ./frontend/.env
     expose:
       - "80"
     depends_on:

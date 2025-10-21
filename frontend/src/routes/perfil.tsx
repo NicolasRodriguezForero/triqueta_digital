@@ -1,18 +1,17 @@
-import { createFileRoute, Navigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useProfile, useUpdateProfile } from "../hooks/useProfile";
-import { useIsAuthenticated } from "../hooks/useAuth";
 import { useState } from "react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import { ProtectedRoute } from "../components/ProtectedRoute";
 
 export const Route = createFileRoute("/perfil")({
   component: PerfilPage,
 });
 
 function PerfilPage() {
-  const isAuthenticated = useIsAuthenticated();
   const { data: user, isLoading } = useProfile();
   const updateProfile = useUpdateProfile();
   
@@ -23,11 +22,6 @@ function PerfilPage() {
   const [disponibilidad, setDisponibilidad] = useState("");
   const [nivelActividad, setNivelActividad] = useState("");
   const [etiquetasInteres, setEtiquetasInteres] = useState("");
-  
-  // Redirect to login if not authenticated
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
-  }
   
   // Initialize form when data loads
   if (user && !nombreCompleto && user.perfil) {
@@ -54,21 +48,19 @@ function PerfilPage() {
     });
   };
   
-  if (isLoading) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto">
-          <div className="h-8 w-48 bg-gray-200 animate-pulse rounded mb-4" />
-          <div className="h-64 bg-gray-200 animate-pulse rounded" />
-        </div>
-      </div>
-    );
-  }
-  
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Mi Perfil</h1>
+    <ProtectedRoute>
+      {isLoading ? (
+        <div className="container mx-auto px-4 py-8">
+          <div className="max-w-2xl mx-auto">
+            <div className="h-8 w-48 bg-gray-200 animate-pulse rounded mb-4" />
+            <div className="h-64 bg-gray-200 animate-pulse rounded" />
+          </div>
+        </div>
+      ) : (
+        <div className="container mx-auto px-4 py-8">
+          <div className="max-w-2xl mx-auto">
+            <h1 className="text-3xl font-bold mb-6">Mi Perfil</h1>
         
         <Card>
           <CardHeader>
@@ -205,7 +197,9 @@ function PerfilPage() {
             </CardContent>
           </form>
         </Card>
-      </div>
-    </div>
+          </div>
+        </div>
+      )}
+    </ProtectedRoute>
   );
 }

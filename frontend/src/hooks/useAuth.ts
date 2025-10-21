@@ -1,66 +1,80 @@
 /**
- * Authentication hooks using React Query
+ * Authentication hooks integrating AuthContext with React Query
  */
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import * as authService from "../services/auth";
+import { useAuth as useAuthContext } from "../contexts/AuthContext";
 import type { LoginData, RegisterData } from "../services/auth";
 
 /**
- * Hook to get current user
+ * Re-export the main auth hook from context
+ */
+export { useAuth } from "../contexts/AuthContext";
+
+/**
+ * Hook to get current user (directly from context)
  */
 export function useCurrentUser() {
-  return useQuery({
-    queryKey: ["currentUser"],
-    queryFn: authService.getCurrentUser,
-    enabled: authService.isAuthenticated(),
-    retry: false,
-  });
+  const { user, isLoading } = useAuthContext();
+  return {
+    data: user,
+    isLoading,
+    isError: !user && !isLoading,
+  };
 }
 
 /**
- * Hook to register a new user
+ * Hook to register a new user (React Query style wrapper)
+ * Auto-login after successful registration
  */
 export function useRegister() {
+  const { register, login } = useAuthContext();
   const navigate = useNavigate();
   
   return useMutation({
-    mutationFn: (data: RegisterData) => authService.register(data),
-    onSuccess: () => {
-      navigate({ to: "/login" });
+    mutationFn: async (data: RegisterData) => {
+      // Register user
+      await register(data);
+      // Auto-login after registration
+      await login({
+        email: data.email,
+        password: data.password,
+      });
     },
-  });
-}
-
-/**
- * Hook to login
- */
-export function useLogin() {
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
-  
-  return useMutation({
-    mutationFn: (data: LoginData) => authService.login(data),
     onSuccess: () => {
-      // Invalidate and refetch user data
-      queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+      // Navigate to home after successful registration and auto-login
       navigate({ to: "/" });
     },
   });
 }
 
 /**
- * Hook to logout
+ * Hook to login (React Query style wrapper)
  */
-export function useLogout() {
-  const queryClient = useQueryClient();
+export function useLogin() {
+  const { login } = useAuthContext();
   const navigate = useNavigate();
   
   return useMutation({
-    mutationFn: authService.logout,
+    mutationFn: (data: LoginData) => login(data),
     onSuccess: () => {
-      // Clear all queries
-      queryClient.clear();
+      // Navigate to home after successful login
+      navigate({ to: "/" });
+    },
+  });
+}
+
+/**
+ * Hook to logout (React Query style wrapper)
+ */
+export function useLogout() {
+  const { logout } = useAuthContext();
+  const navigate = useNavigate();
+  
+  return useMutation({
+    mutationFn: () => logout(),
+    onSuccess: () => {
+      // Navigate to login after logout
       navigate({ to: "/login" });
     },
   });
@@ -70,5 +84,6 @@ export function useLogout() {
  * Check if user is authenticated
  */
 export function useIsAuthenticated(): boolean {
-  return authService.isAuthenticated();
+  const { isAuthenticated } = useAuthContext();
+  return isAuthenticated;
 }
