@@ -1,0 +1,114 @@
+"""
+Dependency injection functions for FastAPI.
+"""
+from typing import AsyncGenerator
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from jose import JWTError
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.core.security import decode_token
+from app.db.session import async_session
+from app.models.user import Usuario
+
+
+# OAuth2 scheme for token authentication
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
+
+
+async def get_db() -> AsyncGenerator[AsyncSession, None]:
+    """
+    Dependency to get database session.
+    
+    Yields:
+        AsyncSession: Database session
+    """
+    async with async_session() as session:
+        yield session
+
+
+async def get_current_user(
+    token: str = Depends(oauth2_scheme),
+    db: AsyncSession = Depends(get_db)
+) -> Usuario:
+    """
+    Dependency to get current authenticated user from JWT token.
+    
+    Args:
+        token: JWT access token
+        db: Database session
+        
+    Returns:
+        Current user object
+        
+    Raises:
+        HTTPException: If token is invalid or user not found
+    """
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    
+    try:
+        payload = decode_token(token)
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise credentials_exception
+    except JWTError:
+        raise credentials_exception
+    
+    # TODO: Implement get_user_by_id in Sprint 1
+    # user = await get_user_by_id(db, user_id)
+    # if user is None:
+    #     raise credentials_exception
+    # return user
+    
+    # Placeholder for now
+    raise NotImplementedError("User retrieval not implemented yet")
+
+
+async def get_current_active_user(
+    current_user: Usuario = Depends(get_current_user)
+) -> Usuario:
+    """
+    Dependency to get current active user.
+    
+    Args:
+        current_user: Current user from token
+        
+    Returns:
+        Current active user
+        
+    Raises:
+        HTTPException: If user is inactive
+    """
+    if current_user.estado != "activo":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Inactive user"
+        )
+    return current_user
+
+
+async def get_current_admin_user(
+    current_user: Usuario = Depends(get_current_active_user)
+) -> Usuario:
+    """
+    Dependency to get current admin user.
+    
+    Args:
+        current_user: Current active user
+        
+    Returns:
+        Current admin user
+        
+    Raises:
+        HTTPException: If user is not admin
+    """
+    if current_user.rol != "administrador":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not enough permissions"
+        )
+    return current_user
