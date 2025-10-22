@@ -94,16 +94,15 @@ export function ActivityFilters({ filters, onChange, onClear }: ActivityFiltersP
           <div className="space-y-2">
             <Label htmlFor="tipo">Tipo de actividad</Label>
             <Select
-              value={filters.tipo || ""}
+              value={filters.tipo}
               onValueChange={(value: string) =>
-                updateFilter("tipo", value ? (value as TipoActividad) : undefined)
+                updateFilter("tipo", value as TipoActividad)
               }
             >
               <SelectTrigger id="tipo">
                 <SelectValue placeholder="Todos los tipos" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Todos los tipos</SelectItem>
                 {TIPOS.map((tipo) => (
                   <SelectItem key={tipo.value} value={tipo.value}>
                     {tipo.label}
@@ -117,16 +116,15 @@ export function ActivityFilters({ filters, onChange, onClear }: ActivityFiltersP
           <div className="space-y-2">
             <Label htmlFor="localidad">Localidad</Label>
             <Select
-              value={filters.localidad || ""}
+              value={filters.localidad}
               onValueChange={(value: string) =>
-                updateFilter("localidad", value ? (value as Localidad) : undefined)
+                updateFilter("localidad", value as Localidad)
               }
             >
               <SelectTrigger id="localidad">
                 <SelectValue placeholder="Todas las localidades" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Todas las localidades</SelectItem>
                 {LOCALIDADES.map((loc) => (
                   <SelectItem key={loc.value} value={loc.value}>
                     {loc.label}
@@ -157,11 +155,11 @@ export function ActivityFilters({ filters, onChange, onClear }: ActivityFiltersP
           <div className="space-y-2">
             <Label htmlFor="nivel">Nivel de actividad física</Label>
             <Select
-              value={filters.nivel_actividad || ""}
+              value={filters.nivel_actividad}
               onValueChange={(value: string) =>
                 updateFilter(
                   "nivel_actividad",
-                  value ? (value as NivelActividad) : undefined
+                  value as NivelActividad
                 )
               }
             >
@@ -169,7 +167,6 @@ export function ActivityFilters({ filters, onChange, onClear }: ActivityFiltersP
                 <SelectValue placeholder="Todos los niveles" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Todos los niveles</SelectItem>
                 {NIVELES.map((nivel) => (
                   <SelectItem key={nivel.value} value={nivel.value}>
                     {nivel.label}

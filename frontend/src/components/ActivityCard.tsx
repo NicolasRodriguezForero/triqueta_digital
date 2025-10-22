@@ -2,9 +2,15 @@
  * ActivityCard component to display activity summary in a card format
  */
 import { Link } from "@tanstack/react-router";
-import { Calendar, MapPin, Tag } from "lucide-react";
+import { Calendar, Eye, MapPin, Star, Tag } from "lucide-react";
 import type { Actividad } from "../services/activities";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 interface ActivityCardProps {
@@ -35,15 +41,15 @@ export function ActivityCard({ activity }: ActivityCardProps) {
   };
 
   return (
-    <Link 
-      to="/actividades/$id" 
-      params={{ id: activity.id }} 
+    <Link
+      to="/actividades/$id"
+      params={{ id: activity.id }}
       className="block group"
     >
       <Card className="h-full transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
         {/* Image */}
         {activity.imagen_url && (
-          <div className="relative h-48 overflow-hidden rounded-t-lg">
+          <div className="relative h-48 overflow-hidden rounded-t-lg -mt-6">
             <img
               src={activity.imagen_url}
               alt={activity.titulo}
@@ -100,11 +106,7 @@ export function ActivityCard({ activity }: ActivityCardProps) {
               <Tag className="w-4 h-4 flex-shrink-0 mt-0.5 text-gray-400" />
               <div className="flex flex-wrap gap-1">
                 {activity.etiquetas.slice(0, 3).map((tag) => (
-                  <Badge
-                    key={tag}
-                    variant="secondary"
-                    className="text-xs"
-                  >
+                  <Badge key={tag} variant="secondary" className="text-xs">
                     {tag}
                   </Badge>
                 ))}
@@ -120,8 +122,14 @@ export function ActivityCard({ activity }: ActivityCardProps) {
 
         <CardFooter className="text-xs text-gray-500 pt-4 border-t">
           <div className="flex items-center justify-between w-full">
-            <span>👁️ {activity.popularidad_vistas} vistas</span>
-            <span>⭐ {activity.popularidad_favoritos} favoritos</span>
+            <span className="flex items-center gap-1">
+              <Eye className="w-3 h-3" />
+              {activity.popularidad_vistas || 0} vistas
+            </span>
+            <span className="flex items-center gap-1">
+              <Star className="w-3 h-3" />
+              {activity.popularidad_favoritos || 0} favoritos
+            </span>
           </div>
         </CardFooter>
       </Card>
