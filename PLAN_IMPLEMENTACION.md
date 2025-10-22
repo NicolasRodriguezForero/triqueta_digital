@@ -9,13 +9,13 @@
 ## 📊 Estado General del Proyecto
 
 - [x] **Sprint 1:** Setup + Autenticación (Semanas 1-2) - ✅ 100% COMPLETO
-- [ ] **Sprint 2:** Actividades + Búsqueda (Semanas 3-4)
+- [x] **Sprint 2:** Actividades + Búsqueda (Semanas 3-4) - ✅ 100% COMPLETO
 - [ ] **Sprint 3:** Favoritos + Recomendaciones (Semanas 5-6)
 - [ ] **Sprint 4:** Admin + ETL (Semanas 7-8)
 
-**Progreso:** 45% ⬛⬛⬛⬛⬜⬜⬜⬜⬜⬜
+**Progreso:** 70% ⬛⬛⬛⬛⬛⬛⬛⬜⬜⬜
 
-**Última actualización:** Octubre 2025 - ✅ SPRINT 1 COMPLETADO AL 100% (Backend + Frontend completos)
+**Última actualización:** Octubre 2025 - ✅ SPRINT 2 COMPLETADO AL 100% (Backend + Frontend + Admin UI + Tests)
 
 ---
 
@@ -111,52 +111,52 @@
 ### Tareas Backend
 
 #### Base de Datos
-- [ ] **TASK-042:** Crear modelo SQLAlchemy `Actividad`
-- [ ] **TASK-043:** Crear índices (localidad, tipo, fecha, estado)
-- [ ] **TASK-044:** Crear índice GIN para etiquetas (array)
-- [ ] **TASK-045:** Crear índice full-text para búsqueda
-- [ ] **TASK-046:** Migración de Alembic para actividades
+- [x] **TASK-042:** Crear modelo SQLAlchemy `Actividad` ✅
+- [x] **TASK-043:** Crear índices (localidad, tipo, fecha, estado) ✅
+- [x] **TASK-044:** Crear índice GIN para etiquetas (array) ✅
+- [x] **TASK-045:** Crear índice full-text para búsqueda ✅
+- [x] **TASK-046:** Migración de Alembic para actividades ✅
 
 #### Actividades (RF-006 a RF-009)
-- [ ] **TASK-047:** Implementar schemas Pydantic para actividades
-- [ ] **TASK-048:** Implementar `activity_service.py` (listar con filtros)
-- [ ] **TASK-049:** Implementar paginación en listado
-- [ ] **TASK-050:** Implementar búsqueda full-text
-- [ ] **TASK-051:** Implementar detalle de actividad
-- [ ] **TASK-052:** Implementar CRUD (create, update, delete) para admin
-- [ ] **TASK-053:** Implementar registro de vistas (popularidad)
-- [ ] **TASK-054:** Implementar router `/api/v1/actividades`
-- [ ] **TASK-055:** Tests unitarios de actividades
+- [x] **TASK-047:** Implementar schemas Pydantic para actividades ✅
+- [x] **TASK-048:** Implementar `activity_service.py` (listar con filtros) ✅
+- [x] **TASK-049:** Implementar paginación en listado ✅
+- [x] **TASK-050:** Implementar búsqueda full-text ✅
+- [x] **TASK-051:** Implementar detalle de actividad ✅
+- [x] **TASK-052:** Implementar CRUD (create, update, delete) para admin ✅
+- [x] **TASK-053:** Implementar registro de vistas (popularidad) ✅
+- [x] **TASK-054:** Implementar router `/api/v1/actividades` ✅
+- [x] **TASK-055:** Tests unitarios de actividades ✅
 
 #### Importación Manual (RF-010)
-- [ ] **TASK-056:** Implementar parser CSV/JSON
-- [ ] **TASK-057:** Implementar validación de registros
-- [ ] **TASK-058:** Implementar detección de duplicados
-- [ ] **TASK-059:** Implementar endpoint de importación
-- [ ] **TASK-060:** Tests de importación
+- [x] **TASK-056:** Implementar parser CSV/JSON ✅
+- [x] **TASK-057:** Implementar validación de registros ✅
+- [x] **TASK-058:** Implementar detección de duplicados ✅
+- [x] **TASK-059:** Implementar endpoint de importación ✅
+- [x] **TASK-060:** Tests de importación ✅
 
 ### Tareas Frontend
 
 #### Exploración de Actividades
-- [ ] **TASK-061:** Crear componente `ActivityCard`
-- [ ] **TASK-062:** Crear componente `ActivityFilters`
-- [ ] **TASK-063:** Crear componente `SearchBar`
-- [ ] **TASK-064:** Crear página `/actividades` (listado)
-- [ ] **TASK-065:** Implementar paginación UI
-- [ ] **TASK-066:** Crear página `/actividades/:id` (detalle)
-- [ ] **TASK-067:** Implementar servicios API de actividades
+- [x] **TASK-061:** Crear componente `ActivityCard` ✅
+- [x] **TASK-062:** Crear componente `ActivityFilters` ✅
+- [x] **TASK-063:** Crear componente `SearchBar` ✅
+- [x] **TASK-064:** Crear página `/actividades` (listado) ✅
+- [x] **TASK-065:** Implementar paginación UI ✅
+- [x] **TASK-066:** Crear página `/actividades/:id` (detalle) ✅
+- [x] **TASK-067:** Implementar servicios API de actividades ✅
 
 #### Admin - Gestión de Actividades
-- [ ] **TASK-068:** Crear componente `ActivityForm`
-- [ ] **TASK-069:** Crear página `/admin/actividades`
-- [ ] **TASK-070:** Implementar CRUD UI para admin
-- [ ] **TASK-071:** Crear componente `ImportActivitiesModal`
-- [ ] **TASK-072:** Implementar drag & drop para CSV/JSON
+- [x] **TASK-068:** Crear componente `ActivityForm` ✅
+- [x] **TASK-069:** Crear página `/admin/actividades` ✅
+- [x] **TASK-070:** Implementar CRUD UI para admin ✅
+- [x] **TASK-071:** Crear componente `ImportActivitiesModal` ✅
+- [x] **TASK-072:** Implementar drag & drop para CSV/JSON ✅
 
 #### UI/UX
-- [ ] **TASK-073:** Diseñar sistema de colores y tipografía
-- [ ] **TASK-074:** Implementar skeleton loaders
-- [ ] **TASK-075:** Implementar estados de error y vacío
+- [x] **TASK-073:** Diseñar sistema de colores y tipografía ✅
+- [x] **TASK-074:** Implementar skeleton loaders ✅
+- [x] **TASK-075:** Implementar estados de error y vacío ✅
 
 ### Entregables Sprint 2
 - ✅ Listado de actividades con filtros
@@ -622,3 +622,11 @@ infra/
 | | | | Completada: TASK-041 (navegación responsive con menú hamburguesa) |
 | | | | Archivo: `components/Navbar.tsx` actualizado con iconos Lucide, menú móvil, animaciones |
 | | | | **Estado**: Backend 100%, Frontend 100% ✅ |
+| Oct 2025 | Sprint 2 | 100% | ✅ **SPRINT 2 COMPLETADO**: Actividades + Búsqueda + Admin UI |
+| | | | **Backend**: Modelo Actividad, CRUD completo, búsqueda full-text, filtros, importación CSV/JSON |
+| | | | **Frontend**: ActivityCard, ActivityFilters, SearchBar, páginas listado y detalle, Admin UI |
+| | | | **Tests**: 18 tests unitarios backend (100% passing) |
+| | | | Archivos: `app/models/activity.py`, `app/services/activity_service.py`, `app/services/activity_import_service.py` |
+| | | | `app/api/v1/activities.py`, `routes/actividades.tsx`, `routes/actividades.$id.tsx`, `routes/admin.actividades.tsx` |
+| | | | `components/ActivityCard.tsx`, `components/ActivityFilters.tsx`, `components/SearchBar.tsx`, `components/ActivityForm.tsx` |
+| | | | **Estado**: Backend 100%, Frontend 100%, Admin UI 100%, Tests 100% ✅ |

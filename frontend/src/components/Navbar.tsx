@@ -36,22 +36,38 @@ export function Navbar() {
             </Link>
             
             {/* Desktop Navigation */}
-            {user && (
-              <div className="hidden md:flex space-x-4">
-                <Link
-                  to="/"
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                >
-                  Inicio
-                </Link>
-                <Link
-                  to="/perfil"
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                >
-                  Mi Perfil
-                </Link>
-              </div>
-            )}
+            <div className="hidden md:flex space-x-4">
+              <Link
+                to="/"
+                className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              >
+                Inicio
+              </Link>
+              <Link
+                to="/actividades"
+                className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              >
+                Actividades
+              </Link>
+              {user && (
+                <>
+                  <Link
+                    to="/perfil"
+                    className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                  >
+                    Mi Perfil
+                  </Link>
+                  {user.is_admin && (
+                    <Link
+                      to="/admin/actividades"
+                      className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                    >
+                      Administración
+                    </Link>
+                  )}
+                </>
+              )}
+            </div>
           </div>
 
           {/* Desktop Auth Buttons */}
@@ -133,12 +149,30 @@ export function Navbar() {
                     Inicio
                   </Link>
                   <Link
+                    to="/actividades"
+                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
+                    onClick={closeMobileMenu}
+                  >
+                    Actividades
+                  </Link>
+                  <Link
                     to="/perfil"
                     className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
                     onClick={closeMobileMenu}
                   >
                     Mi Perfil
                   </Link>
+                  
+                  {/* Admin Link */}
+                  {user.is_admin && (
+                    <Link
+                      to="/admin/actividades"
+                      className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
+                      onClick={closeMobileMenu}
+                    >
+                      Administración
+                    </Link>
+                  )}
                   
                   {/* Logout Button */}
                   <button

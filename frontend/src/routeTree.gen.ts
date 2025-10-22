@@ -14,7 +14,10 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as RegisterImport } from './routes/register'
 import { Route as PerfilImport } from './routes/perfil'
 import { Route as LoginImport } from './routes/login'
+import { Route as ActividadesImport } from './routes/actividades'
 import { Route as IndexImport } from './routes/index'
+import { Route as AdminActividadesImport } from './routes/admin.actividades'
+import { Route as ActividadesIdImport } from './routes/actividades.$id'
 
 // Create/Update Routes
 
@@ -36,10 +39,28 @@ const LoginRoute = LoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const ActividadesRoute = ActividadesImport.update({
+  id: '/actividades',
+  path: '/actividades',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const AdminActividadesRoute = AdminActividadesImport.update({
+  id: '/admin/actividades',
+  path: '/admin/actividades',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ActividadesIdRoute = ActividadesIdImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => ActividadesRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -51,6 +72,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/actividades': {
+      id: '/actividades'
+      path: '/actividades'
+      fullPath: '/actividades'
+      preLoaderRoute: typeof ActividadesImport
       parentRoute: typeof rootRoute
     }
     '/login': {
@@ -74,54 +102,115 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterImport
       parentRoute: typeof rootRoute
     }
+    '/actividades/$id': {
+      id: '/actividades/$id'
+      path: '/$id'
+      fullPath: '/actividades/$id'
+      preLoaderRoute: typeof ActividadesIdImport
+      parentRoute: typeof ActividadesImport
+    }
+    '/admin/actividades': {
+      id: '/admin/actividades'
+      path: '/admin/actividades'
+      fullPath: '/admin/actividades'
+      preLoaderRoute: typeof AdminActividadesImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
+interface ActividadesRouteChildren {
+  ActividadesIdRoute: typeof ActividadesIdRoute
+}
+
+const ActividadesRouteChildren: ActividadesRouteChildren = {
+  ActividadesIdRoute: ActividadesIdRoute,
+}
+
+const ActividadesRouteWithChildren = ActividadesRoute._addFileChildren(
+  ActividadesRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/actividades': typeof ActividadesRouteWithChildren
   '/login': typeof LoginRoute
   '/perfil': typeof PerfilRoute
   '/register': typeof RegisterRoute
+  '/actividades/$id': typeof ActividadesIdRoute
+  '/admin/actividades': typeof AdminActividadesRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/actividades': typeof ActividadesRouteWithChildren
   '/login': typeof LoginRoute
   '/perfil': typeof PerfilRoute
   '/register': typeof RegisterRoute
+  '/actividades/$id': typeof ActividadesIdRoute
+  '/admin/actividades': typeof AdminActividadesRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/actividades': typeof ActividadesRouteWithChildren
   '/login': typeof LoginRoute
   '/perfil': typeof PerfilRoute
   '/register': typeof RegisterRoute
+  '/actividades/$id': typeof ActividadesIdRoute
+  '/admin/actividades': typeof AdminActividadesRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/perfil' | '/register'
+  fullPaths:
+    | '/'
+    | '/actividades'
+    | '/login'
+    | '/perfil'
+    | '/register'
+    | '/actividades/$id'
+    | '/admin/actividades'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/perfil' | '/register'
-  id: '__root__' | '/' | '/login' | '/perfil' | '/register'
+  to:
+    | '/'
+    | '/actividades'
+    | '/login'
+    | '/perfil'
+    | '/register'
+    | '/actividades/$id'
+    | '/admin/actividades'
+  id:
+    | '__root__'
+    | '/'
+    | '/actividades'
+    | '/login'
+    | '/perfil'
+    | '/register'
+    | '/actividades/$id'
+    | '/admin/actividades'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ActividadesRoute: typeof ActividadesRouteWithChildren
   LoginRoute: typeof LoginRoute
   PerfilRoute: typeof PerfilRoute
   RegisterRoute: typeof RegisterRoute
+  AdminActividadesRoute: typeof AdminActividadesRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ActividadesRoute: ActividadesRouteWithChildren,
   LoginRoute: LoginRoute,
   PerfilRoute: PerfilRoute,
   RegisterRoute: RegisterRoute,
+  AdminActividadesRoute: AdminActividadesRoute,
 }
 
 export const routeTree = rootRoute
@@ -135,13 +224,21 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/actividades",
         "/login",
         "/perfil",
-        "/register"
+        "/register",
+        "/admin/actividades"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/actividades": {
+      "filePath": "actividades.tsx",
+      "children": [
+        "/actividades/$id"
+      ]
     },
     "/login": {
       "filePath": "login.tsx"
@@ -151,6 +248,13 @@ export const routeTree = rootRoute
     },
     "/register": {
       "filePath": "register.tsx"
+    },
+    "/actividades/$id": {
+      "filePath": "actividades.$id.tsx",
+      "parent": "/actividades"
+    },
+    "/admin/actividades": {
+      "filePath": "admin.actividades.tsx"
     }
   }
 }

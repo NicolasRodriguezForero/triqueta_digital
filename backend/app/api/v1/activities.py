@@ -11,6 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.dependencies import get_current_user, get_current_admin_user, get_db
 from app.models.user import Usuario
 from app.services.activity_service import ActivityService
+from app.services import activity_import_service
 from app.schemas.activity import (
     ActividadCreate,
     ActividadUpdate,
@@ -311,3 +312,97 @@ async def list_pending_activities(
     pagination.total_pages = (len(pending_activities) + page_size - 1) // page_size
     
     return ActividadListResponse(data=list_items, pagination=pagination)
+
+
+@router.post("/import", response_model=ImportResult, summary="Importar actividades desde CSV/JSON (RF-010)")
+async def import_activities(
+    file: UploadFile = File(...),
+    skip_duplicates: bool = Query(True, description="Skip duplicate activities"),
+    db: AsyncSession = Depends(get_db),
+    current_user: Usuario = Depends(get_current_admin_user)
+):
+    """
+    Import activities from CSV or JSON file.
+    
+    **Admin only**
+    
+    CSV format:
+    - titulo,descripcion,tipo,fecha_inicio,ubicacion_direccion,ubicacion_lat,ubicacion_lng,localidad,precio,es_gratis,etiquetas
+    - etiquetas separated by semicolons (;)
+    
+    JSON format:
+    - Array of activity objects with same fields as ActividadCreate
+    
+    Returns import statistics.
+    """
+    # Validate file type
+    if not file.filename:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No filename provided"
+        )
+    
+    file_ext = file.filename.lower().split('.')[-1]
+    if file_ext not in ['csv', 'json']:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="File must be CSV or JSON"
+        )
+    
+    # Read file content
+    try:
+        content = await file.read()
+        content_str = content.decode('utf-8')
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Error reading file: {str(e)}"
+        )
+    
+    # Parse file
+    try:
+        if file_ext == 'csv':
+            activities = activity_import_service.parse_csv(content_str)
+        else:
+            activities = activity_import_service.parse_json(content_str)
+    except activity_import_service.ImportError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+    
+    total_activities = len(activities)
+    
+    # Check for duplicates
+    if skip_duplicates:
+        unique_activities, duplicates = await activity_import_service.check_duplicates(db, activities)
+    else:
+        unique_activities = activities
+        duplicates = []
+    
+    # Validate activities
+    valid_activities, validation_errors = await activity_import_service.validate_activities(unique_activities)
+    
+    # Import valid activities
+    try:
+        imported_count = await activity_import_service.import_activities(db, valid_activities, current_user.id)
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error importing activities: {str(e)}"
+        )
+    
+    # Build result
+    errors_detail = []
+    for error in validation_errors:
+        errors_detail.append({"error": error})
+    for dup in duplicates:
+        errors_detail.append({"error": f"Duplicate activity: {dup}"})
+    
+    return ImportResult(
+        total=total_activities,
+        exitosos=imported_count,
+        duplicados=len(duplicates),
+        errores=len(validation_errors),
+        errores_detalle=errors_detail
+    )
