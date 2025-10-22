@@ -1,70 +1,133 @@
 # Documentación Técnica - Triqueta Digital
 
-## 📋 Software Requirements Specification (SRS)
+## Descripción General
 
-Documentación completa de requisitos según **ISO/IEC/IEEE 29148:2018** para el proyecto Triqueta Digital.
+Documentación completa del proyecto Triqueta Digital, plataforma digital que conecta actividades culturales, recreativas y deportivas en las localidades de Chapinero, Santa Fe y La Candelaria (Bogotá, Colombia).
 
 ---
 
-## 📚 Índice de Documentos
+## Estructura de Carpetas
 
-### 1. Documento Principal
-**[SRS.md](./SRS.md)** - Software Requirements Specification completo
-- Introducción y alcance del proyecto
-- Descripción general del sistema
-- Resumen de requisitos funcionales y no funcionales
-- Arquitectura de alto nivel
-- Restricciones y apéndices
+```
+docs/
+├── entregables/              # Documentos finales del proyecto
+│   ├── markdowns/           # Versiones editables en Markdown
+│   └── pdfs/                # Versiones finales en PDF
+├── varios/                  # Documentos de trabajo y borradores
+└── README.md               # Este archivo
+```
 
-### 2. Requisitos Funcionales Detallados
-**[SRS_Requisitos_Funcionales.md](./SRS_Requisitos_Funcionales.md)**
-- **RF-001 a RF-005:** Autenticación y gestión de usuarios
-- **RF-006 a RF-010:** Módulo de actividades
-- **RF-011 a RF-013:** Módulo de favoritos
-- **RF-014 a RF-015:** Módulo de recomendaciones (IA)
-- **RF-016 a RF-018:** Gestión de ingesta (ETL)
-- **RF-019 a RF-020:** Dispositivos IoT
-- **RF-021 a RF-022:** Administración
+---
 
-### 3. Requisitos No Funcionales Detallados
-**[SRS_Requisitos_No_Funcionales.md](./SRS_Requisitos_No_Funcionales.md)**
-- **RNF-001 a RNF-003:** Usabilidad y accesibilidad
-- **RNF-004 a RNF-007:** Eficiencia y rendimiento
-- **RNF-008 a RNF-010:** Compatibilidad
-- **RNF-011 a RNF-013:** Fiabilidad
-- **RNF-014 a RNF-017:** Seguridad
-- **RNF-018 a RNF-020:** Mantenibilidad
-- **RNF-021 a RNF-022:** Portabilidad
-- **RNF-023 a RNF-024:** Satisfacción del usuario
+## Documentos Entregables
 
-### 4. Arquitectura y Modelo de Datos
-**[SRS_Arquitectura_y_Datos.md](./SRS_Arquitectura_y_Datos.md)**
+### Formato Markdown
+
+Ubicación: `docs/entregables/markdowns/`
+
+#### 1. Especificaciones Técnicas
+**Archivo:** [Especificaciones_Tecnicas.md](./entregables/markdowns/Especificaciones_Tecnicas.md)
+
+Documento unificado que contiene:
+- **Diagrama de Casos de Uso:** Representación visual de interacciones del sistema
+- **Historias de Usuario (35):** Casos de uso detallados organizados por módulos
+  - Autenticación y Gestión de Usuarios (5)
+  - Actividades (8)
+  - Favoritos (3)
+  - Recomendaciones - IA (2)
+  - Perfil de Usuario (2)
+  - Administración (9)
+  - Gestión de Ingesta - ETL (4)
+  - Dispositivos IoT (2)
+- **Requisitos Funcionales (RF-001 a RF-022):** Especificaciones técnicas detalladas
+- **Requisitos No Funcionales (RNF-001 a RNF-024):** Basados en ISO/IEC 25010:2023
+  - Usabilidad
+  - Eficiencia de Desempeño
+  - Compatibilidad
+  - Fiabilidad
+  - Seguridad
+  - Mantenibilidad
+  - Portabilidad
+  - Satisfacción del Usuario
+
+#### 2. Arquitectura de Software
+**Archivo:** [ARQUITECTURA.md](./entregables/markdowns/ARQUITECTURA.md)
+
+Contiene:
 - Estilo arquitectónico (SOA Modular)
 - Stack tecnológico completo
 - Estructura de directorios del proyecto
-- Modelo de datos PostgreSQL
-- Interfaces externas
-- Ventajas de PostgreSQL para el proyecto
+- Decisiones arquitectónicas clave
+- Diagramas de componentes
+
+#### 3. Alcance y MVP
+**Archivo:** [ALCANCE_Y_MVP.md](./entregables/markdowns/ALCANCE_Y_MVP.md)
+
+Contiene:
+- Definición del alcance del proyecto
+- Características del MVP (Producto Mínimo Viable)
+- Funcionalidades incluidas y excluidas
+- Criterios de éxito
+
+#### 4. Cronograma Simplificado
+**Archivo:** [CRONOGRAMA_SIMPLIFICADO.md](./entregables/markdowns/CRONOGRAMA_SIMPLIFICADO.md)
+
+Contiene:
+- Fases de desarrollo
+- Timeline del proyecto
+- Hitos principales
+- Entregables por fase
 
 ---
 
-## 🎯 Resumen Ejecutivo
+### Formato PDF
 
-### Proyecto
-**Triqueta Digital** - Plataforma digital que conecta actividades culturales, recreativas y deportivas en las localidades de Chapinero, Santa Fe y La Candelaria (Bogotá, Colombia).
+Ubicación: `docs/entregables/pdfs/`
+
+Versiones finales en formato PDF para presentación:
+
+| Documento | Descripción |
+|-----------|-------------|
+| **Especificaciones_Tecnicas.pdf** | Especificaciones técnicas completas |
+| **ARQUITECTURA DE SOFTWARE.pdf** | Arquitectura y diseño del sistema |
+| **CRONOGRAMA_DE_DESARROLLO.pdf** | Planificación temporal del proyecto |
+| **MODELO RELACIONAL DE BASE DE DATOS.pdf** | Diseño de la base de datos PostgreSQL |
+| **PLANIFICACION_DEL_PROYECTO.pdf** | Planificación general del proyecto |
+
+---
+
+## Documentos de Trabajo
+
+Ubicación: `docs/varios/`
+
+Esta carpeta contiene documentos de trabajo, borradores y recursos adicionales:
+
+- **casos_de_uso.png:** Diagrama de casos de uso
+- **CRONOGRAMA.md:** Cronograma detallado
+- **HISTORIAS_USUARIO.md:** Historias de usuario (versión borrador)
+- **SRS.md:** Software Requirements Specification (versión borrador)
+- **SRS_Requisitos_Funcionales.md:** Requisitos funcionales (versión borrador)
+- **SRS_Requisitos_No_Funcionales.md:** Requisitos no funcionales (versión borrador)
+- **SRS_Arquitectura_y_Datos.md:** Arquitectura y modelo de datos (versión borrador)
+
+> **Nota:** Para consultar la documentación oficial, utilizar los archivos de la carpeta `entregables/`.
+
+---
+
+## Resumen Ejecutivo del Proyecto
 
 ### Objetivos Principales
-- ✅ Integrar al menos 70% de la oferta cultural y deportiva disponible
-- ✅ Proveer recomendaciones personalizadas mediante IA
-- ✅ Facilitar participación ciudadana en actividades locales
-- ✅ MVP con 200+ usuarios activos mensuales
+- Integrar al menos 70% de la oferta cultural y deportiva disponible
+- Proveer recomendaciones personalizadas mediante IA
+- Facilitar participación ciudadana en actividades locales
+- MVP con 200+ usuarios activos mensuales
 
 ### Stack Tecnológico
 
 **Frontend:**
 ```
 React 18+ + Vite + TypeScript
-TailwindCSS + Shadcn UI + Lucide Icons
+TailwindCSS + Shadcn UI
 Tanstack Router + Tanstack React Query
 ```
 
@@ -91,52 +154,18 @@ GitHub Actions (CI/CD)
 ### Arquitectura
 
 **SOA Modular** - Monolito modular en FastAPI con servicios internos:
-- 🔐 Servicio de Autenticación
-- 👤 Servicio de Usuarios
-- 🎭 Servicio de Actividades
-- 🤖 Servicio de Recomendaciones (IA)
-- ⭐ Servicio de Favoritos
-- 📊 Servicio de Gestión de Ingesta (ETL)
-- 📱 Servicio de Dispositivos IoT
-- ⚙️ Servicio de Administración
-
-### ETL Pipeline
-Script Docker **separado** del backend para ingesta de datos desde:
-- API IDRD
-- Portales Distritales
-- CSV/JSON
+- Servicio de Autenticación
+- Servicio de Usuarios
+- Servicio de Actividades
+- Servicio de Recomendaciones (IA)
+- Servicio de Favoritos
+- Servicio de Gestión de Ingesta (ETL)
+- Servicio de Dispositivos IoT
+- Servicio de Administración
 
 ---
 
-## 🚀 Roadmap de Desarrollo
-
-### Fase 1: MVP Core (Semanas 1-4)
-- ✅ Autenticación y perfil de usuario
-- ✅ Exploración de actividades con filtros
-- ✅ Búsqueda full-text
-- ✅ Docker Compose setup
-
-### Fase 2: MVP Funcional (Semanas 5-8)
-- ✅ CRUD de actividades (admin)
-- ✅ Sistema de favoritos
-- ✅ Recomendaciones básicas (IA)
-- ✅ Optimización de performance
-
-### Fase 3: MVP Completo (Semanas 9-12)
-- ✅ Importación manual de actividades
-- ✅ Gestión ETL
-- ✅ Dashboard administrativo
-- ✅ Tests automatizados
-
-### Fase 4: Post-MVP (Futuro)
-- 📱 Integración con dispositivo IoT (cubo)
-- 🧠 Recomendaciones avanzadas (filtrado colaborativo)
-- 🎮 Gamificación
-- 🌍 Expansión a otras localidades
-
----
-
-## 📊 Métricas de Éxito
+## Métricas de Éxito
 
 | Métrica | Objetivo | Método |
 |---------|----------|--------|
@@ -150,19 +179,47 @@ Script Docker **separado** del backend para ingesta de datos desde:
 
 ---
 
-## 🔒 Cumplimiento Normativo
+## Cumplimiento Normativo
 
-- ✅ **ISO/IEC/IEEE 29148:2018** - Requirements engineering
-- ✅ **ISO/IEC 25010:2023** - Software quality model
-- ✅ **OWASP ASVS v5.0 Nivel 2** - Security verification
-- ✅ **WCAG 2.1 Level AA** - Accessibility
-- ✅ **Ley 1581 de 2012** - Protección de Datos Personales (Colombia)
-- ✅ **RFC 6749** - OAuth 2.0
-- ✅ **RFC 7519** - JWT
+- **ISO/IEC/IEEE 29148:2018** - Requirements engineering
+- **ISO/IEC 25010:2023** - Software quality model
+- **OWASP ASVS v5.0 Nivel 2** - Security verification
+- **WCAG 2.1 Level AA** - Accessibility
+- **Ley 1581 de 2012** - Protección de Datos Personales (Colombia)
+- **RFC 6749** - OAuth 2.0
+- **RFC 7519** - JWT
 
 ---
 
-## 🎨 Características Principales
+## Roadmap de Desarrollo
+
+### Fase 1: MVP Core (Semanas 1-4)
+- Autenticación y perfil de usuario
+- Exploración de actividades con filtros
+- Búsqueda full-text
+- Docker Compose setup
+
+### Fase 2: MVP Funcional (Semanas 5-8)
+- CRUD de actividades (admin)
+- Sistema de favoritos
+- Recomendaciones básicas (IA)
+- Optimización de performance
+
+### Fase 3: MVP Completo (Semanas 9-12)
+- Importación manual de actividades
+- Gestión ETL
+- Dashboard administrativo
+- Tests automatizados
+
+### Fase 4: Post-MVP (Futuro)
+- Integración con dispositivo IoT
+- Recomendaciones avanzadas (filtrado colaborativo)
+- Gamificación
+- Expansión a otras localidades
+
+---
+
+## Características Principales
 
 ### Para Usuarios
 1. **Exploración inteligente** - Filtros avanzados por localidad, tipo, fecha, precio
@@ -189,7 +246,7 @@ Score = Popularidad_Base (0-100)
 
 ---
 
-## 🛠️ Decisiones Arquitectónicas Clave
+## Decisiones Arquitectónicas Clave
 
 | Decisión | Justificación |
 |----------|---------------|
@@ -204,43 +261,10 @@ Score = Popularidad_Base (0-100)
 
 ---
 
-## 📁 Estructura del Repositorio
-
-```
-triqueta-digital/
-├── backend/              # FastAPI backend
-│   ├── app/
-│   │   ├── api/v1/      # Routers
-│   │   ├── models/      # SQLAlchemy
-│   │   ├── schemas/     # Pydantic
-│   │   ├── services/    # Business logic
-│   │   └── main.py
-│   ├── tests/
-│   └── Dockerfile
-├── frontend/             # React frontend
-│   ├── src/
-│   │   ├── routes/      # Tanstack Router
-│   │   ├── components/  # React components
-│   │   ├── hooks/       # Custom hooks
-│   │   └── services/    # API client
-│   ├── tests/
-│   └── Dockerfile
-├── etl/                  # ETL pipeline
-│   ├── src/
-│   │   ├── extractors/
-│   │   ├── transformers/
-│   │   └── loaders/
-│   └── Dockerfile
-├── docs/                 # 📚 Esta documentación
-├── infra/                # Docker Compose, CI/CD
-└── README.md
-```
-
----
-
-## 🔗 Enlaces Útiles
+## Enlaces Útiles
 
 - [Contexto del Proyecto](../Triqueta_Contexto_Proyecto.md)
+- [Plan de Implementación](../PLAN_IMPLEMENTACION.md)
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
 - [React Documentation](https://react.dev/)
 - [PostgreSQL Documentation](https://www.postgresql.org/docs/)
@@ -249,55 +273,48 @@ triqueta-digital/
 
 ---
 
-## 👥 Equipo y Contacto
+## Equipo y Contacto
 
 **Proyecto:** Diseño Creativo - 8vo Semestre  
-**Universidad:** [Universidad Santo Tomás]  
+**Universidad:** Universidad Santo Tomás  
 **Fecha:** Octubre 2025
 
 ---
 
-## 📄 Licencia
+## Licencia
 
 Este proyecto es de carácter académico. Consultar con la entidad académica responsable para uso y distribución.
 
 ---
 
-## 🔄 Versión del Documento
+## Versión del Documento
 
 **Versión:** 1.0  
-**Última actualización:** Octubre 2025  
-**Estado:** ✅ Aprobado para desarrollo
+**Última actualización:** 22 de Octubre de 2025  
+**Estado:** Aprobado para desarrollo
 
 ---
 
-## 🚦 Próximos Pasos
+## Cómo Usar Esta Documentación
 
-1. **Setup inicial:**
-   - [ ] Crear estructura de directorios
-   - [ ] Configurar Docker Compose
-   - [ ] Setup backend FastAPI base
-   - [ ] Setup frontend React base
+### Para Desarrolladores
+1. Comenzar con **Especificaciones_Tecnicas.md** para entender requisitos
+2. Revisar **ARQUITECTURA.md** para comprender diseño del sistema
+3. Consultar **ALCANCE_Y_MVP.md** para priorizar funcionalidades
+4. Seguir **CRONOGRAMA_SIMPLIFICADO.md** para planificación
 
-2. **Sprint 1 (Semanas 1-2):**
-   - [ ] Implementar autenticación (RF-001 a RF-004)
-   - [ ] Implementar gestión de perfil (RF-005)
-   - [ ] Setup PostgreSQL con migraciones
-   - [ ] Tests unitarios de autenticación
+### Para Stakeholders
+- Los documentos PDF en `entregables/pdfs/` están listos para presentación
+- Cada PDF corresponde a un aspecto específico del proyecto
+- Comenzar con **PLANIFICACION_DEL_PROYECTO.pdf** para visión general
 
-3. **Sprint 2 (Semanas 3-4):**
-   - [ ] Implementar listado de actividades (RF-006)
-   - [ ] Implementar búsqueda (RF-008)
-   - [ ] Implementar detalle de actividad (RF-007)
-   - [ ] Diseño UI/UX del frontend
-
-4. **Revisión y ajuste:**
-   - [ ] Code review
-   - [ ] Tests de integración
-   - [ ] Ajustes de rendimiento
-   - [ ] Documentación de API
+### Para Evaluación Académica
+- Todos los entregables están en `entregables/`
+- Formatos disponibles: Markdown (editable) y PDF (presentación)
+- Cumple con estándares ISO/IEC requeridos
+- Incluye diagramas, especificaciones técnicas y planificación completa
 
 ---
 
 **¿Preguntas sobre la documentación?**  
-Revisa primero los documentos detallados. Si persisten dudas, consulta con el equipo técnico.
+Revisa primero los documentos detallados en la carpeta `entregables/`. Si persisten dudas, consulta con el equipo técnico.

@@ -212,7 +212,7 @@ El MVP incluye las funcionalidades esenciales para que la plataforma sea útil y
 
 ### 2.1 Módulos Incluidos en MVP
 
-#### ✅ Autenticación Completa
+#### Autenticación Completa
 
 **Incluye:**
 
@@ -228,7 +228,7 @@ El MVP incluye las funcionalidades esenciales para que la plataforma sea útil y
 
 ---
 
-#### ✅ Exploración de Actividades
+#### Exploración de Actividades
 
 **Incluye:**
 
@@ -245,7 +245,7 @@ El MVP incluye las funcionalidades esenciales para que la plataforma sea útil y
 
 ---
 
-#### ✅ Sistema de Favoritos
+#### Sistema de Favoritos
 
 **Incluye:**
 
@@ -261,7 +261,7 @@ El MVP incluye las funcionalidades esenciales para que la plataforma sea útil y
 
 ---
 
-#### ✅ Recomendaciones IA (Básicas)
+#### Recomendaciones IA (Básicas)
 
 **Incluye:**
 
@@ -278,7 +278,7 @@ El MVP incluye las funcionalidades esenciales para que la plataforma sea útil y
 
 ---
 
-#### ✅ Perfil de Usuario (Básico)
+#### Perfil de Usuario (Básico)
 
 **Incluye:**
 
@@ -293,7 +293,7 @@ El MVP incluye las funcionalidades esenciales para que la plataforma sea útil y
 
 ---
 
-#### ✅ Panel de Administración (Core)
+#### Panel de Administración (Core)
 
 **Incluye:**
 
@@ -354,32 +354,32 @@ El MVP se considera **completo y aceptado** si cumple:
 
 **Funcionalidad:**
 
-- ✅ Todas las historias de usuario de prioridad ALTA implementadas
-- ✅ Flujo completo funcional: registro → explorar → favoritos → recomendaciones
-- ✅ Panel admin permite CRUD de actividades e importación CSV/JSON
+- Todas las historias de usuario de prioridad ALTA implementadas
+- Flujo completo funcional: registro → explorar → favoritos → recomendaciones
+- Panel admin permite CRUD de actividades e importación CSV/JSON
 
 **Calidad:**
 
-- ✅ Cobertura de tests backend >70%
-- ✅ Cobertura de tests frontend >60%
-- ✅ 0 bugs críticos o bloqueantes
-- ✅ Lighthouse Accessibility >90
+- Cobertura de tests backend >70%
+- Cobertura de tests frontend >60%
+- 0 bugs críticos o bloqueantes
+- Lighthouse Accessibility >90
 
 **Performance:**
 
-- ✅ API P90 <2s en búsquedas
-- ✅ Página de actividades carga en <3s
+- API P90 <2s en búsquedas
+- Página de actividades carga en <3s
 
 **Datos:**
 
-- ✅ Base de datos con mínimo 100 actividades
-- ✅ Al menos 2 fuentes de datos (manual + CSV/JSON importado)
+- Base de datos con mínimo 100 actividades
+- Al menos 2 fuentes de datos (manual + CSV/JSON importado)
 
 **Deployment:**
 
-- ✅ MVP deployado en ambiente de staging
-- ✅ Accesible vía URL pública
-- ✅ Docker Compose funcional para desarrollo
+- MVP deployado en ambiente de staging
+- Accesible vía URL pública
+- Docker Compose funcional para desarrollo
 
 ---
 
@@ -581,7 +581,7 @@ Estas métricas se medirían **después del proyecto académico**, en caso de la
 
 El proyecto se considera **exitoso** si cumple:
 
-### ✅ Criterios Obligatorios:
+### Criterios Obligatorios:
 
 1. **Funcionalidad:**
 
@@ -610,7 +610,7 @@ El proyecto se considera **exitoso** si cumple:
    - Documentación técnica completa
    - Video demo del proyecto
 
-### ⭐ Criterios Deseables:
+### Criterios Deseables:
 
 - Usuarios de prueba >50 registrados
 - NPS >70 en encuesta de satisfacción

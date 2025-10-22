@@ -9,7 +9,7 @@
 
 ## Semana 0: Planificación y Diseño Inicial
 
-**📅 22 - 28 de Septiembre de 2025**
+**22 - 28 de Septiembre de 2025**
 
 ### Tareas:
 
@@ -26,7 +26,7 @@
 
 ## Semana 1: Setup e Infraestructura
 
-**📅 29 Sep - 5 Oct de 2025**
+**29 Sep - 5 Oct de 2025**
 
 ### Tareas:
 
@@ -45,7 +45,7 @@
 
 ## Sprint 1: Autenticación y Usuarios
 
-**📅 6 - 12 Oct de 2025**
+**6 - 12 Oct de 2025**
 
 ### Tareas:
 
@@ -69,7 +69,7 @@
 
 ## Sprint 2: Módulo de Actividades - Parte 1
 
-**📅 13 - 19 Oct de 2025**
+**13 - 19 Oct de 2025**
 
 ### Tareas:
 
@@ -92,7 +92,7 @@
 
 ## Sprint 3: Módulo de Actividades - Parte 2 + Admin
 
-**📅 20 - 26 Oct de 2025**
+**20 - 26 Oct de 2025**
 
 ### Tareas:
 
@@ -117,7 +117,7 @@
 
 ## Sprint 4: Favoritos + Recomendaciones IA
 
-**📅 27 Oct - 2 Nov de 2025** 🚀 **MVP COMPLETO**
+**27 Oct - 2 Nov de 2025** / **MVP COMPLETO**
 
 ### Tareas:
 
@@ -146,7 +146,7 @@
 
 ## Sprint 5: Dashboard de Administración
 
-**📅 3 - 9 Nov de 2025**
+**3 - 9 Nov de 2025**
 
 ### Tareas:
 
@@ -174,7 +174,7 @@
 
 ## Sprint 6: ETL + Importación Automatizada
 
-**📅 10 - 16 Nov de 2025**
+**10 - 16 Nov de 2025**
 
 ### Tareas:
 
@@ -204,7 +204,7 @@
 
 ## Sprint 7: Testing Final y Deployment
 
-**📅 17 - 22 Nov de 2025** 🎉 **ENTREGA FINAL**
+**17 - 22 Nov de 2025** / **ENTREGA FINAL**
 
 ### Tareas:
 
