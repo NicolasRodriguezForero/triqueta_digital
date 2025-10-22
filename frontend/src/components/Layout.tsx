@@ -12,15 +12,14 @@ export function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1">
-        {children}
-      </main>
-      <footer className="border-t bg-gray-50 py-8">
+      <main className="flex-1 flex flex-col">{children}</main>
+      <footer className="border-t bg-card py-8">
         <div className="container mx-auto px-4">
-          <div className="text-center text-sm text-gray-600">
+          <div className="text-center text-sm text-accent-foreground">
             <p>&copy; 2025 Triqueta Digital. Todos los derechos reservados.</p>
             <p className="mt-2">
-              Conectando actividades culturales, recreativas y deportivas en Bogotá
+              Conectando actividades culturales, recreativas y deportivas en
+              Bogotá
             </p>
           </div>
         </div>

@@ -7,7 +7,14 @@ import { useRegister } from "../hooks/useAuth";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
 
 export function RegisterForm() {
   const [email, setEmail] = useState("");
@@ -15,7 +22,7 @@ export function RegisterForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [nombreCompleto, setNombreCompleto] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  
+
   const registerMutation = useRegister();
 
   const validatePassword = (pwd: string): boolean => {
@@ -37,16 +44,16 @@ export function RegisterForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validatePassword(password)) {
       return;
     }
-    
+
     if (password !== confirmPassword) {
       setPasswordError("Las contraseñas no coinciden");
       return;
     }
-    
+
     registerMutation.mutate({
       email,
       password,
@@ -58,9 +65,7 @@ export function RegisterForm() {
     <Card className="w-full max-w-md">
       <CardHeader>
         <CardTitle>Crear Cuenta</CardTitle>
-        <CardDescription>
-          Regístrate en Triqueta Digital
-        </CardDescription>
+        <CardDescription>Regístrate en Triqueta Digital</CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
@@ -128,17 +133,20 @@ export function RegisterForm() {
             </p>
           )}
         </CardContent>
-        <CardFooter className="flex flex-col space-y-4">
-          <Button 
-            type="submit" 
+        <CardFooter className="flex flex-col space-y-4 mt-4">
+          <Button
+            type="submit"
             className="w-full"
             disabled={registerMutation.isPending}
           >
             {registerMutation.isPending ? "Registrando..." : "Crear Cuenta"}
           </Button>
-          <p className="text-sm text-center text-gray-600">
+          <p className="text-sm text-center text-gray-600 dark:text-gray-400">
             ¿Ya tienes cuenta?{" "}
-            <Link to="/login" className="text-blue-600 hover:underline">
+            <Link
+              to="/login"
+              className="text-blue-600 dark:text-blue-400 hover:underline"
+            >
               Inicia sesión aquí
             </Link>
           </p>

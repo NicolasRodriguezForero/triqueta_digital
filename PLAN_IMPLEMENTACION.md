@@ -22,6 +22,7 @@
 ## 🎯 Sprint 1: Setup Inicial + Autenticación (Semanas 1-2)
 
 ### Objetivos
+
 - Configurar infraestructura base (Docker, PostgreSQL, Redis)
 - Implementar backend FastAPI con estructura modular
 - Implementar frontend React con Vite
@@ -31,6 +32,7 @@
 ### Tareas Backend
 
 #### Setup Inicial
+
 - [x] **TASK-001:** Crear estructura de directorios del backend ✅
 - [x] **TASK-002:** Configurar FastAPI con settings (Pydantic BaseSettings) ✅
 - [x] **TASK-003:** Configurar SQLAlchemy con async ✅
@@ -39,12 +41,14 @@
 - [x] **TASK-006:** Configurar CORS y middleware básico ✅
 
 #### Base de Datos
+
 - [x] **TASK-007:** Crear modelo SQLAlchemy `Usuario` ✅
 - [x] **TASK-008:** Crear modelo SQLAlchemy `PerfilUsuario` ✅
 - [x] **TASK-009:** Crear modelo SQLAlchemy `RefreshToken` ✅
 - [x] **TASK-010:** Crear migración inicial de Alembic ✅
 
 #### Autenticación (RF-001 a RF-004)
+
 - [x] **TASK-011:** Implementar hash de contraseñas (bcrypt) ✅
 - [x] **TASK-012:** Implementar generación de JWT (access + refresh) ✅
 - [x] **TASK-013:** Implementar schemas Pydantic para auth ✅
@@ -55,6 +59,7 @@
 - [x] **TASK-018:** Tests unitarios de autenticación ✅
 
 #### Perfil de Usuario (RF-005)
+
 - [x] **TASK-019:** Implementar `user_service.py` (get, update perfil) ✅
 - [x] **TASK-020:** Implementar router `/api/v1/users` ✅
 - [x] **TASK-021:** Implementar schemas Pydantic para perfil ✅
@@ -63,6 +68,7 @@
 ### Tareas Frontend
 
 #### Setup Inicial
+
 - [x] **TASK-023:** Crear estructura de directorios del frontend ✅
 - [x] **TASK-024:** Configurar Vite + React + TypeScript ✅
 - [x] **TASK-025:** Configurar TailwindCSS + Shadcn UI ✅
@@ -71,6 +77,7 @@
 - [x] **TASK-028:** Crear axios instance con interceptors ✅
 
 #### Autenticación UI
+
 - [x] **TASK-029:** Crear componente `LoginForm` ✅
 - [x] **TASK-030:** Crear componente `RegisterForm` ✅
 - [x] **TASK-031:** Crear páginas `/login` y `/register` ✅
@@ -79,17 +86,20 @@
 - [x] **TASK-034:** Implementar servicios API de autenticación ✅
 
 #### Perfil UI
+
 - [x] **TASK-035:** Crear componente `ProfileForm` ✅
 - [x] **TASK-036:** Crear página `/perfil` ✅
 - [x] **TASK-037:** Implementar edición de etiquetas de interés ✅
 - [x] **TASK-038:** Implementar servicios API de perfil ✅
 
 #### Layout y Navegación
+
 - [x] **TASK-039:** Crear componente `Layout` con Navbar y Footer ✅
 - [x] **TASK-040:** Crear componente `Navbar` con auth state ✅
 - [x] **TASK-041:** Implementar navegación responsive ✅
 
 ### Entregables Sprint 1
+
 - ✅ Docker Compose funcional
 - ✅ Backend con autenticación OAuth2 + JWT
 - ✅ Frontend con login/registro funcional
@@ -102,6 +112,7 @@
 ## 🎯 Sprint 2: Actividades + Búsqueda (Semanas 3-4)
 
 ### Objetivos
+
 - CRUD completo de actividades (admin)
 - Listado de actividades con filtros y paginación
 - Búsqueda full-text
@@ -111,6 +122,7 @@
 ### Tareas Backend
 
 #### Base de Datos
+
 - [x] **TASK-042:** Crear modelo SQLAlchemy `Actividad` ✅
 - [x] **TASK-043:** Crear índices (localidad, tipo, fecha, estado) ✅
 - [x] **TASK-044:** Crear índice GIN para etiquetas (array) ✅
@@ -118,6 +130,7 @@
 - [x] **TASK-046:** Migración de Alembic para actividades ✅
 
 #### Actividades (RF-006 a RF-009)
+
 - [x] **TASK-047:** Implementar schemas Pydantic para actividades ✅
 - [x] **TASK-048:** Implementar `activity_service.py` (listar con filtros) ✅
 - [x] **TASK-049:** Implementar paginación en listado ✅
@@ -129,6 +142,7 @@
 - [x] **TASK-055:** Tests unitarios de actividades ✅
 
 #### Importación Manual (RF-010)
+
 - [x] **TASK-056:** Implementar parser CSV/JSON ✅
 - [x] **TASK-057:** Implementar validación de registros ✅
 - [x] **TASK-058:** Implementar detección de duplicados ✅
@@ -138,6 +152,7 @@
 ### Tareas Frontend
 
 #### Exploración de Actividades
+
 - [x] **TASK-061:** Crear componente `ActivityCard` ✅
 - [x] **TASK-062:** Crear componente `ActivityFilters` ✅
 - [x] **TASK-063:** Crear componente `SearchBar` ✅
@@ -147,6 +162,7 @@
 - [x] **TASK-067:** Implementar servicios API de actividades ✅
 
 #### Admin - Gestión de Actividades
+
 - [x] **TASK-068:** Crear componente `ActivityForm` ✅
 - [x] **TASK-069:** Crear página `/admin/actividades` ✅
 - [x] **TASK-070:** Implementar CRUD UI para admin ✅
@@ -154,11 +170,13 @@
 - [x] **TASK-072:** Implementar drag & drop para CSV/JSON ✅
 
 #### UI/UX
+
 - [x] **TASK-073:** Diseñar sistema de colores y tipografía ✅
 - [x] **TASK-074:** Implementar skeleton loaders ✅
 - [x] **TASK-075:** Implementar estados de error y vacío ✅
 
 ### Entregables Sprint 2
+
 - ✅ Listado de actividades con filtros
 - ✅ Búsqueda funcional
 - ✅ Detalle de actividad completo
@@ -170,6 +188,7 @@
 ## 🎯 Sprint 3: Favoritos + Recomendaciones IA (Semanas 5-6)
 
 ### Objetivos
+
 - Sistema de favoritos completo
 - Algoritmo de recomendaciones basado en etiquetas y popularidad
 - UI para recomendaciones personalizadas
@@ -178,11 +197,13 @@
 ### Tareas Backend
 
 #### Base de Datos
+
 - [ ] **TASK-076:** Crear modelo SQLAlchemy `Favorito`
 - [ ] **TASK-077:** Crear índices en favoritos
 - [ ] **TASK-078:** Migración de Alembic para favoritos
 
 #### Favoritos (RF-011 a RF-013)
+
 - [ ] **TASK-079:** Implementar schemas Pydantic para favoritos
 - [ ] **TASK-080:** Implementar `favorite_service.py`
 - [ ] **TASK-081:** Implementar guardar favorito
@@ -193,6 +214,7 @@
 - [ ] **TASK-086:** Tests unitarios de favoritos
 
 #### Recomendaciones IA (RF-014 a RF-015)
+
 - [ ] **TASK-087:** Implementar `recommendation_service.py`
 - [ ] **TASK-088:** Implementar algoritmo de scoring:
   - Base: popularidad normalizada
@@ -206,6 +228,7 @@
 - [ ] **TASK-093:** Tests unitarios de recomendaciones
 
 #### Optimización
+
 - [ ] **TASK-094:** Implementar caché Redis para queries frecuentes
 - [ ] **TASK-095:** Optimizar queries con EXPLAIN ANALYZE
 - [ ] **TASK-096:** Implementar background tasks para actualización de popularidad
@@ -214,6 +237,7 @@
 ### Tareas Frontend
 
 #### Favoritos UI
+
 - [ ] **TASK-098:** Crear componente `FavoriteButton`
 - [ ] **TASK-099:** Integrar `FavoriteButton` en `ActivityCard`
 - [ ] **TASK-100:** Crear página `/favoritos`
@@ -221,17 +245,20 @@
 - [ ] **TASK-102:** Optimistic updates en favoritos
 
 #### Recomendaciones UI
+
 - [ ] **TASK-103:** Crear componente `RecommendationCard`
 - [ ] **TASK-104:** Crear página `/recomendaciones`
 - [ ] **TASK-105:** Implementar visualización de explicaciones
 - [ ] **TASK-106:** Implementar servicios API de recomendaciones
 
 #### Mejoras UX
+
 - [ ] **TASK-107:** Implementar toast notifications (éxito/error)
 - [ ] **TASK-108:** Implementar loading states con React Query
 - [ ] **TASK-109:** Implementar infinite scroll (opcional)
 
 ### Entregables Sprint 3
+
 - ✅ Sistema de favoritos completo
 - ✅ Recomendaciones personalizadas funcionales
 - ✅ Explicaciones claras de recomendaciones
@@ -242,6 +269,7 @@
 ## 🎯 Sprint 4: Admin Dashboard + ETL (Semanas 7-8)
 
 ### Objetivos
+
 - Dashboard administrativo con métricas
 - Script ETL funcional en Docker
 - Gestión de procesos ETL desde admin
@@ -251,10 +279,12 @@
 ### Tareas Backend
 
 #### Base de Datos
+
 - [ ] **TASK-110:** Crear modelo SQLAlchemy `ETLExecution`
 - [ ] **TASK-111:** Migración de Alembic para ETL logs
 
 #### Dashboard Admin (RF-021)
+
 - [ ] **TASK-112:** Implementar `admin_service.py`
 - [ ] **TASK-113:** Implementar queries de métricas:
   - Total usuarios, usuarios activos
@@ -265,6 +295,7 @@
 - [ ] **TASK-115:** Implementar caché de métricas (5 min)
 
 #### Gestión ETL (RF-016 a RF-018)
+
 - [ ] **TASK-116:** Implementar endpoint `/api/v1/admin/etl/status`
 - [ ] **TASK-117:** Implementar endpoint `/api/v1/admin/etl/run` (trigger Docker)
 - [ ] **TASK-118:** Implementar endpoint `/api/v1/admin/etl/executions/:id/logs`
@@ -275,27 +306,32 @@
 ### Tareas ETL (Script Separado)
 
 #### Estructura ETL
+
 - [ ] **TASK-122:** Crear estructura de directorios ETL
 - [ ] **TASK-123:** Configurar entorno Python con dependencias
 - [ ] **TASK-124:** Crear Dockerfile para ETL
 - [ ] **TASK-125:** Configurar logging
 
 #### Extractores
+
 - [ ] **TASK-126:** Implementar `idrd_extractor.py` (API IDRD)
 - [ ] **TASK-127:** Implementar `csv_extractor.py`
 - [ ] **TASK-128:** Implementar `api_extractor.py` (genérico)
 
 #### Transformadores
+
 - [ ] **TASK-129:** Implementar `cleaner.py` (limpieza de datos)
 - [ ] **TASK-130:** Implementar `validator.py` (validación)
 - [ ] **TASK-131:** Implementar `normalizer.py` (normalización)
 - [ ] **TASK-132:** Implementar detección de duplicados
 
 #### Loaders
+
 - [ ] **TASK-133:** Implementar `db_loader.py` (inserción a PostgreSQL)
 - [ ] **TASK-134:** Implementar logging de resultados
 
 #### Script Principal
+
 - [ ] **TASK-135:** Implementar `main.py` (orquestación)
 - [ ] **TASK-136:** Implementar manejo de errores
 - [ ] **TASK-137:** Implementar retry logic
@@ -304,18 +340,21 @@
 ### Tareas Frontend
 
 #### Dashboard Admin
+
 - [ ] **TASK-139:** Crear componente `MetricCard`
 - [ ] **TASK-140:** Crear componente `ChartCard` (opcional: recharts)
 - [ ] **TASK-141:** Crear página `/admin/dashboard`
 - [ ] **TASK-142:** Implementar visualización de métricas
 
 #### Gestión ETL UI
+
 - [ ] **TASK-143:** Crear componente `ETLStatusCard`
 - [ ] **TASK-144:** Crear página `/admin/etl`
 - [ ] **TASK-145:** Implementar botón de activación manual
 - [ ] **TASK-146:** Implementar visualización de logs en tiempo real (polling)
 
 #### Validación de Actividades
+
 - [ ] **TASK-147:** Crear componente `ActivityValidationCard`
 - [ ] **TASK-148:** Crear página `/admin/actividades/pendientes`
 - [ ] **TASK-149:** Implementar botones aprobar/rechazar
@@ -324,6 +363,7 @@
 ### Tareas de Deploy
 
 #### Preparación
+
 - [ ] **TASK-151:** Crear `.env.example` para backend
 - [ ] **TASK-152:** Crear `.env.example` para frontend
 - [ ] **TASK-153:** Documentar variables de entorno
@@ -331,18 +371,21 @@
 - [ ] **TASK-155:** Crear datos de prueba (seed)
 
 #### CI/CD
+
 - [ ] **TASK-156:** Crear workflow GitHub Actions para CI
 - [ ] **TASK-157:** Configurar linters (ruff, eslint)
 - [ ] **TASK-158:** Configurar tests en CI
 - [ ] **TASK-159:** Configurar build de Docker images
 
 #### Documentación
+
 - [ ] **TASK-160:** Crear README.md principal
 - [ ] **TASK-161:** Documentar instalación local
 - [ ] **TASK-162:** Documentar endpoints API (Swagger)
 - [ ] **TASK-163:** Crear guía de contribución
 
 ### Entregables Sprint 4
+
 - ✅ Dashboard admin completo
 - ✅ ETL funcional en Docker
 - ✅ Validación de actividades importadas
@@ -355,6 +398,7 @@
 ## 📦 Estructura de Archivos a Crear
 
 ### Backend (`/backend`)
+
 ```
 backend/
 ├── app/
@@ -424,6 +468,7 @@ backend/
 ```
 
 ### Frontend (`/frontend`)
+
 ```
 frontend/
 ├── src/
@@ -473,6 +518,7 @@ frontend/
 ```
 
 ### ETL (`/etl`)
+
 ```
 etl/
 ├── src/
@@ -498,6 +544,7 @@ etl/
 ```
 
 ### Infraestructura (`/infra`)
+
 ```
 infra/
 ├── docker-compose.yml               ✅ CREAR
@@ -511,11 +558,13 @@ infra/
 ## 🧪 Estrategia de Testing
 
 ### Backend
+
 - **Unit tests:** pytest con coverage >80%
 - **Integration tests:** TestClient de FastAPI
 - **Fixtures:** conftest.py con BD de prueba
 
 ### Frontend
+
 - **Unit tests:** Vitest + React Testing Library
 - **E2E tests:** Playwright (opcional para MVP)
 
@@ -524,14 +573,16 @@ infra/
 ## 📈 Métricas de Progreso
 
 ### Definición de Done (DoD)
+
 ✅ Código implementado  
 ✅ Tests unitarios escritos y pasando  
 ✅ Code review aprobado  
 ✅ Documentación actualizada  
 ✅ Sin warnings de linter  
-✅ Funcionalidad demostrable  
+✅ Funcionalidad demostrable
 
 ### Tracking
+
 - Actualizar este documento diariamente
 - Marcar tareas completadas con ✅
 - Documentar blockers en sección de notas
@@ -543,6 +594,7 @@ infra/
 ### Convenciones de Código
 
 **Python:**
+
 - PEP 8 strict
 - Type hints obligatorios
 - Docstrings en funciones públicas
@@ -550,23 +602,27 @@ infra/
 - Linting: `ruff check`
 
 **TypeScript:**
+
 - ESLint strict
 - Prettier para formateo
 - Interfaces sobre types
 - Functional components con hooks
 
 **Git:**
+
 - Commits en español o inglés (consistente)
 - Formato: `feat: descripción` / `fix: descripción`
 - Branches: `feature/nombre`, `fix/nombre`
 
 ### Prioridades
+
 1. **Funcionalidad > Perfección:** MVP primero, optimizar después
 2. **Tests:** Escribir tests desde el inicio
 3. **Documentación:** Actualizar mientras desarrollas
 4. **Seguridad:** No comprometer en temas de auth/seguridad
 
 ### Recursos Útiles
+
 - **SRS:** Ver `/docs/` para requisitos detallados
 - **API Design:** RESTful, versionado, JSON
 - **DB Schema:** Ver `SRS_Arquitectura_y_Datos.md`
@@ -579,12 +635,14 @@ infra/
 ### Para comenzar el desarrollo:
 
 1. **Leer documentación:**
+
    ```bash
    cat docs/README.md
    cat docs/SRS.md
    ```
 
 2. **Comenzar con Sprint 1, TASK-001:**
+
    - Crear estructura de directorios backend
    - Instalar dependencias
    - Configurar Docker Compose
@@ -603,30 +661,30 @@ infra/
 
 ## 🔄 Actualizaciones
 
-| Fecha | Sprint | Progreso | Notas |
-|-------|--------|----------|-------|
-| Oct 2025 | Setup | 0% | Plan creado |
-| Oct 2025 | Sprint 1 | 10% | ✅ Infraestructura completa: Docker, Backend base, Frontend base, Docs SRS |
-| | | | Completadas: TASK-001 a TASK-006, TASK-011, TASK-012, TASK-023 a TASK-026 |
-| Oct 2025 | Sprint 1 | 40% | ✅ Modelos + Migración + Auth backend + UI básica + React Query + Interceptors |
-| | | | Completadas: TASK-007 a TASK-016, TASK-019 a TASK-021, TASK-029 a TASK-031, TASK-034 a TASK-040 |
-| Oct 2025 | Sprint 1 | 45% | ✅ Backend Sprint 1 completo: Rate limiting con Redis + Tests unitarios auth/perfil |
-| | | | Completadas: TASK-017, TASK-018, TASK-022 |
-| | | | Archivos: `app/middleware/rate_limit.py`, `app/utils/redis_client.py`, `tests/test_auth.py`, `tests/test_users.py` |
-| | | | Pendientes frontend: TASK-032 (AuthContext), TASK-033 (ProtectedRoute), TASK-041 (responsive navbar) |
-| Oct 2025 | Sprint 1 | 95% | ✅ Frontend casi completo: AuthContext + ProtectedRoute + Integración hooks |
-| | | | Completadas: TASK-032, TASK-033 |
-| | | | Archivos: `contexts/AuthContext.tsx`, `components/ProtectedRoute.tsx`, actualizados `hooks/useAuth.ts`, `main.tsx`, `routes/perfil.tsx` |
-| | | | Pendiente: TASK-041 (navegación responsive) |
-| Oct 2025 | Sprint 1 | 100% | ✅ **SPRINT 1 COMPLETADO**: Navbar responsive + Todas las tareas finalizadas |
-| | | | Completada: TASK-041 (navegación responsive con menú hamburguesa) |
-| | | | Archivo: `components/Navbar.tsx` actualizado con iconos Lucide, menú móvil, animaciones |
-| | | | **Estado**: Backend 100%, Frontend 100% ✅ |
-| Oct 2025 | Sprint 2 | 100% | ✅ **SPRINT 2 COMPLETADO**: Actividades + Búsqueda + Admin UI |
-| | | | **Backend**: Modelo Actividad, CRUD completo, búsqueda full-text, filtros, importación CSV/JSON |
-| | | | **Frontend**: ActivityCard, ActivityFilters, SearchBar, páginas listado y detalle, Admin UI |
-| | | | **Tests**: 18 tests unitarios backend (100% passing) |
-| | | | Archivos: `app/models/activity.py`, `app/services/activity_service.py`, `app/services/activity_import_service.py` |
-| | | | `app/api/v1/activities.py`, `routes/actividades.tsx`, `routes/actividades.$id.tsx`, `routes/admin.actividades.tsx` |
-| | | | `components/ActivityCard.tsx`, `components/ActivityFilters.tsx`, `components/SearchBar.tsx`, `components/ActivityForm.tsx` |
-| | | | **Estado**: Backend 100%, Frontend 100%, Admin UI 100%, Tests 100% ✅ |
+| Fecha    | Sprint   | Progreso | Notas                                                                                                                                   |
+| -------- | -------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Oct 2025 | Setup    | 0%       | Plan creado                                                                                                                             |
+| Oct 2025 | Sprint 1 | 10%      | ✅ Infraestructura completa: Docker, Backend base, Frontend base, Docs SRS                                                              |
+|          |          |          | Completadas: TASK-001 a TASK-006, TASK-011, TASK-012, TASK-023 a TASK-026                                                               |
+| Oct 2025 | Sprint 1 | 40%      | ✅ Modelos + Migración + Auth backend + UI básica + React Query + Interceptors                                                          |
+|          |          |          | Completadas: TASK-007 a TASK-016, TASK-019 a TASK-021, TASK-029 a TASK-031, TASK-034 a TASK-040                                         |
+| Oct 2025 | Sprint 1 | 45%      | ✅ Backend Sprint 1 completo: Rate limiting con Redis + Tests unitarios auth/perfil                                                     |
+|          |          |          | Completadas: TASK-017, TASK-018, TASK-022                                                                                               |
+|          |          |          | Archivos: `app/middleware/rate_limit.py`, `app/utils/redis_client.py`, `tests/test_auth.py`, `tests/test_users.py`                      |
+|          |          |          | Pendientes frontend: TASK-032 (AuthContext), TASK-033 (ProtectedRoute), TASK-041 (responsive navbar)                                    |
+| Oct 2025 | Sprint 1 | 95%      | ✅ Frontend casi completo: AuthContext + ProtectedRoute + Integración hooks                                                             |
+|          |          |          | Completadas: TASK-032, TASK-033                                                                                                         |
+|          |          |          | Archivos: `contexts/AuthContext.tsx`, `components/ProtectedRoute.tsx`, actualizados `hooks/useAuth.ts`, `main.tsx`, `routes/perfil.tsx` |
+|          |          |          | Pendiente: TASK-041 (navegación responsive)                                                                                             |
+| Oct 2025 | Sprint 1 | 100%     | ✅ **SPRINT 1 COMPLETADO**: Navbar responsive + Todas las tareas finalizadas                                                            |
+|          |          |          | Completada: TASK-041 (navegación responsive con menú hamburguesa)                                                                       |
+|          |          |          | Archivo: `components/Navbar.tsx` actualizado con iconos Lucide, menú móvil, animaciones                                                 |
+|          |          |          | **Estado**: Backend 100%, Frontend 100% ✅                                                                                              |
+| Oct 2025 | Sprint 2 | 100%     | ✅ **SPRINT 2 COMPLETADO**: Actividades + Búsqueda + Admin UI                                                                           |
+|          |          |          | **Backend**: Modelo Actividad, CRUD completo, búsqueda full-text, filtros, importación CSV/JSON                                         |
+|          |          |          | **Frontend**: ActivityCard, ActivityFilters, SearchBar, páginas listado y detalle, Admin UI                                             |
+|          |          |          | **Tests**: 18 tests unitarios backend (100% passing)                                                                                    |
+|          |          |          | Archivos: `app/models/activity.py`, `app/services/activity_service.py`, `app/services/activity_import_service.py`                       |
+|          |          |          | `app/api/v1/activities.py`, `routes/actividades.tsx`, `routes/actividades.$id.tsx`, `routes/admin.actividades.tsx`                      |
+|          |          |          | `components/ActivityCard.tsx`, `components/ActivityFilters.tsx`, `components/SearchBar.tsx`, `components/ActivityForm.tsx`              |
+|          |          |          | **Estado**: Backend 100%, Frontend 100%, Admin UI 100%, Tests 100% ✅                                                                   |

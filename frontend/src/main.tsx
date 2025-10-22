@@ -8,6 +8,7 @@ import { routeTree } from "./routeTree.gen";
 
 // Import AuthProvider
 import { AuthProvider } from "./contexts/AuthContext";
+import { ThemeProvider } from "./providers/ThemeProvider";
 
 // Create a new router instance
 const router = createRouter({ routeTree });
@@ -25,9 +26,11 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
+      </ThemeProvider>
     </StrictMode>
   );
 }

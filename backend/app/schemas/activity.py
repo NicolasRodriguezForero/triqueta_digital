@@ -77,6 +77,15 @@ class ActividadBase(BaseModel):
         if v > 0 and info.data.get('es_gratis', False):
             raise ValueError("Una actividad gratuita no puede tener precio > 0")
         return v
+    
+    def to_db_dict(self):
+        """Convert to dict for database, converting HttpUrl to str."""
+        data = self.model_dump()
+        if data.get('enlace_externo'):
+            data['enlace_externo'] = str(data['enlace_externo'])
+        if data.get('imagen_url'):
+            data['imagen_url'] = str(data['imagen_url'])
+        return data
 
 
 class ActividadCreate(ActividadBase):
@@ -139,6 +148,15 @@ class ActividadUpdate(BaseModel):
         if v is not None and v not in ESTADOS:
             raise ValueError(f"Estado debe ser uno de: {', '.join(ESTADOS)}")
         return v
+    
+    def to_db_dict(self, exclude_unset: bool = False):
+        """Convert to dict for database, converting HttpUrl to str."""
+        data = self.model_dump(exclude_unset=exclude_unset)
+        if data.get('enlace_externo'):
+            data['enlace_externo'] = str(data['enlace_externo'])
+        if data.get('imagen_url'):
+            data['imagen_url'] = str(data['imagen_url'])
+        return data
 
 
 class ActividadResponse(ActividadBase):

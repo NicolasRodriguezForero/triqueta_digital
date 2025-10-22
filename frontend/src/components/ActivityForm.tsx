@@ -263,14 +263,14 @@ export function ActivityForm({ initialData, onSubmit, onCancel, isSubmitting }: 
           <div>
             <Label htmlFor="nivel_actividad">Nivel de Actividad Física</Label>
             <Select
-              value={watch("nivel_actividad") || ""}
-              onValueChange={(value) => setValue("nivel_actividad", value ? value as NivelActividad : undefined)}
+              value={watch("nivel_actividad") || "ninguno"}
+              onValueChange={(value) => setValue("nivel_actividad", value === "ninguno" ? undefined : value as NivelActividad)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Selecciona nivel (opcional)" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Ninguno</SelectItem>
+                <SelectItem value="ninguno">Ninguno</SelectItem>
                 {NIVELES.map((nivel) => (
                   <SelectItem key={nivel.value} value={nivel.value}>
                     {nivel.label}

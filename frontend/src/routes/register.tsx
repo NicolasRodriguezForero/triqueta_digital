@@ -8,14 +8,14 @@ export const Route = createFileRoute("/register")({
 
 function RegisterPage() {
   const isAuthenticated = useIsAuthenticated();
-  
+
   // Redirect to home if already authenticated
   if (isAuthenticated) {
     return <Navigate to="/" />;
   }
-  
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="flex-1 flex items-center justify-center px-4">
       <RegisterForm />
     </div>
   );

@@ -38,7 +38,7 @@ class ActivityService:
         Returns:
             Created activity
         """
-        activity = Actividad(**activity_data.model_dump())
+        activity = Actividad(**activity_data.to_db_dict())
         db.add(activity)
         await db.commit()
         await db.refresh(activity)
@@ -94,7 +94,7 @@ class ActivityService:
             return None
         
         # Update only provided fields
-        update_data = activity_data.model_dump(exclude_unset=True)
+        update_data = activity_data.to_db_dict(exclude_unset=True)
         for field, value in update_data.items():
             setattr(activity, field, value)
         
@@ -403,7 +403,7 @@ class ActivityService:
                 
                 # Create activity with estado = 'pendiente_validacion'
                 activity_data = ActividadCreate(**data, estado="pendiente_validacion")
-                activity = Actividad(**activity_data.model_dump())
+                activity = Actividad(**activity_data.to_db_dict())
                 db.add(activity)
                 exitosos += 1
                 

@@ -7,7 +7,14 @@ import { useLogin } from "../hooks/useAuth";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
 
 export function LoginForm() {
   const [email, setEmail] = useState("");
@@ -59,9 +66,9 @@ export function LoginForm() {
             </p>
           )}
         </CardContent>
-        <CardFooter className="flex flex-col space-y-4">
-          <Button 
-            type="submit" 
+        <CardFooter className="flex flex-col space-y-4 mt-4">
+          <Button
+            type="submit"
             className="w-full"
             disabled={loginMutation.isPending}
           >

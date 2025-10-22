@@ -22,30 +22,30 @@ export function Navbar() {
   };
 
   return (
-    <nav className="border-b bg-white sticky top-0 z-50 shadow-sm">
+    <nav className="border-b bg-card sticky top-0 z-50 shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-8">
-            <Link 
-              to="/" 
-              className="text-xl font-bold text-blue-600 hover:text-blue-700 transition-colors"
+            <Link
+              to="/"
+              className="text-xl font-bold"
               onClick={closeMobileMenu}
             >
               Triqueta Digital
             </Link>
-            
+
             {/* Desktop Navigation */}
             <div className="hidden md:flex space-x-4">
               <Link
                 to="/"
-                className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                className="text-primary hover:text-accent-foreground px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
                 Inicio
               </Link>
               <Link
                 to="/actividades"
-                className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                className="text-primary hover:text-accent-foreground px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
                 Actividades
               </Link>
@@ -53,14 +53,14 @@ export function Navbar() {
                 <>
                   <Link
                     to="/perfil"
-                    className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                    className="text-primary hover:text-accent-foreground px-3 py-2 rounded-md text-sm font-medium transition-colors"
                   >
                     Mi Perfil
                   </Link>
                   {user.is_admin && (
                     <Link
                       to="/admin/actividades"
-                      className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                      className="text-primary hover:text-accent-foreground px-3 py-2 rounded-md text-sm font-medium transition-colors"
                     >
                       Administración
                     </Link>
@@ -76,7 +76,7 @@ export function Navbar() {
               <div className="h-8 w-20 bg-gray-200 animate-pulse rounded" />
             ) : user ? (
               <>
-                <span className="text-sm text-gray-700 flex items-center space-x-2">
+                <span className="text-sm text-primary flex items-center space-x-2">
                   <User className="h-4 w-4" />
                   <span className="hidden lg:inline">
                     {user.perfil?.nombre_completo || user.email}
@@ -99,9 +99,7 @@ export function Navbar() {
                   </Button>
                 </Link>
                 <Link to="/register">
-                  <Button size="sm">
-                    Registrarse
-                  </Button>
+                  <Button size="sm">Registrarse</Button>
                 </Link>
               </>
             )}
@@ -131,7 +129,7 @@ export function Navbar() {
               {user ? (
                 <>
                   {/* User Info */}
-                  <div className="px-3 py-2 text-sm text-gray-700 border-b">
+                  <div className="px-3 py-2 text-sm text-primary border-b">
                     <div className="flex items-center space-x-2">
                       <User className="h-4 w-4" />
                       <span className="font-medium">
@@ -139,41 +137,41 @@ export function Navbar() {
                       </span>
                     </div>
                   </div>
-                  
+
                   {/* Navigation Links */}
                   <Link
                     to="/"
-                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
+                    className="block px-3 py-2 rounded-md text-base font-medium text-primary hover:text-accent-foreground hover:bg-gray-50 transition-colors"
                     onClick={closeMobileMenu}
                   >
                     Inicio
                   </Link>
                   <Link
                     to="/actividades"
-                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
+                    className="block px-3 py-2 rounded-md text-base font-medium text-primary hover:text-accent-foreground hover:bg-gray-50 transition-colors"
                     onClick={closeMobileMenu}
                   >
                     Actividades
                   </Link>
                   <Link
                     to="/perfil"
-                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
+                    className="block px-3 py-2 rounded-md text-base font-medium text-primary hover:text-accent-foreground hover:bg-gray-50 transition-colors"
                     onClick={closeMobileMenu}
                   >
                     Mi Perfil
                   </Link>
-                  
+
                   {/* Admin Link */}
                   {user.is_admin && (
                     <Link
                       to="/admin/actividades"
-                      className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
+                      className="block px-3 py-2 rounded-md text-base font-medium text-primary hover:text-accent-foreground hover:bg-gray-50 transition-colors"
                       onClick={closeMobileMenu}
                     >
                       Administración
                     </Link>
                   )}
-                  
+
                   {/* Logout Button */}
                   <button
                     onClick={handleLogout}
@@ -182,7 +180,9 @@ export function Navbar() {
                   >
                     <LogOut className="h-4 w-4" />
                     <span>
-                      {logoutMutation.isPending ? "Cerrando sesión..." : "Cerrar Sesión"}
+                      {logoutMutation.isPending
+                        ? "Cerrando sesión..."
+                        : "Cerrar Sesión"}
                     </span>
                   </button>
                 </>
