@@ -10,9 +10,12 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
 from dotenv import load_dotenv
+from app.core.config import settings
 
 # Load test environment variables
 load_dotenv(".env.test")
+# Disable rate limiting during tests to avoid Redis calls and event loop issues
+settings.RATE_LIMIT_ENABLED = False
 
 from app.main import app
 from app.core.dependencies import get_db

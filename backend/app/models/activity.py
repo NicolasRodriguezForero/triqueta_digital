@@ -1,106 +1,100 @@
 """
 Activity models for cultural and recreational activities.
 """
-from datetime import date, time
-from sqlalchemy import Column, Integer, String, Text, Date, Time, Float, Boolean, ARRAY, Enum as SQLEnum
+from datetime import datetime
+from sqlalchemy import Column, Integer, String, Text, DateTime, DECIMAL, Boolean, ARRAY, Index
 from sqlalchemy.orm import relationship
-import enum
+from sqlalchemy.dialects.postgresql import UUID
+import uuid
 
 from app.db.base import Base
-
-
-class TipoActividad(str, enum.Enum):
-    """Activity type enumeration."""
-    CULTURAL = "cultural"
-    DEPORTIVA = "deportiva"
-    RECREATIVA = "recreativa"
-    EDUCATIVA = "educativa"
-    SOCIAL = "social"
-
-
-class EstadoActividad(str, enum.Enum):
-    """Activity status enumeration."""
-    ACTIVA = "activa"
-    PENDIENTE = "pendiente"
-    FINALIZADA = "finalizada"
-    CANCELADA = "cancelada"
 
 
 class Actividad(Base):
     """
     Activity model for cultural, recreational and sports activities.
     
+    Implements requirements RF-006 to RF-010 from SRS.
+    
     Attributes:
-        id: Primary key
+        id: UUID primary key
         titulo: Activity title
-        descripcion: Activity description
-        tipo: Activity type (cultural, deportiva, recreativa, etc.)
+        descripcion: Full activity description (supports markdown)
+        tipo: Activity type (cultura, deporte, recreacion)
+        fecha_inicio: Start datetime
+        fecha_fin: End datetime (optional)
+        ubicacion_direccion: Physical address
+        ubicacion_lat: GPS latitude (DECIMAL for precision)
+        ubicacion_lng: GPS longitude (DECIMAL for precision)
         localidad: Locality (Chapinero, Santa Fe, La Candelaria)
-        direccion: Physical address
-        latitud: GPS latitude
-        longitud: GPS longitude
-        fecha_inicio: Start date
-        fecha_fin: End date (optional)
-        hora_inicio: Start time
-        hora_fin: End time
-        precio: Price (0 for free activities)
-        capacidad_maxima: Maximum capacity (optional)
-        etiquetas: Array of tags for categorization
-        estado: Activity status
-        organizador: Organizer name
-        contacto_email: Contact email
-        contacto_telefono: Contact phone
-        url_externa: External URL (optional)
+        precio: Price in COP (0 for free activities)
+        es_gratis: Boolean flag for free activities
+        nivel_actividad: Physical activity level (bajo, medio, alto)
+        etiquetas: Array of tags for categorization and recommendations
+        contacto: Contact information string
+        enlace_externo: External URL (optional)
+        fuente: Data source (manual, idrd, api, csv)
+        estado: Activity status (activa, pendiente_validacion, rechazada, inactiva)
+        popularidad_favoritos: Count of favorites (RF-015)
+        popularidad_vistas: Weighted view count (RF-015)
+        popularidad_normalizada: Normalized popularity score [0-1] (RF-015)
         imagen_url: Image URL (optional)
-        popularidad: Popularity score
-        vistas: View count
-        fuente: Data source (manual, idrd, api, etc.)
-        validado: Validation status by admin
+        created_at: Creation timestamp
+        updated_at: Last update timestamp
         favoritos: Relationship to Favorito
     """
     __tablename__ = "actividades"
     
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     
     # Basic information
-    titulo = Column(String(255), nullable=False, index=True)
+    titulo = Column(String(255), nullable=False)
     descripcion = Column(Text, nullable=False)
-    tipo = Column(SQLEnum(TipoActividad), nullable=False, index=True)
-    
-    # Location
-    localidad = Column(String(100), nullable=False, index=True)
-    direccion = Column(String(500), nullable=True)
-    latitud = Column(Float, nullable=True)
-    longitud = Column(Float, nullable=True)
+    tipo = Column(String(50), nullable=False)  # cultura, deporte, recreacion
     
     # Timing
-    fecha_inicio = Column(Date, nullable=False, index=True)
-    fecha_fin = Column(Date, nullable=True)
-    hora_inicio = Column(Time, nullable=True)
-    hora_fin = Column(Time, nullable=True)
+    fecha_inicio = Column(DateTime(timezone=True), nullable=False)
+    fecha_fin = Column(DateTime(timezone=True), nullable=True)
+    
+    # Location
+    ubicacion_direccion = Column(String(500), nullable=False)
+    ubicacion_lat = Column(DECIMAL(10, 8), nullable=False)
+    ubicacion_lng = Column(DECIMAL(11, 8), nullable=False)
+    localidad = Column(String(100), nullable=False)
+    
+    # Pricing
+    precio = Column(DECIMAL(10, 2), default=0, nullable=False)
+    es_gratis = Column(Boolean, default=True, nullable=False)
     
     # Details
-    precio = Column(Float, default=0.0, nullable=False)
-    capacidad_maxima = Column(Integer, nullable=True)
-    etiquetas = Column(ARRAY(String), default=list, nullable=False, index=True)
-    
-    # Status
-    estado = Column(SQLEnum(EstadoActividad), default=EstadoActividad.ACTIVA, nullable=False, index=True)
-    
-    # Contact
-    organizador = Column(String(255), nullable=True)
-    contacto_email = Column(String(255), nullable=True)
-    contacto_telefono = Column(String(20), nullable=True)
-    url_externa = Column(String(500), nullable=True)
+    nivel_actividad = Column(String(50), nullable=True)  # bajo, medio, alto
+    etiquetas = Column(ARRAY(String), nullable=False)
+    contacto = Column(String(255), nullable=True)
+    enlace_externo = Column(String(500), nullable=True)
     imagen_url = Column(String(500), nullable=True)
     
-    # Metrics
-    popularidad = Column(Float, default=0.0, nullable=False, index=True)
-    vistas = Column(Integer, default=0, nullable=False)
-    
     # Data management
-    fuente = Column(String(50), nullable=False, default="manual")  # manual, idrd, api, csv
-    validado = Column(Boolean, default=True, nullable=False)
+    fuente = Column(String(100), default="manual", nullable=False)
+    estado = Column(String(50), default="activa", nullable=False)
+    
+    # Popularity metrics (RF-015)
+    popularidad_favoritos = Column(Integer, default=0, nullable=False)
+    popularidad_vistas = Column(DECIMAL(10, 2), default=0, nullable=False)
+    popularidad_normalizada = Column(DECIMAL(5, 4), default=0, nullable=False)
+    
+    # Timestamps
+    created_at = Column(DateTime(timezone=True), default=datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
     
     # Relationships
     favoritos = relationship("Favorito", back_populates="actividad", cascade="all, delete-orphan")
+    
+    # Indexes for performance (RF-006, RF-008)
+    __table_args__ = (
+        Index("idx_actividades_localidad", "localidad"),
+        Index("idx_actividades_tipo", "tipo"),
+        Index("idx_actividades_fecha_inicio", "fecha_inicio"),
+        Index("idx_actividades_estado", "estado"),
+        Index("idx_actividades_etiquetas", "etiquetas", postgresql_using="gin"),
+        Index("idx_actividades_popularidad", "popularidad_normalizada"),
+    )

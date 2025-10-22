@@ -18,6 +18,18 @@ from app.schemas.user import (
     UsuarioResponse,
     UsuarioWithProfile,
 )
+from app.schemas.activity import (
+    ActividadBase,
+    ActividadCreate,
+    ActividadUpdate,
+    ActividadResponse,
+    ActividadListItem,
+    ActividadListResponse,
+    ActividadSearchQuery,
+    PaginationMetadata,
+    ImportResult,
+    ActividadEstadoUpdate,
+)
 
 __all__ = [
     "UserRegister",
@@ -35,4 +47,14 @@ __all__ = [
     "UsuarioUpdate",
     "UsuarioResponse",
     "UsuarioWithProfile",
+    "ActividadBase",
+    "ActividadCreate",
+    "ActividadUpdate",
+    "ActividadResponse",
+    "ActividadListItem",
+    "ActividadListResponse",
+    "ActividadSearchQuery",
+    "PaginationMetadata",
+    "ImportResult",
+    "ActividadEstadoUpdate",
 ]
