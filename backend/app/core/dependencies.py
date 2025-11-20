@@ -8,7 +8,7 @@ from jose import JWTError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security import decode_token
-from app.db.session import async_session
+from app.db.session import get_session
 from app.models.user import Usuario
 
 
@@ -16,14 +16,14 @@ from app.models.user import Usuario
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login/form")
 
 
-async def get_db() -> AsyncGenerator[AsyncSession, None]:
+async def get_db() -> AsyncSession:
     """
-    Dependency to get database session.
+    Dependency to get async database session.
     
     Yields:
         AsyncSession: Database session
     """
-    async with async_session() as session:
+    async for session in get_session():
         yield session
 
 

@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { FavoriteButton } from "./FavoriteButton";
 
 interface ActivityCardProps {
   activity: Actividad;
@@ -63,8 +64,11 @@ export function ActivityCard({ activity }: ActivityCardProps) {
           </div>
         )}
 
-        <CardHeader>
-          <div className="flex items-start justify-between gap-2 mb-2">
+        <CardHeader className="relative">
+          <div className="absolute top-2 right-2 z-10">
+            <FavoriteButton actividadId={activity.id} />
+          </div>
+          <div className="flex items-start justify-between gap-2 mb-2 pr-10">
             <Badge className={getTipoColor(activity.tipo)}>
               {activity.tipo.charAt(0).toUpperCase() + activity.tipo.slice(1)}
             </Badge>

@@ -88,3 +88,70 @@ def sample_user_data():
         "password": "Test1234",
         "nombre_completo": "Test User"
     }
+
+
+@pytest_asyncio.fixture
+async def test_user_tokens(client: AsyncClient, sample_user_data: dict) -> dict:
+    """
+    Fixture to create a test user and return their auth tokens.
+    """
+    # Register user
+    await client.post("/api/v1/auth/register", json=sample_user_data)
+    
+    # Login to get tokens
+    login_response = await client.post("/api/v1/auth/login", json={
+        "email": sample_user_data["email"],
+        "password": sample_user_data["password"]
+    })
+    
+    return login_response.json()
+
+
+@pytest_asyncio.fixture
+async def test_activity(db_session: AsyncSession):
+    """
+    Fixture to create a test activity.
+    """
+    from app.models.activity import Actividad
+    from datetime import datetime, timedelta
+    from decimal import Decimal
+    import uuid
+    
+    activity = Actividad(
+        id=uuid.uuid4(),
+        titulo="Test Activity",
+        descripcion="This is a test activity for unit testing",
+        tipo="cultura",
+        fecha_inicio=datetime.utcnow() + timedelta(days=7),
+        fecha_fin=datetime.utcnow() + timedelta(days=8),
+        ubicacion_direccion="Calle 123 #45-67",
+        ubicacion_lat=Decimal("4.7110"),
+        ubicacion_lng=Decimal("-74.0721"),
+        localidad="Chapinero",
+        precio=Decimal("0"),
+        es_gratis=True,
+        nivel_actividad="medio",
+        etiquetas=["arte", "cultura", "gratis"],
+        contacto="test@example.com",
+        fuente="manual",
+        estado="activa"
+    )
+    
+    db_session.add(activity)
+    await db_session.commit()
+    await db_session.refresh(activity)
+    
+    return activity
+
+
+@pytest_asyncio.fixture
+async def test_db(db_session: AsyncSession) -> AsyncSession:
+    """Alias for db_session for clearer test code."""
+    return db_session
+
+
+@pytest_asyncio.fixture
+async def async_client(client: AsyncClient) -> AsyncClient:
+    """Alias for client fixture for clearer test code."""
+    return client
+

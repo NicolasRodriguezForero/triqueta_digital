@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { FavoriteButton } from "@/components/FavoriteButton";
 
 export const Route = createFileRoute("/actividades/$id")({
   component: ActividadDetailPage,
@@ -139,13 +140,21 @@ function ActividadDetailPage() {
             )}
           </div>
 
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
             {activity.titulo}
           </h1>
 
-          <div className="flex items-center gap-6 text-gray-600">
-            <span>👁️ {activity.popularidad_vistas} vistas</span>
-            <span>⭐ {activity.popularidad_favoritos} favoritos</span>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-6 text-gray-600">
+              <span>👁️ {activity.popularidad_vistas} vistas</span>
+              <span>⭐ {activity.popularidad_favoritos} favoritos</span>
+            </div>
+            
+            <FavoriteButton 
+              actividadId={activity.id} 
+              variant="default" 
+              showLabel={true}
+            />
           </div>
         </div>
 
