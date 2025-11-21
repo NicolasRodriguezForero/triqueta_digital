@@ -10,6 +10,8 @@ from app.core.dependencies import get_db
 from app.models.user import Usuario
 from app.models.etl_execution import ETLStatus
 from app.services.admin_service import AdminService
+from app.services.etl_service import ETLService
+from app.db.session import async_session_maker
 from app.schemas.admin import (
     DashboardMetrics,
     ETLStatusResponse,
@@ -22,6 +24,7 @@ from app.schemas.admin import (
     ActivityApprovalResponse,
 )
 import json
+import asyncio
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -208,6 +211,9 @@ async def upload_csv_and_run_etl(
         # Save file in etl/data directory (mounted volume shared with ETL container)
         upload_dir = "/etl/data"
         
+        # Ensure directory exists
+        os.makedirs(upload_dir, exist_ok=True)
+        
         # Create unique filename with timestamp
         from datetime import datetime
         timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
@@ -235,32 +241,31 @@ async def upload_csv_and_run_etl(
         
         logger.info(f"ETL execution record created: {execution.id}")
         
-        # Trigger ETL execution asynchronously using subprocess
-        import subprocess
+        # Run ETL pipeline asynchronously in background with its own database session
+        async def run_etl_background():
+            """Run ETL in background task with its own database session."""
+            # Create a new database session for the background task
+            async with async_session_maker() as background_db:
+                try:
+                    etl_service = ETLService(background_db)
+                    await etl_service.run_csv_etl(execution.id, file_path)
+                except Exception as e:
+                    logger.error(f"ETL background task failed: {e}", exc_info=True)
+                    # Try to update execution status to failed
+                    try:
+                        async with async_session_maker() as error_db:
+                            admin_service = AdminService(error_db)
+                            await admin_service.update_etl_status(
+                                execution.id,
+                                ETLStatus.FAILED,
+                                str(e)[:500]
+                            )
+                    except Exception as update_error:
+                        logger.error(f"Failed to update ETL execution status: {update_error}")
         
-        # Get the absolute path to the docker-compose.yml
-        project_root = "/app/.."
-        
-        logger.info(f"Triggering ETL subprocess for file: {safe_filename}")
-        
-        try:
-            subprocess.Popen(
-                [
-                    "docker", "compose", 
-                    "-f", f"{project_root}/docker-compose.yml",
-                    "run", "--rm", "etl",
-                    "python", "src/main.py",
-                    "--source", "csv",
-                    "--csv-path", f"/etl/data/{safe_filename}"
-                ],
-                cwd=project_root,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL
-            )
-            logger.info("ETL subprocess started successfully")
-        except Exception as subprocess_error:
-            logger.warning(f"Failed to start ETL subprocess: {subprocess_error}")
-            # Don't fail the request if subprocess fails, file is already uploaded
+        # Start ETL in background (fire and forget)
+        asyncio.create_task(run_etl_background())
+        logger.info(f"ETL pipeline started in background for execution {execution.id}")
         
         return {
             "execution_id": execution.id,
