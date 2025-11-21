@@ -27,10 +27,10 @@ class ActivityMetrics(BaseModel):
 
 class TopActivity(BaseModel):
     """Top activity schema."""
-    id: int
-    nombre: str
+    id: str
+    titulo: str
     total_favoritos: int
-    total_vistas: int
+    total_vistas: float
 
 
 class EngagementMetrics(BaseModel):
@@ -131,24 +131,24 @@ class ETLTriggerResponse(BaseModel):
 
 class PendingActivity(BaseModel):
     """Pending activity schema."""
-    id: int
-    nombre: str
+    id: str
+    titulo: str
     descripcion: str
     tipo: str
     localidad: str
-    direccion: str
+    ubicacion_direccion: str
     fecha_inicio: Optional[str]
     fecha_fin: Optional[str]
-    horario: Optional[str]
+    horario: Optional[str] = None
     precio: Optional[float]
-    es_gratuita: bool
+    es_gratis: bool
     created_at: str
     fuente: str
 
 
 class ActivityApprovalRequest(BaseModel):
     """Activity approval request schema."""
-    activity_id: int = Field(..., description="Activity ID to approve/reject")
+    activity_id: str = Field(..., description="Activity ID to approve/reject")
 
 
 class ActivityApprovalResponse(BaseModel):

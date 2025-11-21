@@ -411,7 +411,7 @@ class AdminService:
             for row in result.scalars()
         ]
     
-    async def approve_activity(self, activity_id: int) -> bool:
+    async def approve_activity(self, activity_id: str) -> bool:
         """
         Approve a pending activity.
         
@@ -432,7 +432,7 @@ class AdminService:
         await self.db.commit()
         return True
     
-    async def reject_activity(self, activity_id: int) -> bool:
+    async def reject_activity(self, activity_id: str) -> bool:
         """
         Reject a pending activity.
         
