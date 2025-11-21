@@ -32,7 +32,7 @@ class AdminService:
         redis = get_redis()
         cache_key = "admin:dashboard:metrics"
         if redis:
-            cached = redis.get(cache_key)
+            cached = await redis.get(cache_key)
             if cached:
                 import json
                 return json.loads(cached)
@@ -48,7 +48,7 @@ class AdminService:
         # Cache for 5 minutes
         if redis:
             import json
-            redis.setex(cache_key, 300, json.dumps(metrics))
+            await redis.setex(cache_key, 300, json.dumps(metrics))
         
         return metrics
     
@@ -126,20 +126,20 @@ class AdminService:
         # Top 10 popular activities
         top_activities_query = select(
             Actividad.id,
-            Actividad.nombre,
-            Actividad.total_favoritos,
-            Actividad.total_vistas
+            Actividad.titulo,
+            Actividad.popularidad_favoritos,
+            Actividad.popularidad_vistas
         ).order_by(
-            desc(Actividad.total_favoritos),
-            desc(Actividad.total_vistas)
+            desc(Actividad.popularidad_favoritos),
+            desc(Actividad.popularidad_vistas)
         ).limit(10)
         top_activities_result = await self.db.execute(top_activities_query)
         top_activities = [
             {
-                "id": row.id,
-                "nombre": row.nombre,
-                "total_favoritos": row.total_favoritos,
-                "total_vistas": row.total_vistas
+                "id": str(row.id),
+                "titulo": row.titulo,
+                "total_favoritos": row.popularidad_favoritos,
+                "total_vistas": float(row.popularidad_vistas)
             }
             for row in top_activities_result
         ]
@@ -356,23 +356,22 @@ class AdminService:
             List of pending activities
         """
         query = select(Actividad).where(
-            Actividad.estado == ActividadEstado.PENDIENTE
+            Actividad.estado == "pendiente"
         ).order_by(desc(Actividad.created_at)).limit(limit).offset(offset)
         result = await self.db.execute(query)
         
         return [
             {
-                "id": row.id,
-                "nombre": row.nombre,
+                "id": str(row.id),
+                "titulo": row.titulo,
                 "descripcion": row.descripcion,
                 "tipo": row.tipo,
                 "localidad": row.localidad,
-                "direccion": row.direccion,
+                "ubicacion_direccion": row.ubicacion_direccion,
                 "fecha_inicio": row.fecha_inicio.isoformat() if row.fecha_inicio else None,
                 "fecha_fin": row.fecha_fin.isoformat() if row.fecha_fin else None,
-                "horario": row.horario,
-                "precio": row.precio,
-                "es_gratuita": row.es_gratuita,
+                "precio": float(row.precio),
+                "es_gratis": row.es_gratis,
                 "created_at": row.created_at.isoformat(),
                 "fuente": row.fuente
             }
@@ -396,7 +395,7 @@ class AdminService:
         if not activity:
             return False
         
-        activity.estado = ActividadEstado.ACTIVA
+        activity.estado = "activa"
         await self.db.commit()
         return True
     
@@ -417,6 +416,6 @@ class AdminService:
         if not activity:
             return False
         
-        activity.estado = ActividadEstado.CANCELADA
+        activity.estado = "cancelada"
         await self.db.commit()
         return True
