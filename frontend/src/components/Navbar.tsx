@@ -59,7 +59,7 @@ export function Navbar() {
                   </Link>
                   {user.is_admin && (
                     <Link
-                      to="/admin/actividades"
+                      to="/admin/dashboard"
                       className="text-primary hover:text-accent-foreground px-3 py-2 rounded-md text-sm font-medium transition-colors"
                     >
                       Administración
@@ -164,7 +164,7 @@ export function Navbar() {
                   {/* Admin Link */}
                   {user.is_admin && (
                     <Link
-                      to="/admin/actividades"
+                      to="/admin/dashboard"
                       className="block px-3 py-2 rounded-md text-base font-medium text-primary hover:text-accent-foreground hover:bg-gray-50 transition-colors"
                       onClick={closeMobileMenu}
                     >
