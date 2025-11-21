@@ -48,6 +48,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: triqueta-backend
+    restart: unless-stopped
     env_file:
       - ./backend/.env
     environment:
@@ -57,12 +58,15 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./etl/data:/etl/data  # Share ETL data directory for CSV uploads
     depends_on:
       db:
         condition: service_healthy
       redis:
         condition: service_healthy
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
 
   # Frontend (React + Vite) - Production Build
   frontend:
@@ -104,6 +108,7 @@ services:
       - ./etl/src:/etl/src
       - ./etl/data:/etl/data
       - ./etl/logs:/etl/logs
+      - ./etl/uploads:/etl/uploads
     depends_on:
       db:
         condition: service_healthy

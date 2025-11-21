@@ -54,3 +54,16 @@ export const rejectActivity = async (activityId: number) => {
   return data;
 };
 
+// CSV Upload
+export const uploadCSV = async (file: File) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  
+  const { data } = await apiClient.post('/admin/etl/upload-csv', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+  return data;
+};
+

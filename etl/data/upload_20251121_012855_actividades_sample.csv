@@ -1,0 +1,6 @@
+nombre,descripcion,tipo,localidad,direccion,fecha_inicio,fecha_fin,horario,precio,es_gratuita,contacto_telefono,contacto_email,etiquetas,fuente
+Cine al Parque - Chapinero,Proyección gratuita de cine colombiano al aire libre,Cultura,Chapinero,Parque El Chicó - Calle 93,2025-12-05,2025-12-05,19:00 - 21:00,0,True,60112345601,cultural@chapinero.gov.co,"cine,cultura,entretenimiento",CSV
+Taller de Pintura Comunitario,Taller gratuito de pintura para todas las edades,Cultura,Santa Fe,Casa de la Cultura Santa Fe - Carrera 4,2025-12-10,2025-12-20,10:00 - 12:00,0,True,60112345602,cultura@santafe.gov.co,"arte,pintura,taller",CSV
+Ciclovía Dominical,Espacio para ciclismo recreativo todos los domingos,Deporte,Chapinero,Carrera 7 desde Calle 72,2025-12-01,2025-12-31,07:00 - 14:00,0,True,60112345603,movilidad@bogota.gov.co,"ciclismo,deporte,recreación",CSV
+Concierto de Jazz,Presentación de agrupación local de jazz,Cultura,La Candelaria,Teatro Colón - Calle 10,2025-12-15,2025-12-15,20:00 - 22 :00,25000,False,60112345604,teatro@bogota.gov.co,"música,jazz,concierto",CSV
+Clases de Ajedrez,Clases gratuitas de ajedrez para principiantes,Educación,Chapinero,Biblioteca Virgilio Barco,2025-12-01,2025-12-31,15:00 - 17:00,0,True,60112345605,biblioteca@bogota.gov.co,"ajedrez,educación,estrategia",CSV

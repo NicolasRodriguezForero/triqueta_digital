@@ -338,6 +338,39 @@ class AdminService:
         await self.db.refresh(execution)
         return execution
     
+    async def update_etl_status(
+        self,
+        execution_id: int,
+        status: ETLStatus,
+        error_message: Optional[str] = None
+    ) -> bool:
+        """
+        Update ETL execution status.
+        
+        Args:
+            execution_id: ETL execution ID
+            status: New status
+            error_message: Optional error message
+            
+        Returns:
+            True if updated, False if not found
+        """
+        query = select(ETLExecution).where(ETLExecution.id == execution_id)
+        result = await self.db.execute(query)
+        execution = result.scalar_one_or_none()
+        
+        if not execution:
+            return False
+        
+        execution.status = status
+        if error_message:
+            execution.error_message = error_message
+        if status in [ETLStatus.SUCCESS, ETLStatus.FAILED]:
+            execution.finished_at = datetime.utcnow()
+        
+        await self.db.commit()
+        return True
+
     # ========== Activity Validation ==========
     
     async def get_pending_activities(

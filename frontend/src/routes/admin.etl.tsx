@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { ETLStatusCard } from '@/components/ETLStatusCard';
+import { CSVUploader } from '@/components/CSVUploader';
 import { getETLStatus, getETLExecutions, triggerETL } from '@/services/admin';
 import { PlayCircle, RefreshCw } from 'lucide-react';
 import { createFileRoute } from '@tanstack/react-router';
@@ -89,6 +90,12 @@ function AdminETL() {
             <RefreshCw className="h-4 w-4" />
           </Button>
         </div>
+      </div>
+
+      {/* CSV Upload */}
+      <div className="mb-8">
+        <h2 className="text-lg font-semibold mb-4">Subir Archivo CSV</h2>
+        <CSVUploader />
       </div>
 
       {/* Current Status */}

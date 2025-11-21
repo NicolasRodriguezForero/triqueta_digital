@@ -2,12 +2,13 @@
 Admin API router for dashboard, ETL management, and activity validation.
 """
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.admin import get_current_admin
 from app.core.dependencies import get_db
 from app.models.user import Usuario
+from app.models.etl_execution import ETLStatus
 from app.services.admin_service import AdminService
 from app.schemas.admin import (
     DashboardMetrics,
@@ -146,6 +147,134 @@ async def trigger_etl(
         "status": execution.status,
         "message": f"ETL execution {execution.id} created. Job will run asynchronously."
     }
+
+
+@router.post(
+    "/etl/upload-csv",
+    response_model=ETLTriggerResponse,
+    summary="Upload CSV and trigger ETL",
+    description="Upload a CSV file and automatically trigger ETL processing"
+)
+async def upload_csv_and_run_etl(
+    file: UploadFile,
+    current_admin: Usuario = Depends(get_current_admin),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Upload a CSV file and trigger ETL processing.
+    
+    Args:
+        file: CSV file to upload
+        current_admin: Current admin user
+        db: Database session
+        
+    Returns:
+        ETL execution details
+    """
+    import os
+    import shutil
+    import logging
+    
+    logger = logging.getLogger(__name__)
+    
+    # Validate file extension  
+    if not file.filename or not file.filename.endswith('.csv'):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Only CSV files are allowed"
+        )
+    
+    # Validate file size (max 10MB)
+    try:
+        file.file.seek(0, 2)  # Seek to end
+        file_size = file.file.tell()
+        file.file.seek(0)  # Reset to beginning
+        
+        if file_size > 10 * 1024 * 1024:  # 10MB
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="File size exceeds 10MB limit"
+            )
+    except Exception as e:
+        logger.error(f"Error checking file size: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid file: {str(e)}"
+        )
+    
+    admin_service = AdminService(db)
+    
+    try:
+        # Save file in etl/data directory (mounted volume shared with ETL container)
+        upload_dir = "/etl/data"
+        
+        # Create unique filename with timestamp
+        from datetime import datetime
+        timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+        safe_filename = f"upload_{timestamp}_{file.filename}"
+        file_path = os.path.join(upload_dir, safe_filename)
+        
+        logger.info(f"Saving uploaded file to: {file_path}")
+        
+        # Write uploaded file
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        
+        logger.info(f"File saved successfully: {safe_filename}")
+        
+        # Create execution record with file path in config
+        execution = await admin_service.create_etl_execution(
+            source="csv_upload",
+            triggered_by=f"admin:{current_admin.id}",
+            config=json.dumps({
+                "original_filename": file.filename,
+                "saved_filename": safe_filename,
+                "file_path": f"/etl/data/{safe_filename}"
+            })
+        )
+        
+        logger.info(f"ETL execution record created: {execution.id}")
+        
+        # Trigger ETL execution asynchronously using subprocess
+        import subprocess
+        
+        # Get the absolute path to the docker-compose.yml
+        project_root = "/app/.."
+        
+        logger.info(f"Triggering ETL subprocess for file: {safe_filename}")
+        
+        try:
+            subprocess.Popen(
+                [
+                    "docker", "compose", 
+                    "-f", f"{project_root}/docker-compose.yml",
+                    "run", "--rm", "etl",
+                    "python", "src/main.py",
+                    "--source", "csv",
+                    "--csv-path", f"/etl/data/{safe_filename}"
+                ],
+                cwd=project_root,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL
+            )
+            logger.info("ETL subprocess started successfully")
+        except Exception as subprocess_error:
+            logger.warning(f"Failed to start ETL subprocess: {subprocess_error}")
+            # Don't fail the request if subprocess fails, file is already uploaded
+        
+        return {
+            "execution_id": execution.id,
+            "status": execution.status,
+            "message": f"CSV '{file.filename}' uploaded successfully. ETL processing started automatically."
+        }
+        
+    except Exception as e:
+        logger.error(f"Error in upload_csv_and_run_etl: {str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to upload file: {str(e)}"
+        )
+
 
 
 # ========== Activity Validation Endpoints ==========
