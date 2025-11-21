@@ -66,10 +66,19 @@ docker-compose up -d
 
 4. **Inicializar base de datos:**
 ```bash
-docker-compose exec backend alembic upgrade head
+docker compose exec backend alembic upgrade head
 ```
 
-5. **Acceder a la aplicación:**
+5. **Crear datos iniciales (opcional):**
+```bash
+docker compose exec backend python scripts/seed_data.py
+```
+Esto crea:
+- Usuario admin: `admin@triqueta.digital` / `admin123`
+- 3 usuarios de prueba
+- 5 actividades de ejemplo
+
+6. **Acceder a la aplicación:**
 - **Aplicación principal:** http://localhost (puerto 80)
 - **Frontend:** http://localhost/
 - **Backend API:** http://localhost/api/v1/
@@ -120,18 +129,30 @@ docker-compose exec backend alembic upgrade head
 
 ## 📊 Estado del Desarrollo
 
-**Progreso:** 10% (Setup inicial) ⬛⬜⬜⬜⬜⬜⬜⬜⬜⬜
+**Progreso:** 80% (MVP en desarrollo) ⬛⬛⬛⬛⬛⬛⬛⬛⬜⬜
 
-### Sprint Actual: Sprint 1 - Setup + Autenticación
-**Duración:** Semanas 1-2  
-**Estado:** 🟡 En progreso
+### Sprint Actual: Sprint 4 - Admin + ETL
+**Duración:** Semanas 7-8  
+**Estado:** ✅ Completado
 
-Ver [PLAN_IMPLEMENTACION.md](./PLAN_IMPLEMENTACION.md) para detalles completos.
+Ver [task.md](./.gemini/antigravity/brain/8438a413-45df-43ed-acfe-ac0bac310b78/task.md) para seguimiento detallado.
 
-### Próximos Sprints
-- **Sprint 2:** Actividades + Búsqueda (Semanas 3-4)
-- **Sprint 3:** Favoritos + Recomendaciones IA (Semanas 5-6)
-- **Sprint 4:** Admin + ETL (Semanas 7-8)
+### Sprints Completados
+- ✅ **Sprint 1:** Setup + Autenticación (Semanas 1-2)
+- ✅ **Sprint 2:** Actividades + Búsqueda (Semanas 3-4)
+- ✅ **Sprint 3:** Favoritos + Recomendaciones IA (Semanas 5-6)
+- ✅ **Sprint 4:** Admin + ETL + Deploy (Semanas 7-8)
+
+### Funcionalidades Implementadas
+- ✅ Sistema de autenticación con JWT
+- ✅ CRUD completo de actividades
+- ✅ Búsqueda y filtros avanzados
+- ✅ Sistema de favoritos
+- ✅ Recomendaciones con IA (híbrido content-based + collaborative)
+- ✅ Dashboard administrativo con métricas
+- ✅ Script ETL para ingesta de datos (IDRD, CSV, API)
+- ✅ Gestión de actividades pendientes
+- ✅ CI/CD con GitHub Actions
 
 ## 🧪 Testing
 
@@ -179,14 +200,39 @@ npm run dev
 ### Base de Datos
 ```bash
 # Crear nueva migración
-docker-compose exec backend alembic revision --autogenerate -m "descripcion"
+docker compose exec backend alembic revision --autogenerate -m "descripcion"
 
 # Aplicar migraciones
-docker-compose exec backend alembic upgrade head
+docker compose exec backend alembic upgrade head
 
 # Revertir migración
-docker-compose exec backend alembic downgrade -1
+docker compose exec backend alembic downgrade -1
+
+# Seed data (usuario admin + datos de prueba)
+docker compose exec backend python scripts/seed_data.py
 ```
+
+### ETL - Ingesta de Datos
+```bash
+# Ejecutar ETL desde IDRD (mock)
+docker compose run --rm etl python src/main.py --source idrd
+
+# Ejecutar ETL desde CSV
+docker compose run --rm etl python src/main.py --source csv --csv-path /etl/data/actividades_sample.csv
+
+# Ver logs del ETL
+ls -la etl/logs/
+```
+
+### Panel Administrativo
+Una vez iniciada la aplicación, acceder a:
+- **Dashboard:** http://localhost/admin/dashboard
+- **Gestión ETL:** http://localhost/admin/etl
+- **Validación de Actividades:** http://localhost/admin/actividades/pendientes
+
+**Credenciales por defecto (después de seed):**
+- Email: `admin@triqueta.digital`
+- Password: `admin123`
 
 ### Linting y Formateo
 ```bash
