@@ -26,11 +26,15 @@ export function Layout({ children }: LayoutProps) {
                 </div>
                 <div>
                   <span className="text-lg font-bold">Triqueta</span>
-                  <span className="text-lg font-bold text-primary"> Digital</span>
+                  <span className="text-lg font-bold text-primary">
+                    {" "}
+                    Digital
+                  </span>
                 </div>
               </div>
               <p className="text-sm text-muted-foreground max-w-xs">
-                Conectando comunidades a través de actividades culturales, recreativas y deportivas en Bogotá.
+                Conectando comunidades a través de actividades culturales,
+                recreativas y deportivas en Bogotá.
               </p>
             </div>
 
@@ -39,17 +43,26 @@ export function Layout({ children }: LayoutProps) {
               <h3 className="font-semibold text-foreground">Enlaces Rápidos</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <Link to="/actividades" className="text-muted-foreground hover:text-primary transition-colors">
+                  <Link
+                    to="/actividades"
+                    className="text-muted-foreground hover:text-primary transition-colors"
+                  >
                     Explorar Actividades
                   </Link>
                 </li>
                 <li>
-                  <Link to="/recomendaciones" className="text-muted-foreground hover:text-primary transition-colors">
+                  <Link
+                    to="/recomendaciones"
+                    className="text-muted-foreground hover:text-primary transition-colors"
+                  >
                     Recomendaciones
                   </Link>
                 </li>
                 <li>
-                  <Link to="/favoritos" className="text-muted-foreground hover:text-primary transition-colors">
+                  <Link
+                    to="/favoritos"
+                    className="text-muted-foreground hover:text-primary transition-colors"
+                  >
                     Mis Favoritos
                   </Link>
                 </li>
@@ -75,12 +88,13 @@ export function Layout({ children }: LayoutProps) {
           {/* Bottom Bar */}
           <div className="border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground text-center md:text-left">
-              &copy; {new Date().getFullYear()} Triqueta Digital. Todos los derechos reservados.
+              &copy; {new Date().getFullYear()} Triqueta Digital. Todos los
+              derechos reservados.
             </p>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span>Proyecto académico</span>
               <span>•</span>
-              <span>Universidad Santo Tomás</span>
+              <span>Universidad Sergio Arboleda</span>
             </div>
           </div>
         </div>
