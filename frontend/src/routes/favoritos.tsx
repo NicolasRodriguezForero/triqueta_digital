@@ -52,14 +52,23 @@ function FavoritosPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-2">
-          <Heart className="w-8 h-8 text-red-500 fill-current" />
-          <h1 className="text-3xl font-bold">Mis Favoritos</h1>
+      <div className="mb-10 relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-red-500/5 via-pink-500/5 to-red-500/5 rounded-2xl blur-3xl -z-10"></div>
+        <div className="relative">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-red-500 to-pink-500 flex items-center justify-center shadow-lg">
+              <Heart className="w-7 h-7 text-white fill-white" />
+            </div>
+            <div>
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent mb-2">
+                Mis Favoritos
+              </h1>
+              <p className="text-lg text-muted-foreground">
+                {data?.total || 0} {data?.total === 1 ? 'actividad guardada' : 'actividades guardadas'}
+              </p>
+            </div>
+          </div>
         </div>
-        <p className="text-gray-600">
-          {data?.total || 0} actividades guardadas
-        </p>
       </div>
 
       {/* Filters */}
@@ -111,15 +120,22 @@ function FavoritosPage() {
 
       {/* Content */}
       {!hasFavorites ? (
-        <div className="text-center py-16">
-          <Heart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h2 className="text-2xl font-semibold mb-2">
-            No tienes favoritos aún
+        <div className="text-center py-20">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-red-500/10 to-pink-500/10 mb-6">
+            <Heart className="w-10 h-10 text-red-400" />
+          </div>
+          <h2 className="text-2xl font-semibold mb-3">
+            Tu lista de favoritos está vacía
           </h2>
-          <p className="text-gray-600 mb-6">
-            Explora actividades y guarda tus favoritas aquí
+          <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+            Explora actividades increíbles y guarda tus favoritas para encontrarlas fácilmente después
           </p>
-          <Button onClick={() => (window.location.href = "/actividades")}>
+          <Button 
+            onClick={() => (window.location.href = "/actividades")} 
+            size="lg"
+            className="gap-2"
+          >
+            <Heart className="w-4 h-4" />
             Explorar actividades
           </Button>
         </div>
