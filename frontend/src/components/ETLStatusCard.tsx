@@ -1,5 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { CheckCircle, XCircle, Clock, AlertCircle } from 'lucide-react';
 
 interface ETLStatusCardProps {
@@ -57,8 +58,11 @@ export function ETLStatusCard({ status, source, startedAt, finishedAt, recordsLo
             </div>
           )}
           {errorMessage && (
-            <div className="mt-2 p-2 bg-red-50 border border-red-200 rounded text-sm text-red-800">
-              {errorMessage}
+            <div className="mt-2">
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{errorMessage}</AlertDescription>
+              </Alert>
             </div>
           )}
         </div>

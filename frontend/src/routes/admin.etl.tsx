@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { ETLStatusCard } from '@/components/ETLStatusCard';
@@ -6,6 +7,7 @@ import { getETLStatus, getETLExecutions, triggerETL } from '@/services/admin';
 import { PlayCircle, RefreshCw } from 'lucide-react';
 import { createFileRoute } from '@tanstack/react-router';
 import { useToast } from '@/hooks/use-toast';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 
 export const Route = createFileRoute('/admin/etl')({
   component: AdminETL,
@@ -14,6 +16,8 @@ export const Route = createFileRoute('/admin/etl')({
 function AdminETL() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const [triggerConfirmOpen, setTriggerConfirmOpen] = useState(false);
+  const [sourceToTrigger, setSourceToTrigger] = useState<string | null>(null);
 
   const { data: currentStatus, isLoading: statusLoading } = useQuery({
     queryKey: ['etl-status'],
@@ -47,9 +51,15 @@ function AdminETL() {
     },
   });
 
-  const handleTrigger = (source: string) => {
-    if (window.confirm(`¿Iniciar ETL desde fuente: ${source}?`)) {
-      triggerMutation.mutate(source);
+  const handleTriggerClick = (source: string) => {
+    setSourceToTrigger(source);
+    setTriggerConfirmOpen(true);
+  };
+
+  const handleTriggerConfirm = () => {
+    if (sourceToTrigger) {
+      triggerMutation.mutate(sourceToTrigger);
+      setSourceToTrigger(null);
     }
   };
 
@@ -65,7 +75,7 @@ function AdminETL() {
         <h2 className="text-lg font-semibold mb-4">Iniciar Proceso ETL</h2>
         <div className="flex flex-wrap gap-3">
           <Button
-            onClick={() => handleTrigger('idrd')}
+            onClick={() => handleTriggerClick('idrd')}
             disabled={triggerMutation.isPending}
           >
             <PlayCircle className="h-4 w-4 mr-2" />
@@ -73,7 +83,7 @@ function AdminETL() {
           </Button>
           <Button
             variant="outline"
-            onClick={() => handleTrigger('csv')}
+            onClick={() => handleTriggerClick('csv')}
             disabled={triggerMutation.isPending}
           >
             <PlayCircle className="h-4 w-4 mr-2" />
@@ -134,6 +144,22 @@ function AdminETL() {
           </div>
         )}
       </div>
+
+      {/* Trigger Confirmation Dialog */}
+      <ConfirmDialog
+        open={triggerConfirmOpen}
+        onOpenChange={setTriggerConfirmOpen}
+        onConfirm={handleTriggerConfirm}
+        title="Iniciar Proceso ETL"
+        description={
+          sourceToTrigger
+            ? `¿Estás seguro de iniciar el proceso ETL desde la fuente: ${sourceToTrigger.toUpperCase()}?`
+            : "¿Estás seguro de iniciar el proceso ETL?"
+        }
+        confirmText="Iniciar"
+        cancelText="Cancelar"
+        variant="default"
+      />
     </div>
   );
 }

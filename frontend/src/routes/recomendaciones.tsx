@@ -79,7 +79,7 @@ function RecomendacionesPage() {
 
       {/* Profile Incomplete Alert */}
       {data && !data.user_profile_complete && (
-        <Alert className="mb-6">
+        <Alert variant="info" className="mb-6">
           <Info className="h-4 w-4" />
           <AlertDescription>
             <strong>Completa tu perfil</strong> para obtener recomendaciones más

@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ActivityValidationCard } from '@/components/ActivityValidationCard';
 import { getPendingActivities, approveActivity, rejectActivity } from '@/services/admin';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useToast } from '@/hooks/use-toast';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 
 export const Route = createFileRoute('/admin/actividades/pendientes')({
   component: PendingActivities,
@@ -12,6 +14,9 @@ function PendingActivities() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [approveConfirmOpen, setApproveConfirmOpen] = useState(false);
+  const [rejectConfirmOpen, setRejectConfirmOpen] = useState(false);
+  const [activityToProcess, setActivityToProcess] = useState<string | null>(null);
 
   const { data: activities = [], isLoading } = useQuery({
     queryKey: ['admin', 'pending-activities'],
@@ -55,15 +60,27 @@ function PendingActivities() {
     },
   });
 
-  const handleApprove = (id: string) => {
-    if (window.confirm('¿Aprobar esta actividad?')) {
-      approveMutation.mutate(id);
+  const handleApproveClick = (id: string) => {
+    setActivityToProcess(id);
+    setApproveConfirmOpen(true);
+  };
+
+  const handleApproveConfirm = () => {
+    if (activityToProcess) {
+      approveMutation.mutate(activityToProcess);
+      setActivityToProcess(null);
     }
   };
 
-  const handleReject = (id: string) => {
-    if (window.confirm('¿Rechazar esta actividad?')) {
-      rejectMutation.mutate(id);
+  const handleRejectClick = (id: string) => {
+    setActivityToProcess(id);
+    setRejectConfirmOpen(true);
+  };
+
+  const handleRejectConfirm = () => {
+    if (activityToProcess) {
+      rejectMutation.mutate(activityToProcess);
+      setActivityToProcess(null);
     }
   };
 
@@ -96,8 +113,8 @@ function PendingActivities() {
             <ActivityValidationCard
               key={activity.id}
               activity={activity}
-              onApprove={handleApprove}
-              onReject={handleReject}
+              onApprove={handleApproveClick}
+              onReject={handleRejectClick}
               onView={handleView}
             />
           ))}
@@ -109,6 +126,30 @@ function PendingActivities() {
           </p>
         </div>
       )}
+
+      {/* Approve Confirmation Dialog */}
+      <ConfirmDialog
+        open={approveConfirmOpen}
+        onOpenChange={setApproveConfirmOpen}
+        onConfirm={handleApproveConfirm}
+        title="Aprobar Actividad"
+        description="¿Estás seguro de aprobar esta actividad? Se publicará y estará disponible para todos los usuarios."
+        confirmText="Aprobar"
+        cancelText="Cancelar"
+        variant="default"
+      />
+
+      {/* Reject Confirmation Dialog */}
+      <ConfirmDialog
+        open={rejectConfirmOpen}
+        onOpenChange={setRejectConfirmOpen}
+        onConfirm={handleRejectConfirm}
+        title="Rechazar Actividad"
+        description="¿Estás seguro de rechazar esta actividad? Esta acción marcará la actividad como rechazada."
+        confirmText="Rechazar"
+        cancelText="Cancelar"
+        variant="destructive"
+      />
     </div>
   );
 }

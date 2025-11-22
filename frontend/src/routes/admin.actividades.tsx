@@ -22,6 +22,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import type { Actividad, ActividadCreate } from "../services/activities";
 
 export const Route = createFileRoute("/admin/actividades")({
@@ -45,6 +46,8 @@ function AdminActividadesPage() {
   const [editingActivity, setEditingActivity] = useState<Actividad | null>(
     null
   );
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [activityToDelete, setActivityToDelete] = useState<string | null>(null);
 
   // Use admin endpoint to get all activities (including inactive)
   const { data, isLoading } = useQuery({
@@ -67,9 +70,15 @@ function AdminActividadesPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (confirm("¿Estás seguro de eliminar esta actividad?")) {
-      await deleteMutation.mutateAsync(id);
+  const handleDeleteClick = (id: string) => {
+    setActivityToDelete(id);
+    setDeleteConfirmOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (activityToDelete) {
+      await deleteMutation.mutateAsync(activityToDelete);
+      setActivityToDelete(null);
     }
   };
 
@@ -154,7 +163,7 @@ function AdminActividadesPage() {
                   <Button
                     variant="destructive"
                     size="sm"
-                    onClick={() => handleDelete(activity.id)}
+                    onClick={() => handleDeleteClick(activity.id)}
                     disabled={deleteMutation.isPending}
                   >
                     <Trash2 className="w-4 h-4" />
@@ -205,6 +214,18 @@ function AdminActividadesPage() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        open={deleteConfirmOpen}
+        onOpenChange={setDeleteConfirmOpen}
+        onConfirm={handleDeleteConfirm}
+        title="Eliminar Actividad"
+        description="¿Estás seguro de eliminar esta actividad? Esta acción no se puede deshacer."
+        confirmText="Eliminar"
+        cancelText="Cancelar"
+        variant="destructive"
+      />
     </div>
   );
 }

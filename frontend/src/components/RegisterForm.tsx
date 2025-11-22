@@ -174,9 +174,9 @@ export function RegisterForm() {
               </Alert>
             )}
             {registerMutation.isSuccess && (
-              <Alert className="border-green-200 bg-green-50 dark:bg-green-950/20">
-                <CheckCircle2 className="h-4 w-4 text-green-600" />
-                <AlertDescription className="text-green-800 dark:text-green-300">
+              <Alert variant="success">
+                <CheckCircle2 className="h-4 w-4" />
+                <AlertDescription>
                   ¡Registro exitoso! Redirigiendo al login...
                 </AlertDescription>
               </Alert>
