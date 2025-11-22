@@ -77,17 +77,19 @@ function AdminLayout() {
   return (
     <SidebarProvider>
       <Sidebar>
-        <SidebarHeader>
-          <div className="flex items-center gap-2 px-2 py-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent-foreground flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-primary-foreground" />
+        <Link to="/">
+          <SidebarHeader>
+            <div className="flex items-center gap-2 px-2 py-2">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent-foreground flex items-center justify-center">
+                <Sparkles className="w-5 h-5 text-primary-foreground" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-sm font-bold">Triqueta</span>
+                <span className="text-xs text-muted-foreground">Admin</span>
+              </div>
             </div>
-            <div className="flex flex-col">
-              <span className="text-sm font-bold">Triqueta</span>
-              <span className="text-xs text-muted-foreground">Admin</span>
-            </div>
-          </div>
-        </SidebarHeader>
+          </SidebarHeader>
+        </Link>
 
         <SidebarContent>
           <SidebarGroup>
@@ -119,12 +121,12 @@ function AdminLayout() {
         <SidebarFooter>
           <SidebarMenu>
             {user && (
-              <SidebarMenuItem>
+              <SidebarMenuItem className="py-2">
                 <Popover>
                   <PopoverTrigger asChild>
                     <SidebarMenuButton
                       tooltip="Ver perfil y opciones"
-                      className="w-full"
+                      className="w-full px-3 h-auto rounded-full"
                     >
                       <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent-foreground flex items-center justify-center shrink-0">
                         <User className="h-4 w-4 text-primary-foreground" />
