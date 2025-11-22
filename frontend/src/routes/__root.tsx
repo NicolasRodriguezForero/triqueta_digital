@@ -1,15 +1,26 @@
-import { createRootRoute, Outlet } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { createRootRoute, Outlet, useLocation } from "@tanstack/react-router";
+// import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { QueryProvider } from "../providers/QueryProvider";
 import { Layout } from "../components/Layout";
 
-export const Route = createRootRoute({
-  component: () => (
+function RootComponent() {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
+
+  return (
     <QueryProvider>
-      <Layout>
+      {isAdminRoute ? (
         <Outlet />
-      </Layout>
-      <TanStackRouterDevtools />
+      ) : (
+        <Layout>
+          <Outlet />
+        </Layout>
+      )}
+      {/* <TanStackRouterDevtools /> */}
     </QueryProvider>
-  ),
+  );
+}
+
+export const Route = createRootRoute({
+  component: RootComponent,
 });
