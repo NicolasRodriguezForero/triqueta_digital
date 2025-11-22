@@ -5,19 +5,23 @@ import { CheckCircle, XCircle, Eye } from 'lucide-react';
 
 interface ActivityValidationCardProps {
   activity: {
-    id: number;
-    nombre: string;
+    id: string;
+    titulo: string;
     descripcion: string;
     tipo: string;
     localidad: string;
+    ubicacion_direccion?: string;
     fecha_inicio?: string;
+    fecha_fin?: string;
     precio?: number;
-    es_gratuita: boolean;
+    es_gratis: boolean;
     fuente: string;
+    estado?: string;
+    created_at?: string;
   };
-  onApprove: (id: number) => void;
-  onReject: (id: number) => void;
-  onView?: (id: number) => void;
+  onApprove: (id: string) => void;
+  onReject: (id: string) => void;
+  onView?: (id: string) => void;
 }
 
 export function ActivityValidationCard({ activity, onApprove, onReject, onView }: ActivityValidationCardProps) {
@@ -26,12 +30,29 @@ export function ActivityValidationCard({ activity, onApprove, onReject, onView }
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <CardTitle className="text-lg">{activity.nombre}</CardTitle>
+            <CardTitle className="text-lg">{activity.titulo}</CardTitle>
             <CardDescription className="mt-1">
               {activity.tipo} • {activity.localidad}
             </CardDescription>
           </div>
-          <Badge variant="outline" className="ml-2">{activity.fuente}</Badge>
+          <div className="flex flex-col gap-1 items-end">
+            {activity.estado && (
+              <Badge 
+                variant={
+                  activity.estado === 'activa' ? 'default' :
+                  activity.estado === 'pendiente_validacion' ? 'secondary' :
+                  activity.estado === 'rechazada' ? 'destructive' : 'outline'
+                }
+                className="ml-2"
+              >
+                {activity.estado === 'activa' ? 'Activa' :
+                 activity.estado === 'pendiente_validacion' ? 'Pendiente' :
+                 activity.estado === 'rechazada' ? 'Rechazada' :
+                 activity.estado === 'inactiva' ? 'Inactiva' : activity.estado}
+              </Badge>
+            )}
+            <Badge variant="outline">{activity.fuente}</Badge>
+          </div>
         </div>
       </CardHeader>
       <CardContent>
@@ -39,17 +60,23 @@ export function ActivityValidationCard({ activity, onApprove, onReject, onView }
           {activity.descripcion}
         </p>
         
+        {activity.ubicacion_direccion && (
+          <p className="text-xs text-muted-foreground mb-4">
+            📍 {activity.ubicacion_direccion}
+          </p>
+        )}
+        
         <div className="grid grid-cols-2 gap-4 text-sm mb-4">
           {activity.fecha_inicio && (
             <div>
-              <span className="text-muted-foreground">Fecha:</span>
+              <span className="text-muted-foreground">Fecha inicio:</span>
               <p className="font-medium">{new Date(activity.fecha_inicio).toLocaleDateString()}</p>
             </div>
           )}
           <div>
             <span className="text-muted-foreground">Precio:</span>
             <p className="font-medium">
-              {activity.es_gratuita ? 'Gratuita' : `$${activity.precio?.toLocaleString()}`}
+              {activity.es_gratis ? 'Gratuita' : `$${activity.precio?.toLocaleString() || 0}`}
             </p>
           </div>
         </div>

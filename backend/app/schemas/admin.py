@@ -142,6 +142,7 @@ class PendingActivity(BaseModel):
     horario: Optional[str] = None
     precio: Optional[float]
     es_gratis: bool
+    estado: str
     created_at: str
     fuente: str
 

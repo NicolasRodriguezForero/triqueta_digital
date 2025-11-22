@@ -187,6 +187,7 @@ class ActividadListItem(BaseModel):
     es_gratis: bool
     etiquetas: List[str]
     popularidad_normalizada: Decimal
+    estado: Optional[str] = None
     
     class Config:
         from_attributes = True

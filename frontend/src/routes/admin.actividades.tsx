@@ -3,15 +3,16 @@
  * CRUD operations for activities
  */
 import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useLocation } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { ActivityForm } from "../components/ActivityForm";
 import {
-  useActivities,
   useCreateActivity,
   useUpdateActivity,
   useDeleteActivity,
 } from "../hooks/useActivities";
+import { getAllActivitiesAdmin } from "../services/activities";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -24,8 +25,20 @@ import {
 import type { Actividad, ActividadCreate } from "../services/activities";
 
 export const Route = createFileRoute("/admin/actividades")({
-  component: AdminActividadesPage,
+  component: AdminActividadesLayout,
 });
+
+function AdminActividadesLayout() {
+  const location = useLocation();
+
+  // If we're on a child route (like /admin/actividades/pendientes), render only the child
+  if (location.pathname !== "/admin/actividades") {
+    return <Outlet />;
+  }
+
+  // Otherwise render the main actividades page
+  return <AdminActividadesPage />;
+}
 
 function AdminActividadesPage() {
   const [isCreating, setIsCreating] = useState(false);
@@ -33,7 +46,11 @@ function AdminActividadesPage() {
     null
   );
 
-  const { data, isLoading } = useActivities({ limit: 100 });
+  // Use admin endpoint to get all activities (including inactive)
+  const { data, isLoading } = useQuery({
+    queryKey: ["admin-activities"],
+    queryFn: () => getAllActivitiesAdmin({ limit: 100 }),
+  });
   const createMutation = useCreateActivity();
   const updateMutation = useUpdateActivity(editingActivity?.id || "");
   const deleteMutation = useDeleteActivity();
@@ -85,8 +102,33 @@ function AdminActividadesPage() {
             <Card key={activity.id}>
               <CardContent className="flex items-center justify-between p-6">
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold">{activity.titulo}</h3>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="text-lg font-semibold">{activity.titulo}</h3>
+                    {activity.estado && (
+                      <span
+                        className={`text-xs px-2 py-1 rounded font-medium ${
+                          activity.estado === "activa"
+                            ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                            : activity.estado === "pendiente_validacion"
+                              ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                              : activity.estado === "rechazada"
+                                ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                                : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200"
+                        }`}
+                      >
+                        {activity.estado === "activa"
+                          ? "Activa"
+                          : activity.estado === "pendiente_validacion"
+                            ? "Pendiente"
+                            : activity.estado === "rechazada"
+                              ? "Rechazada"
+                              : activity.estado === "inactiva"
+                                ? "Inactiva"
+                                : activity.estado}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                     {activity.localidad} • {activity.tipo} •{" "}
                     {activity.fecha_inicio}
                   </p>
@@ -94,7 +136,7 @@ function AdminActividadesPage() {
                     {activity.etiquetas.slice(0, 3).map((tag) => (
                       <span
                         key={tag}
-                        className="text-xs bg-gray-100 px-2 py-1 rounded"
+                        className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded"
                       >
                         {tag}
                       </span>

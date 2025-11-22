@@ -14,8 +14,9 @@ function PendingActivities() {
   const navigate = useNavigate();
 
   const { data: activities = [], isLoading } = useQuery({
-    queryKey: ['pending-activities'],
+    queryKey: ['admin', 'pending-activities'],
     queryFn: () => getPendingActivities(50, 0),
+    staleTime: 0, // Always fetch fresh data
   });
 
   const approveMutation = useMutation({
@@ -25,7 +26,7 @@ function PendingActivities() {
         title: 'Actividad Aprobada',
         description: 'La actividad ha sido aprobada correctamente',
       });
-      queryClient.invalidateQueries({ queryKey: ['pending-activities'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'pending-activities'] });
     },
     onError: () => {
       toast({
@@ -43,7 +44,7 @@ function PendingActivities() {
         title: 'Actividad Rechazada',
         description: 'La actividad ha sido rechazada',
       });
-      queryClient.invalidateQueries({ queryKey: ['pending-activities'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'pending-activities'] });
     },
     onError: () => {
       toast({
@@ -54,19 +55,19 @@ function PendingActivities() {
     },
   });
 
-  const handleApprove = (id: number) => {
+  const handleApprove = (id: string) => {
     if (window.confirm('¿Aprobar esta actividad?')) {
       approveMutation.mutate(id);
     }
   };
 
-  const handleReject = (id: number) => {
+  const handleReject = (id: string) => {
     if (window.confirm('¿Rechazar esta actividad?')) {
       rejectMutation.mutate(id);
     }
   };
 
-  const handleView = (id: number) => {
+  const handleView = (id: string) => {
     navigate({ to: `/actividades/${id}` });
   };
 

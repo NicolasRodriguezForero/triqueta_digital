@@ -2,7 +2,7 @@
  * Activities list page with search, filters and pagination (RF-007, RF-008)
  */
 import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useLocation } from "@tanstack/react-router";
 import { Loader2, AlertCircle } from "lucide-react";
 import { ActivityCard } from "../components/ActivityCard";
 import { SearchBar } from "../components/SearchBar";
@@ -15,8 +15,20 @@ import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export const Route = createFileRoute("/actividades")({
-  component: ActividadesPage,
+  component: ActividadesLayout,
 });
+
+function ActividadesLayout() {
+  const location = useLocation();
+
+  // If we're on a child route (like /actividades/$id), render only the child
+  if (location.pathname !== "/actividades") {
+    return <Outlet />;
+  }
+
+  // Otherwise render the main actividades page
+  return <ActividadesPage />;
+}
 
 function ActividadesPage() {
   const [searchQuery, setSearchQuery] = useState("");

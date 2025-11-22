@@ -57,6 +57,7 @@ async def list_activities(
     Lista actividades con filtros y paginación.
     
     **Acceso:** Público (no requiere autenticación)
+    Solo muestra actividades con estado 'activa'.
     """
     # Build query params
     query_params = ActividadSearchQuery(
@@ -97,6 +98,7 @@ async def list_activities(
             es_gratis=activity.es_gratis,
             etiquetas=activity.etiquetas,
             popularidad_normalizada=activity.popularidad_normalizada,
+            estado=activity.estado,
         )
         list_items.append(item)
     
@@ -259,38 +261,72 @@ async def import_activities(
     )
 
 
-@router.get("/admin/pendientes", response_model=ActividadListResponse, summary="Listar actividades pendientes (RF-018)")
-async def list_pending_activities(
-    page: int = Query(1, ge=1),
-    page_size: int = Query(20, ge=1, le=100),
+@router.get("/admin/all", response_model=ActividadListResponse, summary="Listar todas las actividades (Admin)")
+async def list_all_activities_admin(
+    # Search
+    q: Optional[str] = Query(None, description="Búsqueda de texto libre"),
+    
+    # Filters
+    tipo: Optional[str] = Query(None, description="Tipo: cultura, deporte, recreacion"),
+    localidad: Optional[str] = Query(None, description="Localidad: Chapinero, Santa Fe, La Candelaria"),
+    estado: Optional[str] = Query(None, description="Filtrar por estado: activa, pendiente_validacion, rechazada, inactiva"),
+    fecha_desde: Optional[str] = Query(None, description="Fecha desde (ISO 8601)"),
+    fecha_hasta: Optional[str] = Query(None, description="Fecha hasta (ISO 8601)"),
+    precio_min: Optional[float] = Query(None, ge=0, description="Precio mínimo"),
+    precio_max: Optional[float] = Query(None, ge=0, description="Precio máximo"),
+    es_gratis: Optional[bool] = Query(None, description="Solo actividades gratuitas"),
+    nivel_actividad: Optional[str] = Query(None, description="Nivel: bajo, medio, alto"),
+    etiquetas: Optional[List[str]] = Query(None, description="Etiquetas (puede repetirse)"),
+    
+    # Pagination
+    page: int = Query(1, ge=1, description="Número de página"),
+    page_size: int = Query(20, ge=1, le=100, description="Tamaño de página"),
+    
+    # Sorting
+    sort_by: str = Query("fecha_inicio", description="Campo para ordenar"),
+    sort_order: str = Query("asc", description="Orden: asc o desc"),
+    
     db: AsyncSession = Depends(get_db),
     current_user: Usuario = Depends(get_current_admin_user),
 ):
     """
-    Lista actividades pendientes de validación.
+    Lista todas las actividades para administradores (incluye todos los estados).
     
     **Acceso:** Solo administradores
     """
     query_params = ActividadSearchQuery(
+        q=q,
+        tipo=tipo,
+        localidad=localidad,
+        fecha_desde=fecha_desde,
+        fecha_hasta=fecha_hasta,
+        precio_min=precio_min,
+        precio_max=precio_max,
+        es_gratis=es_gratis,
+        nivel_actividad=nivel_actividad,
+        etiquetas=etiquetas,
         page=page,
         page_size=page_size,
-        sort_by="created_at",
-        sort_order="desc",
+        sort_by=sort_by,
+        sort_order=sort_order,
     )
     
-    # Override estado filter to show only pending
+    # Get all activities including inactive
     activities, pagination = await ActivityService.list_activities(
         db=db,
         query_params=query_params,
         include_inactive=True,
     )
     
-    # Filter by estado = pendiente_validacion
-    pending_activities = [a for a in activities if a.estado == "pendiente_validacion"]
+    # Filter by estado if provided
+    if estado:
+        activities = [a for a in activities if a.estado == estado]
+        pagination.total = len(activities)
+        pagination.total_pages = (len(activities) + page_size - 1) // page_size
     
     # Convert to list items
     list_items = []
-    for activity in pending_activities:
+    for activity in activities:
         desc_corta = activity.descripcion[:200] + "..." if len(activity.descripcion) > 200 else activity.descripcion
         item = ActividadListItem(
             id=activity.id,
@@ -304,12 +340,9 @@ async def list_pending_activities(
             es_gratis=activity.es_gratis,
             etiquetas=activity.etiquetas,
             popularidad_normalizada=activity.popularidad_normalizada,
+            estado=activity.estado,
         )
         list_items.append(item)
-    
-    # Update pagination total
-    pagination.total = len(pending_activities)
-    pagination.total_pages = (len(pending_activities) + page_size - 1) // page_size
     
     return ActividadListResponse(data=list_items, pagination=pagination)
 

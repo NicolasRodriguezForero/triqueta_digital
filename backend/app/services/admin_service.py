@@ -389,7 +389,7 @@ class AdminService:
             List of pending activities
         """
         query = select(Actividad).where(
-            Actividad.estado == "pendiente"
+            Actividad.estado == "pendiente_validacion"
         ).order_by(desc(Actividad.created_at)).limit(limit).offset(offset)
         result = await self.db.execute(query)
         
@@ -405,6 +405,7 @@ class AdminService:
                 "fecha_fin": row.fecha_fin.isoformat() if row.fecha_fin else None,
                 "precio": float(row.precio),
                 "es_gratis": row.es_gratis,
+                "estado": row.estado,
                 "created_at": row.created_at.isoformat(),
                 "fuente": row.fuente
             }
@@ -449,6 +450,6 @@ class AdminService:
         if not activity:
             return False
         
-        activity.estado = "cancelada"
+        activity.estado = "rechazada"
         await self.db.commit()
         return True

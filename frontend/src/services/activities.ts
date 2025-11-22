@@ -130,6 +130,34 @@ export const getActivities = async (filters?: ActividadFilters): Promise<Activid
 };
 
 /**
+ * Get all activities for admin (includes all estados)
+ */
+export const getAllActivitiesAdmin = async (filters?: ActividadFilters & { estado?: string }): Promise<ActividadListResponse> => {
+  const params = new URLSearchParams();
+  
+  if (filters) {
+    if (filters.tipo) params.append("tipo", filters.tipo);
+    if (filters.localidad) params.append("localidad", filters.localidad);
+    if (filters.estado) params.append("estado", filters.estado);
+    if (filters.es_gratis !== undefined) params.append("es_gratis", String(filters.es_gratis));
+    if (filters.nivel_actividad) params.append("nivel_actividad", filters.nivel_actividad);
+    if (filters.fecha_desde) params.append("fecha_desde", filters.fecha_desde);
+    if (filters.fecha_hasta) params.append("fecha_hasta", filters.fecha_hasta);
+    if (filters.etiquetas && filters.etiquetas.length > 0) {
+      filters.etiquetas.forEach(tag => params.append("etiquetas", tag));
+    }
+    if (filters.q) params.append("q", filters.q);
+    if (filters.skip !== undefined) params.append("page", String(Math.floor(filters.skip / 20) + 1));
+    if (filters.limit !== undefined) params.append("page_size", String(filters.limit));
+  }
+  
+  const response = await apiClient.get<ActividadListResponse>(
+    `/actividades/admin/all?${params.toString()}`
+  );
+  return response.data;
+};
+
+/**
  * Get activity by ID (RF-010)
  */
 export const getActivityById = async (id: string): Promise<Actividad> => {

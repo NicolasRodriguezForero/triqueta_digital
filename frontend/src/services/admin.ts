@@ -40,14 +40,14 @@ export const getPendingActivities = async (limit: number = 50, offset: number = 
   return data;
 };
 
-export const approveActivity = async (activityId: number) => {
+export const approveActivity = async (activityId: string) => {
   const { data } = await apiClient.post('/admin/actividades/aprobar', {
     activity_id: activityId
   });
   return data;
 };
 
-export const rejectActivity = async (activityId: number) => {
+export const rejectActivity = async (activityId: string) => {
   const { data } = await apiClient.post('/admin/actividades/rechazar', {
     activity_id: activityId
   });
