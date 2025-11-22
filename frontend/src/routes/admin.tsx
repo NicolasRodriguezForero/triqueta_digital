@@ -1,10 +1,21 @@
-import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router';
-import { LayoutDashboard, Calendar, Database, CheckSquare, Menu } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  useLocation,
+} from "@tanstack/react-router";
+import {
+  LayoutDashboard,
+  Calendar,
+  Database,
+  CheckSquare,
+  Menu,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
-export const Route = createFileRoute('/admin')({
+export const Route = createFileRoute("/admin")({
   component: AdminLayout,
 });
 
@@ -14,23 +25,23 @@ function AdminLayout() {
 
   const navItems = [
     {
-      to: '/admin/dashboard',
-      label: 'Dashboard',
+      to: "/admin/dashboard",
+      label: "Dashboard",
       icon: LayoutDashboard,
     },
     {
-      to: '/admin/actividades',
-      label: 'Actividades',
+      to: "/admin/actividades",
+      label: "Actividades",
       icon: Calendar,
     },
     {
-      to: '/admin/etl',
-      label: 'Gestión ETL',
+      to: "/admin/etl",
+      label: "Gestión ETL",
       icon: Database,
     },
     {
-      to: '/admin/actividades/pendientes',
-      label: 'Validación',
+      to: "/admin/actividades/pendientes",
+      label: "Validación",
       icon: CheckSquare,
     },
   ];
