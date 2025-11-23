@@ -2,7 +2,7 @@
  * Activities list page with search, filters and pagination (RF-007, RF-008)
  */
 import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useLocation } from "@tanstack/react-router";
 import { Loader2, AlertCircle } from "lucide-react";
 import { ActivityCard } from "../components/ActivityCard";
 import { SearchBar } from "../components/SearchBar";
@@ -15,8 +15,20 @@ import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export const Route = createFileRoute("/actividades")({
-  component: ActividadesPage,
+  component: ActividadesLayout,
 });
+
+function ActividadesLayout() {
+  const location = useLocation();
+
+  // If we're on a child route (like /actividades/$id), render only the child
+  if (location.pathname !== "/actividades") {
+    return <Outlet />;
+  }
+
+  // Otherwise render the main actividades page
+  return <ActividadesPage />;
+}
 
 function ActividadesPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -53,13 +65,23 @@ function ActividadesPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-          Actividades
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          Explora actividades culturales, deportivas y recreativas en Bogotá
-        </p>
+      <div className="mb-10 relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5 rounded-2xl blur-3xl -z-10"></div>
+        <div className="relative">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-accent-foreground flex items-center justify-center shadow-lg">
+              <span className="text-2xl">🎯</span>
+            </div>
+            <div>
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent mb-2">
+                Explora Actividades
+              </h1>
+              <p className="text-lg text-muted-foreground">
+                Descubre experiencias increíbles en Bogotá
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Search and Filters */}

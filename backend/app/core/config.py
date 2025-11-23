@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     
     # Database
     DATABASE_URL: str
+    DB_ECHO: bool = False
     
     # Redis
     REDIS_URL: str

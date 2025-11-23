@@ -3,12 +3,12 @@
  */
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Loader2, AlertCircle, Calendar, MapPin, Tag, DollarSign, ExternalLink, Phone, ArrowLeft } from "lucide-react";
-import { Layout } from "../components/Layout";
 import { useActivity } from "../hooks/useActivities";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { FavoriteButton } from "@/components/FavoriteButton";
 
 export const Route = createFileRoute("/actividades/$id")({
   component: ActividadDetailPage,
@@ -59,41 +59,36 @@ function ActividadDetailPage() {
 
   if (isLoading) {
     return (
-      <Layout>
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex justify-center items-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-          </div>
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex justify-center items-center py-12">
+          <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
         </div>
-      </Layout>
+      </div>
     );
   }
 
   if (isError || !activity) {
     return (
-      <Layout>
-        <div className="container mx-auto px-4 py-8">
-          <Alert variant="destructive" className="mb-8">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Error al cargar actividad</AlertTitle>
-            <AlertDescription>
-              {error instanceof Error
-                ? error.message
-                : "No se pudo cargar la información de la actividad."}
-            </AlertDescription>
-          </Alert>
-          <Button onClick={() => navigate({ to: "/actividades" })} variant="outline">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Volver a actividades
-          </Button>
-        </div>
-      </Layout>
+      <div className="container mx-auto px-4 py-8">
+        <Alert variant="destructive" className="mb-8">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Error al cargar actividad</AlertTitle>
+          <AlertDescription>
+            {error instanceof Error
+              ? error.message
+              : "No se pudo cargar la información de la actividad."}
+          </AlertDescription>
+        </Alert>
+        <Button onClick={() => navigate({ to: "/actividades" })} variant="outline">
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Volver a actividades
+        </Button>
+      </div>
     );
   }
 
   return (
-    <Layout>
-      <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8">
         {/* Back Button */}
         <Button
           onClick={() => navigate({ to: "/actividades" })}
@@ -139,13 +134,21 @@ function ActividadDetailPage() {
             )}
           </div>
 
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
             {activity.titulo}
           </h1>
 
-          <div className="flex items-center gap-6 text-gray-600">
-            <span>👁️ {activity.popularidad_vistas} vistas</span>
-            <span>⭐ {activity.popularidad_favoritos} favoritos</span>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-6 text-gray-600">
+              <span>👁️ {activity.popularidad_vistas} vistas</span>
+              <span>⭐ {activity.popularidad_favoritos} favoritos</span>
+            </div>
+            
+            <FavoriteButton 
+              actividadId={activity.id} 
+              variant="default" 
+              showLabel={true}
+            />
           </div>
         </div>
 
@@ -265,7 +268,6 @@ function ActividadDetailPage() {
             )}
           </div>
         </div>
-      </div>
-    </Layout>
+    </div>
   );
 }

@@ -8,7 +8,11 @@ import apiClient from "./api";
 export type TipoActividad = "cultura" | "deporte" | "recreacion";
 export type Localidad = "Chapinero" | "Santa Fe" | "La Candelaria";
 export type NivelActividad = "bajo" | "medio" | "alto";
-export type EstadoActividad = "activa" | "pendiente_validacion" | "rechazada" | "inactiva";
+export type EstadoActividad =
+  | "activa"
+  | "pendiente_validacion"
+  | "rechazada"
+  | "inactiva";
 export type FuenteActividad = "manual" | "idrd" | "api" | "csv";
 
 export interface Actividad {
@@ -36,6 +40,21 @@ export interface Actividad {
   imagen_url?: string | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface ActividadListItem {
+  id: string;
+  titulo: string;
+  descripcion_corta: string;
+  imagen_url?: string | null;
+  fecha_inicio: string;
+  localidad: Localidad;
+  tipo: TipoActividad;
+  precio: number;
+  es_gratis: boolean;
+  etiquetas: string[];
+  popularidad_normalizada: number;
+  estado?: EstadoActividad | null;
 }
 
 export interface ActividadCreate {
@@ -90,6 +109,15 @@ export interface ActividadFilters {
   limit?: number;
 }
 
+export interface ActividadAdminFilters
+  extends Omit<ActividadFilters, "skip" | "limit"> {
+  estado?: EstadoActividad;
+  page?: number;
+  page_size?: number;
+  sort_by?: string;
+  sort_order?: "asc" | "desc";
+}
+
 export interface PaginationInfo {
   total: number;
   skip: number;
@@ -97,34 +125,86 @@ export interface PaginationInfo {
   has_more: boolean;
 }
 
+export interface PaginationMetadata {
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+}
+
 export interface ActividadListResponse {
   data: Actividad[];
   pagination: PaginationInfo;
 }
 
+export interface ActividadListResponseAdmin {
+  data: ActividadListItem[];
+  pagination: PaginationMetadata;
+}
+
 /**
  * Get list of activities with filters and pagination (RF-007)
  */
-export const getActivities = async (filters?: ActividadFilters): Promise<ActividadListResponse> => {
+export const getActivities = async (
+  filters?: ActividadFilters
+): Promise<ActividadListResponse> => {
   const params = new URLSearchParams();
-  
+
   if (filters) {
     if (filters.tipo) params.append("tipo", filters.tipo);
     if (filters.localidad) params.append("localidad", filters.localidad);
-    if (filters.es_gratis !== undefined) params.append("es_gratis", String(filters.es_gratis));
-    if (filters.nivel_actividad) params.append("nivel_actividad", filters.nivel_actividad);
+    if (filters.es_gratis !== undefined)
+      params.append("es_gratis", String(filters.es_gratis));
+    if (filters.nivel_actividad)
+      params.append("nivel_actividad", filters.nivel_actividad);
     if (filters.fecha_desde) params.append("fecha_desde", filters.fecha_desde);
     if (filters.fecha_hasta) params.append("fecha_hasta", filters.fecha_hasta);
     if (filters.etiquetas && filters.etiquetas.length > 0) {
-      filters.etiquetas.forEach(tag => params.append("etiquetas", tag));
+      filters.etiquetas.forEach((tag) => params.append("etiquetas", tag));
     }
     if (filters.q) params.append("q", filters.q);
     if (filters.skip !== undefined) params.append("skip", String(filters.skip));
-    if (filters.limit !== undefined) params.append("limit", String(filters.limit));
+    if (filters.limit !== undefined)
+      params.append("limit", String(filters.limit));
   }
-  
+
   const response = await apiClient.get<ActividadListResponse>(
     `/actividades?${params.toString()}`
+  );
+  return response.data;
+};
+
+/**
+ * Get all activities for admin (includes all estados)
+ */
+export const getAllActivitiesAdmin = async (
+  filters?: ActividadAdminFilters
+): Promise<ActividadListResponseAdmin> => {
+  const params = new URLSearchParams();
+
+  if (filters) {
+    if (filters.tipo) params.append("tipo", filters.tipo);
+    if (filters.localidad) params.append("localidad", filters.localidad);
+    if (filters.estado) params.append("estado", filters.estado);
+    if (filters.es_gratis !== undefined)
+      params.append("es_gratis", String(filters.es_gratis));
+    if (filters.nivel_actividad)
+      params.append("nivel_actividad", filters.nivel_actividad);
+    if (filters.fecha_desde) params.append("fecha_desde", filters.fecha_desde);
+    if (filters.fecha_hasta) params.append("fecha_hasta", filters.fecha_hasta);
+    if (filters.etiquetas && filters.etiquetas.length > 0) {
+      filters.etiquetas.forEach((tag) => params.append("etiquetas", tag));
+    }
+    if (filters.q) params.append("q", filters.q);
+    if (filters.page !== undefined) params.append("page", String(filters.page));
+    if (filters.page_size !== undefined)
+      params.append("page_size", String(filters.page_size));
+    if (filters.sort_by) params.append("sort_by", filters.sort_by);
+    if (filters.sort_order) params.append("sort_order", filters.sort_order);
+  }
+
+  const response = await apiClient.get<ActividadListResponseAdmin>(
+    `/actividades/admin/all?${params.toString()}`
   );
   return response.data;
 };
@@ -140,7 +220,9 @@ export const getActivityById = async (id: string): Promise<Actividad> => {
 /**
  * Create new activity (RF-009) - Admin only
  */
-export const createActivity = async (data: ActividadCreate): Promise<Actividad> => {
+export const createActivity = async (
+  data: ActividadCreate
+): Promise<Actividad> => {
   const response = await apiClient.post<Actividad>("/actividades", data);
   return response.data;
 };

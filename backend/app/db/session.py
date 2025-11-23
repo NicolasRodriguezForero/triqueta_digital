@@ -1,8 +1,7 @@
 """
-Database session configuration.
+Database session management.
 """
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 
 from app.core.config import settings
 
@@ -10,18 +9,24 @@ from app.core.config import settings
 # Create async engine
 engine = create_async_engine(
     settings.DATABASE_URL,
-    echo=settings.DEBUG,
-    future=True,
-    pool_pre_ping=True,
-    pool_size=20,
-    max_overflow=10,
+    echo=settings.DB_ECHO,
+    future=True
 )
 
 # Create async session factory
-async_session = sessionmaker(
+async_session_maker = async_sessionmaker(
     engine,
     class_=AsyncSession,
-    expire_on_commit=False,
-    autocommit=False,
-    autoflush=False,
+    expire_on_commit=False
 )
+
+
+async def get_session() -> AsyncSession:
+    """
+    Dependency to get database session.
+    
+    Yields:
+        AsyncSession: Database session
+    """
+    async with async_session_maker() as session:
+        yield session

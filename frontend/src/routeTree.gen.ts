@@ -12,18 +12,31 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as RegisterImport } from './routes/register'
+import { Route as RecomendacionesImport } from './routes/recomendaciones'
 import { Route as PerfilImport } from './routes/perfil'
 import { Route as LoginImport } from './routes/login'
+import { Route as FavoritosImport } from './routes/favoritos'
+import { Route as AdminImport } from './routes/admin'
 import { Route as ActividadesImport } from './routes/actividades'
 import { Route as IndexImport } from './routes/index'
+import { Route as AdminIndexImport } from './routes/admin.index'
+import { Route as AdminEtlImport } from './routes/admin.etl'
+import { Route as AdminDashboardImport } from './routes/admin.dashboard'
 import { Route as AdminActividadesImport } from './routes/admin.actividades'
 import { Route as ActividadesIdImport } from './routes/actividades.$id'
+import { Route as AdminActividadesPendientesImport } from './routes/admin.actividades.pendientes'
 
 // Create/Update Routes
 
 const RegisterRoute = RegisterImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const RecomendacionesRoute = RecomendacionesImport.update({
+  id: '/recomendaciones',
+  path: '/recomendaciones',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,6 +52,18 @@ const LoginRoute = LoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const FavoritosRoute = FavoritosImport.update({
+  id: '/favoritos',
+  path: '/favoritos',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminRoute = AdminImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const ActividadesRoute = ActividadesImport.update({
   id: '/actividades',
   path: '/actividades',
@@ -51,10 +76,28 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AdminIndexRoute = AdminIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminEtlRoute = AdminEtlImport.update({
+  id: '/etl',
+  path: '/etl',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminDashboardRoute = AdminDashboardImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AdminRoute,
+} as any)
+
 const AdminActividadesRoute = AdminActividadesImport.update({
-  id: '/admin/actividades',
-  path: '/admin/actividades',
-  getParentRoute: () => rootRoute,
+  id: '/actividades',
+  path: '/actividades',
+  getParentRoute: () => AdminRoute,
 } as any)
 
 const ActividadesIdRoute = ActividadesIdImport.update({
@@ -62,6 +105,14 @@ const ActividadesIdRoute = ActividadesIdImport.update({
   path: '/$id',
   getParentRoute: () => ActividadesRoute,
 } as any)
+
+const AdminActividadesPendientesRoute = AdminActividadesPendientesImport.update(
+  {
+    id: '/pendientes',
+    path: '/pendientes',
+    getParentRoute: () => AdminActividadesRoute,
+  } as any,
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -81,6 +132,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ActividadesImport
       parentRoute: typeof rootRoute
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminImport
+      parentRoute: typeof rootRoute
+    }
+    '/favoritos': {
+      id: '/favoritos'
+      path: '/favoritos'
+      fullPath: '/favoritos'
+      preLoaderRoute: typeof FavoritosImport
+      parentRoute: typeof rootRoute
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -93,6 +158,13 @@ declare module '@tanstack/react-router' {
       path: '/perfil'
       fullPath: '/perfil'
       preLoaderRoute: typeof PerfilImport
+      parentRoute: typeof rootRoute
+    }
+    '/recomendaciones': {
+      id: '/recomendaciones'
+      path: '/recomendaciones'
+      fullPath: '/recomendaciones'
+      preLoaderRoute: typeof RecomendacionesImport
       parentRoute: typeof rootRoute
     }
     '/register': {
@@ -111,10 +183,38 @@ declare module '@tanstack/react-router' {
     }
     '/admin/actividades': {
       id: '/admin/actividades'
-      path: '/admin/actividades'
+      path: '/actividades'
       fullPath: '/admin/actividades'
       preLoaderRoute: typeof AdminActividadesImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof AdminImport
+    }
+    '/admin/dashboard': {
+      id: '/admin/dashboard'
+      path: '/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminDashboardImport
+      parentRoute: typeof AdminImport
+    }
+    '/admin/etl': {
+      id: '/admin/etl'
+      path: '/etl'
+      fullPath: '/admin/etl'
+      preLoaderRoute: typeof AdminEtlImport
+      parentRoute: typeof AdminImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexImport
+      parentRoute: typeof AdminImport
+    }
+    '/admin/actividades/pendientes': {
+      id: '/admin/actividades/pendientes'
+      path: '/pendientes'
+      fullPath: '/admin/actividades/pendientes'
+      preLoaderRoute: typeof AdminActividadesPendientesImport
+      parentRoute: typeof AdminActividadesImport
     }
   }
 }
@@ -133,35 +233,82 @@ const ActividadesRouteWithChildren = ActividadesRoute._addFileChildren(
   ActividadesRouteChildren,
 )
 
+interface AdminActividadesRouteChildren {
+  AdminActividadesPendientesRoute: typeof AdminActividadesPendientesRoute
+}
+
+const AdminActividadesRouteChildren: AdminActividadesRouteChildren = {
+  AdminActividadesPendientesRoute: AdminActividadesPendientesRoute,
+}
+
+const AdminActividadesRouteWithChildren =
+  AdminActividadesRoute._addFileChildren(AdminActividadesRouteChildren)
+
+interface AdminRouteChildren {
+  AdminActividadesRoute: typeof AdminActividadesRouteWithChildren
+  AdminDashboardRoute: typeof AdminDashboardRoute
+  AdminEtlRoute: typeof AdminEtlRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminActividadesRoute: AdminActividadesRouteWithChildren,
+  AdminDashboardRoute: AdminDashboardRoute,
+  AdminEtlRoute: AdminEtlRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/actividades': typeof ActividadesRouteWithChildren
+  '/admin': typeof AdminRouteWithChildren
+  '/favoritos': typeof FavoritosRoute
   '/login': typeof LoginRoute
   '/perfil': typeof PerfilRoute
+  '/recomendaciones': typeof RecomendacionesRoute
   '/register': typeof RegisterRoute
   '/actividades/$id': typeof ActividadesIdRoute
-  '/admin/actividades': typeof AdminActividadesRoute
+  '/admin/actividades': typeof AdminActividadesRouteWithChildren
+  '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/etl': typeof AdminEtlRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/actividades/pendientes': typeof AdminActividadesPendientesRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/actividades': typeof ActividadesRouteWithChildren
+  '/favoritos': typeof FavoritosRoute
   '/login': typeof LoginRoute
   '/perfil': typeof PerfilRoute
+  '/recomendaciones': typeof RecomendacionesRoute
   '/register': typeof RegisterRoute
   '/actividades/$id': typeof ActividadesIdRoute
-  '/admin/actividades': typeof AdminActividadesRoute
+  '/admin/actividades': typeof AdminActividadesRouteWithChildren
+  '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/etl': typeof AdminEtlRoute
+  '/admin': typeof AdminIndexRoute
+  '/admin/actividades/pendientes': typeof AdminActividadesPendientesRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/actividades': typeof ActividadesRouteWithChildren
+  '/admin': typeof AdminRouteWithChildren
+  '/favoritos': typeof FavoritosRoute
   '/login': typeof LoginRoute
   '/perfil': typeof PerfilRoute
+  '/recomendaciones': typeof RecomendacionesRoute
   '/register': typeof RegisterRoute
   '/actividades/$id': typeof ActividadesIdRoute
-  '/admin/actividades': typeof AdminActividadesRoute
+  '/admin/actividades': typeof AdminActividadesRouteWithChildren
+  '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/etl': typeof AdminEtlRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/actividades/pendientes': typeof AdminActividadesPendientesRoute
 }
 
 export interface FileRouteTypes {
@@ -169,48 +316,72 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/actividades'
+    | '/admin'
+    | '/favoritos'
     | '/login'
     | '/perfil'
+    | '/recomendaciones'
     | '/register'
     | '/actividades/$id'
     | '/admin/actividades'
+    | '/admin/dashboard'
+    | '/admin/etl'
+    | '/admin/'
+    | '/admin/actividades/pendientes'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/actividades'
+    | '/favoritos'
     | '/login'
     | '/perfil'
+    | '/recomendaciones'
     | '/register'
     | '/actividades/$id'
     | '/admin/actividades'
+    | '/admin/dashboard'
+    | '/admin/etl'
+    | '/admin'
+    | '/admin/actividades/pendientes'
   id:
     | '__root__'
     | '/'
     | '/actividades'
+    | '/admin'
+    | '/favoritos'
     | '/login'
     | '/perfil'
+    | '/recomendaciones'
     | '/register'
     | '/actividades/$id'
     | '/admin/actividades'
+    | '/admin/dashboard'
+    | '/admin/etl'
+    | '/admin/'
+    | '/admin/actividades/pendientes'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ActividadesRoute: typeof ActividadesRouteWithChildren
+  AdminRoute: typeof AdminRouteWithChildren
+  FavoritosRoute: typeof FavoritosRoute
   LoginRoute: typeof LoginRoute
   PerfilRoute: typeof PerfilRoute
+  RecomendacionesRoute: typeof RecomendacionesRoute
   RegisterRoute: typeof RegisterRoute
-  AdminActividadesRoute: typeof AdminActividadesRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ActividadesRoute: ActividadesRouteWithChildren,
+  AdminRoute: AdminRouteWithChildren,
+  FavoritosRoute: FavoritosRoute,
   LoginRoute: LoginRoute,
   PerfilRoute: PerfilRoute,
+  RecomendacionesRoute: RecomendacionesRoute,
   RegisterRoute: RegisterRoute,
-  AdminActividadesRoute: AdminActividadesRoute,
 }
 
 export const routeTree = rootRoute
@@ -225,10 +396,12 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/actividades",
+        "/admin",
+        "/favoritos",
         "/login",
         "/perfil",
-        "/register",
-        "/admin/actividades"
+        "/recomendaciones",
+        "/register"
       ]
     },
     "/": {
@@ -240,11 +413,26 @@ export const routeTree = rootRoute
         "/actividades/$id"
       ]
     },
+    "/admin": {
+      "filePath": "admin.tsx",
+      "children": [
+        "/admin/actividades",
+        "/admin/dashboard",
+        "/admin/etl",
+        "/admin/"
+      ]
+    },
+    "/favoritos": {
+      "filePath": "favoritos.tsx"
+    },
     "/login": {
       "filePath": "login.tsx"
     },
     "/perfil": {
       "filePath": "perfil.tsx"
+    },
+    "/recomendaciones": {
+      "filePath": "recomendaciones.tsx"
     },
     "/register": {
       "filePath": "register.tsx"
@@ -254,7 +442,27 @@ export const routeTree = rootRoute
       "parent": "/actividades"
     },
     "/admin/actividades": {
-      "filePath": "admin.actividades.tsx"
+      "filePath": "admin.actividades.tsx",
+      "parent": "/admin",
+      "children": [
+        "/admin/actividades/pendientes"
+      ]
+    },
+    "/admin/dashboard": {
+      "filePath": "admin.dashboard.tsx",
+      "parent": "/admin"
+    },
+    "/admin/etl": {
+      "filePath": "admin.etl.tsx",
+      "parent": "/admin"
+    },
+    "/admin/": {
+      "filePath": "admin.index.tsx",
+      "parent": "/admin"
+    },
+    "/admin/actividades/pendientes": {
+      "filePath": "admin.actividades.pendientes.tsx",
+      "parent": "/admin/actividades"
     }
   }
 }

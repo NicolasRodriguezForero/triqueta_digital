@@ -27,3 +27,6 @@ python-multipart==0.0.6
 # Utilities
 python-dateutil==2.8.2
 pytz==2023.3
+
+# Job Scheduling
+apscheduler==3.10.4

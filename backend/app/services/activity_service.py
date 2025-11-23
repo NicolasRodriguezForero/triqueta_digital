@@ -253,6 +253,9 @@ class ActivityService:
             "popularidad": Actividad.popularidad_normalizada,
             "precio": Actividad.precio,
             "titulo": Actividad.titulo,
+            "tipo": Actividad.tipo,
+            "localidad": Actividad.localidad,
+            "estado": Actividad.estado,
         }
         
         sort_field = sort_fields.get(sort_by, Actividad.fecha_inicio)

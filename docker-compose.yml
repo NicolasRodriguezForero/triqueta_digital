@@ -48,6 +48,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: triqueta-backend
+    restart: unless-stopped
     env_file:
       - ./backend/.env
     environment:
@@ -57,12 +58,15 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./etl/data:/etl/data  # Share ETL data directory for CSV uploads
     depends_on:
       db:
         condition: service_healthy
       redis:
         condition: service_healthy
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
 
   # Frontend (React + Vite) - Production Build
   frontend:
@@ -92,5 +96,26 @@ services:
       - frontend
     restart: unless-stopped
 
+  # ETL Service (runs on demand)
+  etl:
+    build:
+      context: ./etl
+      dockerfile: Dockerfile
+    container_name: triqueta-etl
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://triqueta_user:triqueta_pass@db:5432/triqueta_db
+    volumes:
+      - ./etl/src:/etl/src
+      - ./etl/data:/etl/data
+      - ./etl/logs:/etl/logs
+      - ./etl/uploads:/etl/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    profiles:
+      - etl  # Run only when explicitly called
+    # No command here, will be provided when calling docker compose run
+
 volumes:
   postgres_data:
+
