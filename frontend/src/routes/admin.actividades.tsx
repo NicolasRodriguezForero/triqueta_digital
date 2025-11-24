@@ -286,7 +286,7 @@ function AdminActividadesPage() {
                       </TableCell>
                       <TableCell>{activity.localidad}</TableCell>
                       <TableCell>{formatDate(activity.fecha_inicio)}</TableCell>
-                      <TableCell>{getEstadoBadge(activity.estado)}</TableCell>
+                      <TableCell>{getEstadoBadge(activity.estado || "inactiva")}</TableCell>
                       <TableCell className="text-right">
                         {formatPrice(activity.precio, activity.es_gratis)}
                       </TableCell>

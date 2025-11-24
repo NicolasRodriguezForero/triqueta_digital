@@ -4,7 +4,7 @@
 import { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Navbar } from "./Navbar";
-import { Sparkles, Heart, MapPin, Mail } from "lucide-react";
+import { Sparkles, Heart, MapPin } from "lucide-react";
 
 interface LayoutProps {
   children: ReactNode;
