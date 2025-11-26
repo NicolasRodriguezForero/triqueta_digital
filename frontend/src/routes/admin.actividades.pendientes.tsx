@@ -1,12 +1,16 @@
-import { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { ActivityValidationCard } from '@/components/ActivityValidationCard';
-import { getPendingActivities, approveActivity, rejectActivity } from '@/services/admin';
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { useToast } from '@/hooks/use-toast';
-import { ConfirmDialog } from '@/components/ui/confirm-dialog';
+import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { ActivityValidationCard } from "@/components/ActivityValidationCard";
+import {
+  getPendingActivities,
+  approveActivity,
+  rejectActivity,
+} from "@/services/admin";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useToast } from "@/hooks/use-toast";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 
-export const Route = createFileRoute('/admin/actividades/pendientes')({
+export const Route = createFileRoute("/admin/actividades/pendientes")({
   component: PendingActivities,
 });
 
@@ -16,10 +20,12 @@ function PendingActivities() {
   const navigate = useNavigate();
   const [approveConfirmOpen, setApproveConfirmOpen] = useState(false);
   const [rejectConfirmOpen, setRejectConfirmOpen] = useState(false);
-  const [activityToProcess, setActivityToProcess] = useState<string | null>(null);
+  const [activityToProcess, setActivityToProcess] = useState<string | null>(
+    null
+  );
 
   const { data: activities = [], isLoading } = useQuery({
-    queryKey: ['admin', 'pending-activities'],
+    queryKey: ["admin", "pending-activities"],
     queryFn: () => getPendingActivities(50, 0),
     staleTime: 0, // Always fetch fresh data
   });
@@ -28,16 +34,19 @@ function PendingActivities() {
     mutationFn: approveActivity,
     onSuccess: () => {
       toast({
-        title: 'Actividad Aprobada',
-        description: 'La actividad ha sido aprobada correctamente',
+        title: "Actividad Aprobada",
+        description: "La actividad ha sido aprobada correctamente",
       });
-      queryClient.invalidateQueries({ queryKey: ['admin', 'pending-activities'] });
+      queryClient.invalidateQueries({
+        queryKey: ["admin", "pending-activities"],
+      });
+      queryClient.invalidateQueries({ queryKey: ["admin-activities"] });
     },
     onError: () => {
       toast({
-        title: 'Error',
-        description: 'No se pudo aprobar la actividad',
-        variant: 'destructive',
+        title: "Error",
+        description: "No se pudo aprobar la actividad",
+        variant: "destructive",
       });
     },
   });
@@ -46,16 +55,18 @@ function PendingActivities() {
     mutationFn: rejectActivity,
     onSuccess: () => {
       toast({
-        title: 'Actividad Rechazada',
-        description: 'La actividad ha sido rechazada',
+        title: "Actividad Rechazada",
+        description: "La actividad ha sido rechazada",
       });
-      queryClient.invalidateQueries({ queryKey: ['admin', 'pending-activities'] });
+      queryClient.invalidateQueries({
+        queryKey: ["admin", "pending-activities"],
+      });
     },
     onError: () => {
       toast({
-        title: 'Error',
-        description: 'No se pudo rechazar la actividad',
-        variant: 'destructive',
+        title: "Error",
+        description: "No se pudo rechazar la actividad",
+        variant: "destructive",
       });
     },
   });
