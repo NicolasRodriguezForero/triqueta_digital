@@ -17,6 +17,7 @@ import {
 } from "./ui/card";
 import { Sparkles, Mail, Lock, ArrowRight, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "./ui/alert";
+import { getErrorMessage } from "../lib/error-utils";
 
 export function LoginForm() {
   const [email, setEmail] = useState("");
@@ -91,7 +92,7 @@ export function LoginForm() {
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>
-                  {loginMutation.error?.message || "Error al iniciar sesión. Verifica tus credenciales."}
+                  {getErrorMessage(loginMutation.error) || "Error al iniciar sesión. Verifica tus credenciales."}
                 </AlertDescription>
               </Alert>
             )}

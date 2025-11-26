@@ -17,6 +17,7 @@ import {
 } from "./ui/card";
 import { Sparkles, Mail, Lock, User, ArrowRight, CheckCircle2, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "./ui/alert";
+import { getErrorMessage } from "../lib/error-utils";
 
 export function RegisterForm() {
   const [email, setEmail] = useState("");
@@ -169,7 +170,7 @@ export function RegisterForm() {
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>
-                  {registerMutation.error?.message || "Error al registrarse. Intenta nuevamente."}
+                  {getErrorMessage(registerMutation.error) || "Error al registrarse. Intenta nuevamente."}
                 </AlertDescription>
               </Alert>
             )}

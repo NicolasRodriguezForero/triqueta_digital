@@ -75,6 +75,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setUser(currentUser);
     } catch (error) {
       console.error("Login failed:", error);
+      // Don't clear tokens on login error - let the error propagate
+      // The error will be handled by the component
       throw error;
     } finally {
       setIsLoading(false);
@@ -92,6 +94,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       await authService.register(data);
     } catch (error) {
       console.error("Registration failed:", error);
+      // Don't change state on registration error - let the error propagate
+      // The error will be handled by the component
       throw error;
     } finally {
       setIsLoading(false);

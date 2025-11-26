@@ -40,8 +40,15 @@ apiClient.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
     
+    // Don't try to refresh token for authentication endpoints (login, register, refresh)
+    // These endpoints return 401/400 for invalid credentials, not expired tokens
+    const isAuthEndpoint = originalRequest?.url?.includes("/auth/login") ||
+                           originalRequest?.url?.includes("/auth/register") ||
+                           originalRequest?.url?.includes("/auth/refresh");
+    
     // If 401 and we haven't retried yet, try to refresh token
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // Only for non-auth endpoints (protected routes that need authentication)
+    if (error.response?.status === 401 && !originalRequest._retry && !isAuthEndpoint) {
       originalRequest._retry = true;
       
       const refreshToken = localStorage.getItem("refresh_token");
@@ -67,17 +74,30 @@ apiClient.interceptors.response.use(
           return apiClient(originalRequest);
         } catch (refreshError) {
           // Refresh failed, clear tokens and redirect to login
+          // Only redirect if we're not already on login/register page
           localStorage.removeItem("access_token");
           localStorage.removeItem("refresh_token");
-          window.location.href = "/login";
+          
+          // Use router navigation instead of window.location to avoid full page reload
+          // But only if not already on auth pages
+          if (!window.location.pathname.includes("/login") && 
+              !window.location.pathname.includes("/register")) {
+            window.location.href = "/login";
+          }
+          
           return Promise.reject(refreshError);
         }
       } else {
-        // No refresh token, redirect to login
-        window.location.href = "/login";
+        // No refresh token, redirect to login only if not already on auth pages
+        if (!window.location.pathname.includes("/login") && 
+            !window.location.pathname.includes("/register")) {
+          window.location.href = "/login";
+        }
       }
     }
     
+    // For auth endpoints, just reject the error so it can be handled by the component
+    // For other endpoints, also reject to allow error handling
     return Promise.reject(error);
   }
 );
