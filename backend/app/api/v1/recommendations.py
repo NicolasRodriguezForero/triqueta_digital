@@ -3,10 +3,11 @@ API endpoints for personalized recommendations.
 
 Implements requirements RF-014 to RF-015 from SRS.
 """
+from typing import Optional
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.dependencies import get_db, get_current_user
+from app.core.dependencies import get_db, get_optional_current_user
 from app.models.user import Usuario
 from app.schemas.recommendation import RecommendationList, RecommendationQuery
 from app.services.recommendation_service import recommendation_service
@@ -17,21 +18,23 @@ router = APIRouter()
 @router.get(
     "",
     response_model=RecommendationList,
-    summary="Get personalized recommendations",
-    description="Get personalized activity recommendations based on user profile and preferences (RF-014, RF-015)"
+    summary="Get activity recommendations",
+    description="Get activity recommendations. Personalized if authenticated, popularity-based if not."
 )
 async def get_recommendations(
     limit: int = Query(default=10, ge=1, le=50, description="Number of recommendations to return"),
     tipo: str = Query(default=None, description="Filter by activity type"),
     localidad: str = Query(default=None, description="Filter by locality"),
-    exclude_favorited: bool = Query(default=False, description="Exclude already favorited activities"),
+    exclude_favorited: bool = Query(default=False, description="Exclude already favorited activities (requires auth)"),
     db: AsyncSession = Depends(get_db),
-    current_user: Usuario = Depends(get_current_user),
+    current_user: Optional[Usuario] = Depends(get_optional_current_user),
 ):
     """
-    Get personalized activity recommendations.
+    Get activity recommendations.
     
-    The recommendation algorithm uses a hybrid approach:
+    **Without authentication:** Returns recommendations based on popularity.
+    
+    **With authentication:** Returns personalized recommendations using a hybrid approach:
     1. **Popularity score**: Base score from community engagement (favorites + views)
     2. **Tag matching**: Bonus points for activities matching user's interests (+10 per tag)
     3. **Location matching**: Bonus for activities in preferred locality (+5 points)
@@ -41,17 +44,15 @@ async def get_recommendations(
     - Full activity details
     - Recommendation score (0-100)
     - Explanation of why it was recommended
-    - Whether user has already favorited it
+    - Whether user has already favorited it (always false if not authenticated)
     
     Query parameters:
     - **limit**: Number of recommendations (default: 10, max: 50)
     - **tipo**: Filter by activity type (optional)
     - **localidad**: Filter by locality (optional)
-    - **exclude_favorited**: Exclude activities user has already favorited (default: false)
+    - **exclude_favorited**: Exclude activities user has already favorited (only works if authenticated)
     
-    Responses are cached for 1 hour per user. Cache is invalidated when:
-    - User adds/removes favorites
-    - User updates their profile
+    Responses are cached for 1 hour. Cache is invalidated when user adds/removes favorites or updates profile.
     
     Returns:
     - List of recommendations sorted by score (highest first)
@@ -62,12 +63,12 @@ async def get_recommendations(
         limit=limit,
         tipo=tipo,
         localidad=localidad,
-        exclude_favorited=exclude_favorited
+        exclude_favorited=exclude_favorited if current_user else False
     )
     
     recommendations = await recommendation_service.get_recommendations(
         db=db,
-        usuario_id=current_user.id,
+        usuario_id=current_user.id if current_user else None,
         query_params=query_params
     )
     

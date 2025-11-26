@@ -1,7 +1,7 @@
 """
 Dependency injection functions for FastAPI.
 """
-from typing import AsyncGenerator
+from typing import AsyncGenerator, Optional
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError
@@ -14,6 +14,9 @@ from app.models.user import Usuario
 
 # OAuth2 scheme for token authentication (uses form endpoint for Swagger UI compatibility)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login/form")
+
+# OAuth2 scheme for optional authentication (does not raise error if no token)
+oauth2_scheme_optional = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login/form", auto_error=False)
 
 
 async def get_db() -> AsyncSession:
@@ -111,3 +114,38 @@ async def get_current_admin_user(
             detail="Not enough permissions"
         )
     return current_user
+
+
+async def get_optional_current_user(
+    token: Optional[str] = Depends(oauth2_scheme_optional),
+    db: AsyncSession = Depends(get_db)
+) -> Optional[Usuario]:
+    """
+    Dependency to get current user if authenticated, None otherwise.
+    
+    Unlike get_current_user, this does not raise an exception if no token
+    is provided or if the token is invalid. Useful for endpoints that
+    work both with and without authentication.
+    
+    Args:
+        token: Optional JWT access token
+        db: Database session
+        
+    Returns:
+        Current user object if authenticated, None otherwise
+    """
+    if not token:
+        return None
+    
+    try:
+        from app.services.auth_service import get_user_by_id
+        
+        payload = decode_token(token)
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            return None
+        
+        user = await get_user_by_id(db, int(user_id))
+        return user
+    except JWTError:
+        return None
