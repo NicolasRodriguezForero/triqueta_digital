@@ -50,7 +50,7 @@ export function ActivityCard({ activity }: ActivityCardProps) {
       <Card className="h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-2 border-2 hover:border-primary/30 overflow-hidden relative">
         {/* Gradient overlay on hover */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-primary/0 group-hover:from-primary/5 group-hover:via-primary/0 group-hover:to-accent/5 transition-all duration-300 pointer-events-none z-0"></div>
-        
+
         <div className="relative z-10">
           {/* Image */}
           {activity.imagen_url ? (
@@ -62,29 +62,37 @@ export function ActivityCard({ activity }: ActivityCardProps) {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent"></div>
               {activity.es_gratis && (
-                <Badge className="absolute top-3 right-3 bg-green-600 text-white shadow-lg border-2 border-white/20">
+                <Badge className="absolute top-3 right-8 bg-green-600 text-white shadow-lg border-2 border-white/20">
                   ✨ Gratis
                 </Badge>
               )}
-              <div className="absolute top-3 left-3">
-                <Badge className={`${getTipoColor(activity.tipo)} shadow-md border-2 border-white/20`}>
-                  {activity.tipo.charAt(0).toUpperCase() + activity.tipo.slice(1)}
+              <div className="absolute top-3 left-8">
+                <Badge
+                  className={`${getTipoColor(activity.tipo)} shadow-md border-2 border-white/20`}
+                >
+                  {activity.tipo.charAt(0).toUpperCase() +
+                    activity.tipo.slice(1)}
                 </Badge>
               </div>
             </div>
           ) : (
             <div className="relative h-32 overflow-hidden -mt-6 -mx-6 mb-4 bg-gradient-to-br from-primary/20 via-accent/20 to-primary/10 flex items-center justify-center">
               <div className="text-4xl">
-                {activity.tipo === "cultura" ? "🎭" : activity.tipo === "deporte" ? "⚽" : "🎉"}
+                {activity.tipo === "cultura"
+                  ? "🎭"
+                  : activity.tipo === "deporte"
+                    ? "⚽"
+                    : "🎉"}
               </div>
               {activity.es_gratis && (
-                <Badge className="absolute top-3 right-3 bg-green-600 text-white shadow-lg">
+                <Badge className="absolute top-3 right-8 bg-green-600 text-white shadow-lg">
                   ✨ Gratis
                 </Badge>
               )}
-              <div className="absolute top-3 left-3">
+              <div className="absolute top-3 left-8">
                 <Badge className={`${getTipoColor(activity.tipo)} shadow-md`}>
-                  {activity.tipo.charAt(0).toUpperCase() + activity.tipo.slice(1)}
+                  {activity.tipo.charAt(0).toUpperCase() +
+                    activity.tipo.slice(1)}
                 </Badge>
               </div>
             </div>
@@ -135,7 +143,11 @@ export function ActivityCard({ activity }: ActivityCardProps) {
                 <Tag className="w-4 h-4 flex-shrink-0 mt-0.5 text-muted-foreground/50" />
                 <div className="flex flex-wrap gap-1.5">
                   {activity.etiquetas.slice(0, 3).map((tag) => (
-                    <Badge key={tag} variant="secondary" className="text-xs font-medium">
+                    <Badge
+                      key={tag}
+                      variant="secondary"
+                      className="text-xs font-medium"
+                    >
                       {tag}
                     </Badge>
                   ))}
