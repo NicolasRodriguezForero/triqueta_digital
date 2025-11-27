@@ -153,7 +153,7 @@ export function ActivityCard({ activity }: ActivityCardProps) {
             <div className="flex items-center justify-between w-full">
               <span className="flex items-center gap-1.5 font-medium">
                 <Eye className="w-3.5 h-3.5 text-primary/60" />
-                {activity.popularidad_vistas || 0} vistas
+                {Math.round((activity.popularidad_vistas || 0) * 10)} vistas
               </span>
               <span className="flex items-center gap-1.5 font-medium">
                 <Star className="w-3.5 h-3.5 text-primary/60 fill-primary/20" />

@@ -53,6 +53,8 @@ export interface ActividadListItem {
   precio: number;
   es_gratis: boolean;
   etiquetas: string[];
+  popularidad_favoritos: number;
+  popularidad_vistas: number;
   popularidad_normalizada: number;
   estado?: EstadoActividad | null;
 }
