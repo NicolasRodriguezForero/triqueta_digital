@@ -12,6 +12,7 @@ from app.schemas.user import (
     PerfilUsuarioResponse
 )
 from app.services import user_service
+from app.services.recommendation_service import recommendation_service
 from app.models.user import Usuario
 
 router = APIRouter()
@@ -49,7 +50,12 @@ async def update_my_profile(
     
     All fields are optional.
     """
-    return await user_service.update_user_profile(db, current_user.id, profile_data)
+    result = await user_service.update_user_profile(db, current_user.id, profile_data)
+    
+    # Invalidate recommendation cache since profile affects personalization
+    await recommendation_service.invalidate_cache(current_user.id)
+    
+    return result
 
 
 @router.delete("/me", status_code=status.HTTP_204_NO_CONTENT)

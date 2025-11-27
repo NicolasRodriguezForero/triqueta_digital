@@ -36,11 +36,11 @@ export function useFavorites(params?: {
 /**
  * Hook to check if an activity is favorited
  */
-export function useIsFavorite(actividadId: string) {
+export function useIsFavorite(actividadId: string, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: favoritesKeys.check(actividadId),
     queryFn: () => favoritesApi.checkIsFavorite(actividadId),
-    enabled: !!actividadId,
+    enabled: !!actividadId && (options?.enabled !== false),
   });
 }
 

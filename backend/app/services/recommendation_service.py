@@ -43,11 +43,14 @@ class RecommendationService:
     async def get_recommendations(
         self,
         db: AsyncSession,
-        usuario_id: int,
+        usuario_id: Optional[int],
         query_params: RecommendationQuery,
     ) -> RecommendationList:
         """
-        Get personalized recommendations for user (RF-014, RF-015).
+        Get recommendations for user (RF-014, RF-015).
+        
+        If usuario_id is None, returns popularity-based recommendations.
+        If usuario_id is provided, returns personalized recommendations.
         
         Algorithm:
         1. Base score: popularidad_normalizada (0-1)
@@ -60,14 +63,15 @@ class RecommendationService:
         
         Args:
             db: Database session
-            usuario_id: User ID
+            usuario_id: User ID (None for anonymous/public recommendations)
             query_params: Query parameters (limit, filters)
             
         Returns:
             List of recommendations with scores and explanations
         """
-        # Check cache first
-        cache_key = f"recommendations:user:{usuario_id}:{query_params.limit}:{query_params.tipo}:{query_params.localidad}:{query_params.exclude_favorited}"
+        # Build cache key (use 'anonymous' for unauthenticated users)
+        user_key = f"user:{usuario_id}" if usuario_id else "anonymous"
+        cache_key = f"recommendations:{user_key}:{query_params.limit}:{query_params.tipo}:{query_params.localidad}:{query_params.exclude_favorited}"
         redis = await self._get_redis()
         
         cached = await redis.get(cache_key)
@@ -75,21 +79,28 @@ class RecommendationService:
             data = json.loads(cached)
             return RecommendationList(**data)
         
-        # Get user profile
-        profile_query = select(PerfilUsuario).where(PerfilUsuario.usuario_id == usuario_id)
-        profile_result = await db.execute(profile_query)
-        profile = profile_result.scalar_one_or_none()
-        
-        # Check if profile is complete
-        profile_complete = bool(
-            profile
-            and profile.etiquetas_interes
-            and len(profile.etiquetas_interes) > 0
-        )
-        
-        # Get user's favorited activities if excluding them
+        # Get user profile and favorites only if authenticated
+        profile = None
+        profile_complete = False
         favorited_ids = set()
-        if query_params.exclude_favorited:
+        
+        if usuario_id:
+            # Get user profile
+            profile_query = select(PerfilUsuario).where(PerfilUsuario.usuario_id == usuario_id)
+            profile_result = await db.execute(profile_query)
+            profile = profile_result.scalar_one_or_none()
+            
+            # Check if profile has at least one preference for personalization
+            profile_complete = bool(
+                profile
+                and (
+                    (profile.etiquetas_interes and len(profile.etiquetas_interes) > 0)
+                    or profile.localidad_preferida
+                    or profile.nivel_actividad
+                )
+            )
+            
+            # Get user's favorited activities (for is_favorite flag and optional exclusion)
             fav_query = select(Favorito.actividad_id).where(Favorito.usuario_id == usuario_id)
             fav_result = await db.execute(fav_query)
             favorited_ids = {fav_id for (fav_id,) in fav_result.fetchall()}
@@ -102,7 +113,7 @@ class RecommendationService:
             query = query.where(Actividad.tipo == query_params.tipo)
         if query_params.localidad:
             query = query.where(Actividad.localidad == query_params.localidad)
-        if favorited_ids:
+        if query_params.exclude_favorited and favorited_ids:
             query = query.where(~Actividad.id.in_(favorited_ids))
         
         # Get activities

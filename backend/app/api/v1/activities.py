@@ -97,6 +97,8 @@ async def list_activities(
             precio=activity.precio,
             es_gratis=activity.es_gratis,
             etiquetas=activity.etiquetas,
+            popularidad_favoritos=activity.popularidad_favoritos,
+            popularidad_vistas=activity.popularidad_vistas,
             popularidad_normalizada=activity.popularidad_normalizada,
             estado=activity.estado,
         )
@@ -339,6 +341,8 @@ async def list_all_activities_admin(
             precio=activity.precio,
             es_gratis=activity.es_gratis,
             etiquetas=activity.etiquetas,
+            popularidad_favoritos=activity.popularidad_favoritos,
+            popularidad_vistas=activity.popularidad_vistas,
             popularidad_normalizada=activity.popularidad_normalizada,
             estado=activity.estado,
         )

@@ -104,11 +104,11 @@ function AdminDashboard() {
             <div key={activity.id} className="flex items-center justify-between p-3 bg-muted/50 rounded">
               <div className="flex items-center gap-3">
                 <span className="font-bold text-lg text-muted-foreground">#{index + 1}</span>
-                <span className="font-medium">{activity.nombre}</span>
+                <span className="font-medium">{activity.titulo}</span>
               </div>
               <div className="flex gap-4 text-sm text-muted-foreground">
                 <span>❤️ {activity.total_favoritos}</span>
-                <span>👁️ {activity.total_vistas}</span>
+                <span>👁️ {Math.round(activity.total_vistas * 10)}</span>
               </div>
             </div>
           ))}

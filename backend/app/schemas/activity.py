@@ -186,6 +186,8 @@ class ActividadListItem(BaseModel):
     precio: Decimal
     es_gratis: bool
     etiquetas: List[str]
+    popularidad_favoritos: int
+    popularidad_vistas: Decimal
     popularidad_normalizada: Decimal
     estado: Optional[str] = None
     

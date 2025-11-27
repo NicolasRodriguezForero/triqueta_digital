@@ -70,7 +70,8 @@ function RecomendacionesPage() {
                 Recomendaciones para ti
               </h1>
               <p className="text-lg text-muted-foreground">
-                Actividades personalizadas basadas en tus intereses y preferencias
+                Actividades personalizadas basadas en tus intereses y
+                preferencias
               </p>
             </div>
           </div>
@@ -152,10 +153,14 @@ function RecomendacionesPage() {
             No hay recomendaciones disponibles
           </h2>
           <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-            Prueba ajustando los filtros o completa tu perfil para obtener recomendaciones más personalizadas
+            Prueba ajustando los filtros o completa tu perfil para obtener
+            recomendaciones más personalizadas
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button onClick={() => (window.location.href = "/actividades")} variant="outline">
+            <Button
+              onClick={() => (window.location.href = "/actividades")}
+              variant="outline"
+            >
               Ver todas las actividades
             </Button>
             <Button onClick={() => (window.location.href = "/perfil")}>
@@ -172,15 +177,14 @@ function RecomendacionesPage() {
                 className="relative group"
               >
                 {/* Recommendation Card with gradient border */}
-                <div className="relative bg-card rounded-xl shadow-lg border-2 border-border hover:border-primary/30 transition-all duration-300 overflow-hidden">
-                  {/* Gradient accent bar */}
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-primary to-purple-500"></div>
-                  
+                <div className="relative bg-transparent rounded-xl shadow-lg transition-all duration-300 overflow-hidden">
                   <div className="p-6">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                       {/* Activity Card */}
                       <div className="lg:col-span-2">
-                        <ActivityCard activity={recommendation.actividad as any} />
+                        <ActivityCard
+                          activity={recommendation.actividad as any}
+                        />
                       </div>
 
                       {/* Recommendation Info */}
@@ -192,9 +196,14 @@ function RecomendacionesPage() {
                               <Sparkles className="w-5 h-5 text-white" />
                             </div>
                             <div>
-                              <p className="text-xs text-muted-foreground uppercase tracking-wide">Puntuación</p>
+                              <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                                Puntuación
+                              </p>
                               <p className="text-2xl font-bold text-foreground">
-                                {recommendation.score.toFixed(0)}<span className="text-lg text-muted-foreground">/100</span>
+                                {recommendation.score.toFixed(0)}
+                                <span className="text-lg text-muted-foreground">
+                                  /100
+                                </span>
                               </p>
                             </div>
                           </div>
@@ -224,9 +233,10 @@ function RecomendacionesPage() {
                               <Badge className="bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-800">
                                 {recommendation.explanation.reason === "tags"
                                   ? "✨ Coincidencia de intereses"
-                                  : recommendation.explanation.reason === "location"
-                                  ? "📍 En tu zona"
-                                  : "🔥 Popular"}
+                                  : recommendation.explanation.reason ===
+                                      "location"
+                                    ? "📍 En tu zona"
+                                    : "🔥 Popular"}
                               </Badge>
                               <p className="text-sm text-muted-foreground leading-relaxed">
                                 {recommendation.explanation.details}
@@ -245,8 +255,8 @@ function RecomendacionesPage() {
           {/* Load More */}
           {data && data.total > limit && (
             <div className="text-center mt-10">
-              <Button 
-                onClick={() => setLimit(limit + 12)} 
+              <Button
+                onClick={() => setLimit(limit + 12)}
                 size="lg"
                 className="gap-2"
               >
