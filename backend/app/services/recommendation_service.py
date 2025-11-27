@@ -90,11 +90,14 @@ class RecommendationService:
             profile_result = await db.execute(profile_query)
             profile = profile_result.scalar_one_or_none()
             
-            # Check if profile is complete
+            # Check if profile has at least one preference for personalization
             profile_complete = bool(
                 profile
-                and profile.etiquetas_interes
-                and len(profile.etiquetas_interes) > 0
+                and (
+                    (profile.etiquetas_interes and len(profile.etiquetas_interes) > 0)
+                    or profile.localidad_preferida
+                    or profile.nivel_actividad
+                )
             )
             
             # Get user's favorited activities (for is_favorite flag and optional exclusion)
